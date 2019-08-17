@@ -68,6 +68,10 @@ output: pdf_document
 **Outreach**
 * Introduction to Network Visualization, Austin R Users Group, Spring, 2018
 * Speaker at BAHFest Texas, A festival of bad ad-hoc hypotheses, Spring, 2018
+
+**Groups**
+* R-Ladies Austin
+* Quest for Orthologs
  
 **Talks**
 
