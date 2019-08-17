@@ -60,16 +60,22 @@ output: pdf_document
 * CD McWhite, BJ Liebeskind, EM Marcotte, "Applications of comparative evolution to human disease genetics", Current opinion in genetics & development 35, 16-24, 2015 
 * W Zhao, M Bonem, CD McWhite, JJ Silberg, L Segatori, "Sensitive detection of proteasomal activation using the Deg-On mammalian synthetic gene circuit", Nature Communications 5, 2014
 * A Demelash, P Rudrabhatla, HC Pant, X Wang, ND Amin, CD McWhite, X Naizhen, RI Linnoila, "Achaete-scute homologue-1 (ASH1) stimulates migration of lung cancer cells through Cdk5/p35 pathway", Molecular biology of the cell 23 (15), 2856-2866, 2012
+
+
+**Software**
+ * colorblindr: An R package to aid design of colorblind-interpretable figures
  
 **Outreach**
-
-* colorblindr: An R package to aid design of colorblind-interpretable figures
 * Introduction to Network Visualization, Austin R Users Group, Spring, 2018
-* BAHFest Texas, A festival of bad ad-hoc hypotheses, Spring, 2018
+* Speaker at BAHFest Texas, A festival of bad ad-hoc hypotheses, Spring, 2018
  
-**Presentations**
+**Talks**
 
+* Computing on Phenotypes, Invited talk, Ames, IA, 4/2019
 * First International Plant Systems Biology Conference, Roscoff, France, 9/2018
+
+**Posters**
+
 * The Society for Molecular Biology and Evolution, Austin, TX, 7/2017
 * Omics Approaches to Study the Proteome Keystone Conference, Breckenridge, CO, 1/2017
 * Plant Biology, Austin, TX, 7/2016
