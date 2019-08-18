@@ -2,7 +2,8 @@
 output: pdf_document
 ---
 #### Claire Darnell McWhite
-##### claire.mcwhite@utexas.edu |  <a href="https://clairemcwhite.github.io" target="_blank">clairemcwhite.github.io</a> |  <a href="https://twitter.com/clairemcwhite" target="_blank">@clairemcwhite</a> | <a href="https://scholar.google.com/citations?user=claire+mcwhite&user=AOYsDhsAAAAJ" target="_blank">Scholar page</a>
+##### claire.mcwhite@utexas.edu |  [clairemcwhite.github.io](https://clairemcwhite.github.io) |  [@clairemcwhite](https://twitter.com/clairemcwhite) | [Scholar page](https://scholar.google.com/citations?u=clairemcwhite)
+
 ##### Ph.D Candidate, Cell and Molecular Biology Ph.D. Program, University of Texas at Austin
  
 **Education**
@@ -63,7 +64,9 @@ output: pdf_document
 
 
 **Software**
- * colorblindr: An R package to aid design of colorblind-interpretable figures
+
+ * [colorblindr](https://github.com/clauswilke/colorblindr): An R package to aid design of colorblind-interpretable figures
+ * [colorspace](http://colorspace.r-forge.r-project.org/): A Toolbox for Manipulating and Assessing Colors and Palettes
  
 **Outreach**
 * Introduction to Network Visualization, Austin R Users Group, Spring, 2018
@@ -75,7 +78,7 @@ output: pdf_document
  
 **Talks**
 
-* Computing on Phenotypes, Invited talk, Ames, IA, 4/2019
+* Computing on Phenotypes, Invited talk, Iowa State, Ames, IA, 4/2019
 * First International Plant Systems Biology Conference, Roscoff, France, 9/2018
 
 **Posters**
@@ -92,11 +95,11 @@ output: pdf_document
 **Teaching**
 
 * Teacher's Assistant - Advanced Bash Scripting Short Course, Spring 2019
-* Teacher"s Assistant - Intro to Next-Generation Sequencing Short Course, Spring 2018
+* Teacher's Assistant - Intro to Next-Generation Sequencing Short Course, Spring 2018
 * Co-instructor - Peer-led Biocomputing Working Group: Python/Bash, Spring 2017
 * Lecturer (data visualization in R) - Peer-led Biostatistics Seminar, Fall, 2016
-* Open Coding Hour - Assist graduate students with programming issues. Fall 2016 - Spring 2018
-* Teacher"s Assistant - BCH339N Systems Biology & Bioinformatics, Spring, 2016
+* Open Coding Hour - Assist graduate students with programming issues. Fall 2016 - Spring 2019
+* Teacher's Assistant - BCH339N Systems Biology & Bioinformatics, Spring, 2016
  
 **References**
 
