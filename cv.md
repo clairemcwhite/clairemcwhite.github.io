@@ -2,7 +2,7 @@
 output: pdf_document
 ---
 #### Claire Darnell McWhite
-##### claire.mcwhite@utexas.edu | clairemcwhite.github.io
+##### claire.mcwhite@utexas.edu | < a href = <a href="clairemcwhite.github.io" target="_blank">clairemcwhite.github.io</a> |  <a href="twitter.com/clairemcwhite" target="_blank">@clairemcwhite</a>
 ##### Ph.D Candidate, Cell and Molecular Biology Ph.D. Program, University of Texas at Austin
  
 **Education**
