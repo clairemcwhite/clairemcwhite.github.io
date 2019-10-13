@@ -29,7 +29,7 @@ output: pdf_document
  
 **Awards**
 
-* NIH F31 Graduate Fellowship, "Proteomics of ciliopathy protein complexes" _ Impact score: 10, Percentile: 1* , 1/2018
+* NIH F31 Graduate Fellowship, "Proteomics of ciliopathy protein complexes" Impact score: 10, Percentile: 1* , 1/2018
 * Graduate School Summer Fellowship, Summer, 2017
 * Honorable Mention, NSF Graduate Research Fellowship Program (2016)
 * Spring/Fall Graduate Fellowship, UT Austin (8/2014-5/2015)
@@ -40,7 +40,7 @@ output: pdf_document
 **Honors**
 
 * Best Talk, First International Plant Systems Biology Conference, Fall, 2018
-* Student Choice Award, UT Austin Natural Sciences Council"s Art in Science Display, 3/2017, for my network visualization of gene orthology relationships.
+* Student Choice Award, UT Austin Natural Sciences Council's Art in Science Display, 3/2017, for my network visualization of gene orthology relationships.
 * Visualizing Science Competition, 2nd Place, UT Austin College of Natural Sciences, 11/2016, my visualization of gene-gene relationships is hanging in the departmental office.
 * Graduate Student Research Award, Society of Systemic Biologists, 7/2016
 * Selected Artist, Evolution Art Exhibition, Art.Science.Gallery, 6/2016
@@ -51,7 +51,7 @@ output: pdf_document
 
 **Publications**
 
-* CD DuPai, CD McWhite, CB Smith, R Garten, S Maurer-Stroh, CO Wilke, "Influenza passaging annotations: what they tell us and why we should listen", Virus evolution 5 (1), vez0162019
+* CD DuPai, CD McWhite, CB Smith, R Garten, S Maurer-Stroh, CO Wilke, "Influenza passaging annotations: what they tell us and why we should listen", Virus evolution 5 (1), vez016 2019
 * A Zeileis, JC Fisher, K Hornik, R Ihaka, CD McWhite, P Murrell, R Stauffer, CO Wilke, "colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes" arXiv preprint arXiv:1903.06490 1 2019
 * W Zhao, B Bachhav, C McWhite, L Segatori, "A yeast selection system for the detection of proteasomal activation",Protein Engineering, Design and Selection 31 (11), 437-445
 * AH Kachroo, JM Laurent, A Akhmetov, M Szilagyi-Jones, CD McWhite, A Zhao, EM Marcotte, "Systematic bacterialization of yeast genes identifies a near-universally swappable pathway", eLife 2017;6:e25093
@@ -71,6 +71,7 @@ output: pdf_document
 **Outreach**
 * Introduction to Network Visualization, Austin R Users Group, Spring, 2018
 * Speaker at BAHFest Texas, A festival of bad ad-hoc hypotheses, Spring, 2018
+* Introduction to Data Visualization in R, Fall 2019
 
 **Groups**
 * R-Ladies Austin
