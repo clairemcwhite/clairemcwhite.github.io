@@ -2,7 +2,7 @@
 output: pdf_document
 ---
 #### Claire Darnell McWhite
-##### claire.mcwhite@utexas.edu |  [clairemcwhite.github.io](https://clairemcwhite.github.io) |  [@clairemcwhite](https://twitter.com/clairemcwhite) | [Scholar page](https://scholar.google.com/citations?u=clairemcwhite)
+##### claire.mcwhite@utexas.edu |  [clairemcwhite.github.io](https://clairemcwhite.github.io) |  [@clairemcwhite](https://twitter.com/clairemcwhite) | [Scholar page](https://scholar.google.com/citations?u=AOYsDhsAAAAJ)
 
 ##### Ph.D Candidate, Cell and Molecular Biology Ph.D. Program, University of Texas at Austin
  
@@ -29,7 +29,7 @@ output: pdf_document
  
 **Awards**
 
-* NIH F31 Graduate Fellowship, "Proteomics of ciliopathy protein complexes" Impact score: 10, Percentile: 1* , 1/2018
+* NIH F31 Graduate Fellowship, "Proteomics of ciliopathy protein complexes" Impact score: 10, Percentile: 1% , 1/2018
 * Graduate School Summer Fellowship, Summer, 2017
 * Honorable Mention, NSF Graduate Research Fellowship Program (2016)
 * Spring/Fall Graduate Fellowship, UT Austin (8/2014-5/2015)
