@@ -102,6 +102,7 @@ output: pdf_document
 * NIH Summer Research Symposium, 8/2011
  
 **Groups**
+
 * R-Ladies Austin
 * Quest for Orthologs
 
