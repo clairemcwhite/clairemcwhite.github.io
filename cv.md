@@ -54,12 +54,12 @@ output: pdf_document
 * CD McWhite,O Papoulas, K Drew, RM Cox, V June, OX Dong, T Kwon, C Wan, ML Salmi, SJ Roux, KS Browning, ZJ Chen, PC Ronald, EM Marcotte, "A pan-plant protein complex map reveals deep conservation and novel assemblies", submitted 2019
 * CD DuPai, CD McWhite, CB Smith, R Garten, S Maurer-Stroh, CO Wilke, "Influenza passaging annotations: what they tell us and why we should listen", Virus evolution 5 (1), vez016 2019
 * A Zeileis, JC Fisher, K Hornik, R Ihaka, CD McWhite, P Murrell, R Stauffer, CO Wilke, "colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes" arXiv preprint arXiv:1903.06490 1 2019
-* W Zhao, B Bachhav, C McWhite, L Segatori, "A yeast selection system for the detection of proteasomal activation",Protein Engineering, Design and Selection 31 (11), 437-445
+* W Zhao, B Bachhav, C McWhite, L Segatori, "A yeast selection system for the detection of proteasomal activation", Protein Engineering, Design and Selection 31 (11), 437-445
 * AH Kachroo, JM Laurent, A Akhmetov, M Szilagyi-Jones, CD McWhite, A Zhao, EM Marcotte, "Systematic bacterialization of yeast genes identifies a near-universally swappable pathway", eLife 2017;6:e25093
 * KS Drew, C Lee, RL Huizar, F Tu, B Borgeson, CD McWhite, Y Ma, JB Wallingford, EM Marcotte, "Integration of over 9,000 mass spectrometry experiments builds a global map of human protein complexes", Molecular Systems Biology (2017) 13, 932
 * BJ Liebeskind, CD McWhite, EM Marcotte, "Towards Consensus Gene Ages", Genome Biology and Evolution 8 (6): 1812-1823, 2016
 * CD McWhite, AG Meyer, CO Wilke, "Sequence amplification via cell passaging creates spurious signals of positive adaptation in influenza virus H3N2 hemagglutinin", Virus Evolution 2 (2):vew026, 2016
-* CD McWhite, BJ Liebeskind, EM Marcotte, "Applications of comparative evolution to human disease genetics", Current opinion in genetics & development 35, 16-24, 2015 
+* CD McWhite, BJ Liebeskind, EM Marcotte, "Applications of comparative evolution to human disease genetics", Current Opinion in Genetics & Development 35, 16-24, 2015 
 * W Zhao, M Bonem, CD McWhite, JJ Silberg, L Segatori, "Sensitive detection of proteasomal activation using the Deg-On mammalian synthetic gene circuit", Nature Communications 5, 2014
 * A Demelash, P Rudrabhatla, HC Pant, X Wang, ND Amin, CD McWhite, X Naizhen, RI Linnoila, "Achaete-scute homologue-1 (ASH1) stimulates migration of lung cancer cells through Cdk5/p35 pathway", Molecular biology of the cell 23 (15), 2856-2866, 2012
 
@@ -103,13 +103,15 @@ output: pdf_document
  
 **Groups**
 
+* Quest for Orthologs Consortium
 * Plant Cell Atlas
 * R-Ladies Austin
-* Quest for Orthologs Consortium
+
 
 **References**
 
 * Prof. Edward Marcotte - marcotte@icmb.utexas.edu
 * Prof. John Wallingford - wallingford@austin.utexas.edu
-* Prof. Claus Wilke - wilke@austin.utexas.edu
 * Prof. Andrew Ellington - ellingtonlab@gmail.com
+* Prof. Claus Wilke - wilke@austin.utexas.edu
+
