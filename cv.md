@@ -103,8 +103,9 @@ output: pdf_document
  
 **Groups**
 
+* Plant Cell Atlas
 * R-Ladies Austin
-* Quest for Orthologs
+* Quest for Orthologs Consortium
 
 **References**
 
