@@ -29,7 +29,7 @@ output: pdf_document
  
 **Awards**
 
-* NIH F31 Graduate Fellowship, "Proteomics of ciliopathy protein complexes" Impact score: 10, Percentile: 1% , 1/2018
+* NIH F31 Graduate Fellowship, "Proteomics of ciliopathy protein complexes" Impact score: 10, Percentile: 1% , 1/2018-
 * Graduate School Summer Fellowship, Summer, 2017
 * Honorable Mention, NSF Graduate Research Fellowship Program (2016)
 * Spring/Fall Graduate Fellowship, UT Austin (8/2014-5/2015)
@@ -51,6 +51,7 @@ output: pdf_document
 
 **Publications**
 
+* CD McWhite,O Papoulas, K Drew, RM Cox, V June, OX Dong, T Kwon, C Wan, ML Salmi, SJ Roux, KS Browning, ZJ Chen, PC Ronald, EM Marcotte, "A pan-plant protein complex map reveals deep conservation and novel assemblies", submitted 2019
 * CD DuPai, CD McWhite, CB Smith, R Garten, S Maurer-Stroh, CO Wilke, "Influenza passaging annotations: what they tell us and why we should listen", Virus evolution 5 (1), vez016 2019
 * A Zeileis, JC Fisher, K Hornik, R Ihaka, CD McWhite, P Murrell, R Stauffer, CO Wilke, "colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes" arXiv preprint arXiv:1903.06490 1 2019
 * W Zhao, B Bachhav, C McWhite, L Segatori, "A yeast selection system for the detection of proteasomal activation",Protein Engineering, Design and Selection 31 (11), 437-445
@@ -69,17 +70,23 @@ output: pdf_document
  * [colorspace](http://colorspace.r-forge.r-project.org/): A Toolbox for Manipulating and Assessing Colors and Palettes
  
 **Outreach**
+
 * Introduction to Network Visualization, Austin R Users Group, Spring, 2018
 * Speaker at BAHFest Texas, A festival of bad ad-hoc hypotheses, Spring, 2018
 * Introduction to Data Visualization in R, Fall 2019
 
-**Groups**
-* R-Ladies Austin
-* Quest for Orthologs
+**Teaching**
+
+* Teacher's Assistant - Advanced Bash Scripting Short Course, Spring 2019
+* Teacher's Assistant - Intro to Next-Generation Sequencing Short Course, Spring 2018
+* Co-instructor - Peer-led Biocomputing Working Group: Python/Bash, Spring 2017
+* Lecturer (data visualization in R) - Peer-led Biostatistics Seminar, Fall, 2016
+* Open Coding Hour - Assist graduate students with programming issues. Fall 2016 - Spring 2019
+* Teacher's Assistant - BCH339N Systems Biology & Bioinformatics, Spring, 2016
  
 **Talks**
 
-* Computing on Phenotypes, Invited talk, Iowa State, Ames, IA, 4/2019
+* Computing on Phenotypes, Invited talk, Iowa State University, Ames, IA, 4/2019
 * First International Plant Systems Biology Conference, Roscoff, France, 9/2018
 
 **Posters**
@@ -93,17 +100,13 @@ output: pdf_document
 * Rice Undergraduate Research Symposium, 4/2011, 4/2012, 4/2013
 * NIH Summer Research Symposium, 8/2011
  
-**Teaching**
+**Groups**
+* R-Ladies Austin
+* Quest for Orthologs
 
-* Teacher's Assistant - Advanced Bash Scripting Short Course, Spring 2019
-* Teacher's Assistant - Intro to Next-Generation Sequencing Short Course, Spring 2018
-* Co-instructor - Peer-led Biocomputing Working Group: Python/Bash, Spring 2017
-* Lecturer (data visualization in R) - Peer-led Biostatistics Seminar, Fall, 2016
-* Open Coding Hour - Assist graduate students with programming issues. Fall 2016 - Spring 2019
-* Teacher's Assistant - BCH339N Systems Biology & Bioinformatics, Spring, 2016
- 
 **References**
 
 * Prof. Edward Marcotte - marcotte@icmb.utexas.edu
 * Prof. John Wallingford - wallingford@austin.utexas.edu
 * Prof. Claus Wilke - wilke@austin.utexas.edu
+* Prof. Andrew Ellington - ellingtonlab@gmail.com
