@@ -63,7 +63,15 @@ output: pdf_document
 * W Zhao, M Bonem, CD McWhite, JJ Silberg, L Segatori, "Sensitive detection of proteasomal activation using the Deg-On mammalian synthetic gene circuit", Nature Communications 5, 2014
 * A Demelash, P Rudrabhatla, HC Pant, X Wang, ND Amin, CD McWhite, X Naizhen, RI Linnoila, "Achaete-scute homologue-1 (ASH1) stimulates migration of lung cancer cells through Cdk5/p35 pathway", Molecular biology of the cell 23 (15), 2856-2866, 2012
 
+**Teaching**
 
+* Teacher's Assistant - Advanced Bash Scripting Short Course, Spring 2019
+* Teacher's Assistant - Intro to Next-Generation Sequencing Short Course, Spring 2018
+* Co-instructor - Peer-led Biocomputing Working Group: Python/Bash, Spring 2017
+* Lecturer (data visualization in R) - Peer-led Biostatistics Seminar, Fall, 2016
+* Open Coding Hour - Assist graduate students with programming issues. Fall 2016 - Spring 2019
+* Teacher's Assistant - BCH339N Systems Biology & Bioinformatics, Spring, 2016
+ 
 **Software**
 
  * [colorblindr](https://github.com/clauswilke/colorblindr): An R package to aid design of colorblind-interpretable figures
@@ -75,15 +83,7 @@ output: pdf_document
 * Speaker at BAHFest Texas, A festival of bad ad-hoc hypotheses, Spring, 2018
 * Introduction to Data Visualization in R, Fall 2019
 
-**Teaching**
 
-* Teacher's Assistant - Advanced Bash Scripting Short Course, Spring 2019
-* Teacher's Assistant - Intro to Next-Generation Sequencing Short Course, Spring 2018
-* Co-instructor - Peer-led Biocomputing Working Group: Python/Bash, Spring 2017
-* Lecturer (data visualization in R) - Peer-led Biostatistics Seminar, Fall, 2016
-* Open Coding Hour - Assist graduate students with programming issues. Fall 2016 - Spring 2019
-* Teacher's Assistant - BCH339N Systems Biology & Bioinformatics, Spring, 2016
- 
 **Talks**
 
 * Computing on Phenotypes, Invited talk, Iowa State University, Ames, IA, 4/2019
