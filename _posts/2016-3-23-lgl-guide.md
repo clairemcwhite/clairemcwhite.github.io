@@ -21,7 +21,7 @@ As nicely outlined by in Martin Krzywinski's  [Hive Plot page](http://www.hivepl
 ### LGL tips
 As there aren't many resources on using the Large Graph Layout, I wanted to do a quick post on my tips for using the software. This post is meant to supplement the [main FAQ](http://www.opte.org/lgl/) and the [README](https://github.com/TheOpteProject/LGL/blob/master/README.txt). LGL is mainly maintained by the Opte Project to map the internet, and the most recent version of the software can be cloned from their [ Github](https://github.com/TheOpteProject/LGL), with git clone https://github.com/TheOpteProject/LGL.git.
 
-Note that the lgl layout implemented on igraph performs differently (and much worse) than the original LGL software. Someone inspired should fix this one day. 
+Note that the lgl layout implemented on igraph lays out graphs differently (and much worse IMO) than the original LGL software. Someone inspired should fix this one day. 
 
 #### Formatting and installation tips
 
