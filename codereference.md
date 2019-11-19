@@ -470,6 +470,29 @@ ENOG411DPZG,"                         ID1                        ID2  pearsonR
      args<-commandArgs(TRUE)
      genename=args[1]
 
+##### Theme that always outputs text in size 8 fonts in images
+    library(cowplot)
+    theme_cowplot_consistent_text <- function (font_size = 8) {
+  
+    theme_cowplot() %+replace%
+        theme(strip.text = element_text(size = font_size),
+             axis.text = element_text(colour = "black", size = font_size),
+             plot.title = element_text(size = font_size),
+             axis.title = element_text(size = font_size),
+             legend.text = element_text(size = font_size),
+             legend.title = element_text(size = font_size),
+             legend.key.size = unit(0.5, "lines"),
+             axis.title.x = element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0), vjust = 1),
+             axis.text.x = element_text(margin = ggplot2::margin(t = 1, r = 0, b = 0, l = 0), vjust = 1),
+             axis.title.y = element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0), angle = 90, vjust = 1),
+             axis.text.y = element_text(margin = ggplot2::margin(t = 0, r = 1, b = 0, l = 0), hjust = 1)
+            )
+  
+    }
+    theme_set(theme_cowplot_consistent_text(font_size = 8))
+
+
+
 ##### Get to R studio server
 
     In browser, go to http://<yourserverIP>:8787
