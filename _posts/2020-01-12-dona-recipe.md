@@ -63,7 +63,7 @@ For me, the spice level is great with something substantial like a breakfast tac
 ### Results of experiments
  
 #### Round 1: 
-  - Roasted fully de-seeded jalapeños, added lime juice
+  - De-seeded jalapeños prior to roasting, added lime juice
   - 3 jalapeños/3 garlic/0.5 tsp salt/3 tbsp oil/2 tsp lime juice
   - Not spicy enough, missing flavor/spice from jalapeno seeds
   - Also salsa doña definitely doesn't have lime juice 
