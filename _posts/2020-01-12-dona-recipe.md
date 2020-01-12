@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Imitation Tacodeli Doña sauce
+title: Imitation Tacodeli Salsa Doña
 ---
 
 ### Doña sauce
@@ -40,7 +40,7 @@ For me, the spice level is great with something substantial like a breakfast tac
 
  3. Remove garlic from oven
  
- 4. Flip jalapeños and continue to broil on low another 10-15 minutes, or until peppers have somewhat internally collapsed<br>
+ 4. Flip jalapeños and continue to broil on low for another 10-15 minutes, or until peppers have somewhat internally collapsed<br>
   <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/collapsing.jpg" width="300"/><br>
 *Jalapeños are done - charred somewhat and begun to collapse in on themselves*
 
@@ -62,7 +62,7 @@ For me, the spice level is great with something substantial like a breakfast tac
  
 #### Round 1: 
   - Roasted fully de-seeded jalapeños, added lime juice
-  - 3 jalapenos/3 garlic/0.5 tsp salt/3 tbsp oil/2 tsp lime juice
+  - 3 jalapeños/3 garlic/0.5 tsp salt/3 tbsp oil/2 tsp lime juice
   - Not spicy enough, missing flavor/spice from jalapeno seeds
   - Also salsa doña definitely doesn't have lime juice 
   - However this sauce was delicious, and the low spice level would make it a great party dip<br>
@@ -73,7 +73,7 @@ For me, the spice level is great with something substantial like a breakfast tac
    - Roasted whole jalapeños, removed skins
    - 3 jalapeños/6 cloves garlic/0.5 tsp salt/3 tbsp oil
    - Much closer to original flavor, but too spicy
-   - Consistency is too smooth (the original has more bits in it (likely jalapeño skins)<br>
+   - Consistency is too smooth (the original has more bits in it (jalapeño skins)<br>
   <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/toosmooth.jpg" width="300"/><br>
 *Left: Original doña sauce, Right: Round 2 sauce. Original has more bits of jalapeño*
   
@@ -81,7 +81,7 @@ For me, the spice level is great with something substantial like a breakfast tac
    - Roasted whole jalapeños, kept skins on, removed approximately 2/3rds of seeds
    - 5 jalapeños/5 garlic cloves/5 tbs oil/1 tsp salt<br>
 <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="300"/><br>
-*Left: Original doña sauce, Right: Round 3 sauce*
+*Left: Original doña sauce, Right: Round 3 sauce. Very close in appearance and flavor*
   
  
  
