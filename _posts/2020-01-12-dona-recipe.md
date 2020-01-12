@@ -6,14 +6,14 @@ title: Imitation Tacodeli Salsa Doña
 <img src = "https://cdn.vox-cdn.com/thumbor/N9PxU3yObBcLh4aa6EFi7UvJC5U=/0x0:5184x3456/1220x813/filters:focal(2040x1323:2868x2151):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/54613965/IMG_3125.0.jpg" width ="300"/><br>
 <i>Image source: https://austin.eater.com/2017/5/4/15536524/tacodeli-salsas-packaged</i>
 
-Salsa doña is essentially a roasted jalapeño/garlic emulsion that is rich, spicy, and delicious. It was created by Bertha Gonzales for the Austin chain Tacodeli and you can read its <a href="https://www.austin360.com/article/20121204/ENTERTAINMENT/312049688">history here</a>). Tacodeli recently started selling containers of salsa doña, but currently only in Whole Foods in Texas, Louisiana, Oklahoma, and Arkansas.
+Salsa doña is essentially a roasted jalapeño/garlic emulsion that is rich, spicy, and delicious. It was created by Bertha Gonzales for the Austin chain Tacodeli and you can read its <a href="https://www.austin360.com/article/20121204/ENTERTAINMENT/312049688">history here</a>. Tacodeli recently started selling containers of salsa doña, but currently only in Whole Foods in Texas, Louisiana, Oklahoma, and Arkansas.
 
 Since I want this sauce constantly, and not only in Texas, Louisiana, Oklahoma, or Arkansas, this is a record of my attempts to replicate it. It came out pretty successfully in the end.
 
 <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="400"/><br>
 *Left: Original doña sauce, Right: This recipe*
 
-There are several salsa doña recipes online, but some include extra ingredients or steps. From my comparison to the original sauce I've found a few key things:
+There are several salsa doña recipes online, but many include extra ingredients or steps. From my comparison to the original sauce I've found a few key things:
 
 1. The ingredients are only roasted jalapeños, roasted garlic, salt, and vegetable oil (or other neutral oil). i.e. no cilantro or lime in the original recipe, but it is very good with added lime.
 2. The original sauce includes jalapeño seeds, not just jalapeño flesh  
