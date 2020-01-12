@@ -63,23 +63,21 @@ It's basically a jalapeño/garlic emulsion. For me, the spice level is great wit
   - Roasted fully de-seeded jalapeños, added lime juice
   - 3 jalapenos/3 garlic/0.5 tsp salt/3 tbsp oil/2 tsp lime juice
   - Not spicy enough, missing flavor/spice from jalapeno seeds
-  - Also salsa doña definitely doesn't have lime juice (what was I thinking?)
+  - Also salsa doña definitely doesn't have lime juice 
   - However this sauce was delicious, and the low spice level would make it a great party dip
   
 ####  Round 2 (after acquiring doña sauce for comparison purposes) : 
    - Roasted whole jalapeños, removed skins
    - 3 jalapeños/6 cloves garlic/0.5 tsp salt/3 tbsp oil
    - Much closer to original flavor, but too spicy
-   - Consistency is too smooth (the original has more bits in it (likely jalapeño skins)
-  
-<img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/toosmooth.jpg" width="300"/><br>
+   - Consistency is too smooth (the original has more bits in it (likely jalapeño skins)<br>
+  <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/toosmooth.jpg" width="300"/><br>
 *Left: Original doña sauce, Right: Round 2 sauce. Original has more bits of jalapeño*
   
 #### Round 3:
    - Roasted whole jalapeños, kept skins on, removed approximately 2/3rds of seeds
-   - 5 jalapeños/5 garlic cloves/5 tbs oil/1 tsp salt
-
- <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="300"/><br>
+   - 5 jalapeños/5 garlic cloves/5 tbs oil/1 tsp salt<br>
+<img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="300"/><br>
 *Left: Original doña sauce, Right: Round 3 sauce*
   
  
