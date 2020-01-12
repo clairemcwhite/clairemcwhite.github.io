@@ -52,11 +52,13 @@ For me, the spice level is great with something substantial like a breakfast tac
 
  6. Remove about 2/3 total seeds from insides of peppers. 
  
- 7. Blend peppers, garlic, oil, and salt on high ("liquify") for 30 seconds or until very smooth (and oil does not separate)<br>
+ 7. Remove skins from garlic cloves
+ 
+ 8. Blend peppers, garlic, oil, and salt on high ("liquify") for 30 seconds or until very smooth (and oil does not separate)<br>
    <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/blended.jpg" width="300"/><br>
 *Fully blended*
 
- 8. Refrigerate over night (or at minimum until cool) 
+ 9. Refrigerate over night (or at minimum until cool) 
  
 ### Results of experiments
  
