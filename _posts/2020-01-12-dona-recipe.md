@@ -31,12 +31,10 @@ It's basically a jalapeño/garlic emulsion. For me, the spice level is great wit
  - 1 teaspoon salt (5mL)
  - 5 tablespoon vegetable oil (1/3 cup or 75mL)
  
- 1. Chop off jalapeño tops/stems, and place with garlic on baking sheet
- 
+ 1. Chop off jalapeño tops/stems, and place with garlic on baking sheet<br> 
  <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/preroast.jpg" width="300"/>
-  
- 2. Broil on low for 10-15 minutes, or until garlic is squishable. Broilers vary, so time may vary.
- 
+
+ 2. Broil on low for 10-15 minutes, or until garlic is squishable. Broilers vary, so time may vary<br>
  <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/roasted garlic.jpg" width="300"/><br>
 *Garlic is ready to go*
 
@@ -48,8 +46,9 @@ It's basically a jalapeño/garlic emulsion. For me, the spice level is great wit
 
  5. Place garlic and peppers in a closed container with a splash of water and let steam at least 15 minutes<br>
   <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/presteam.jpg" width="300"/><br>
-*Pre-steaming. Coffee cans are good airtight containers for this step.*
- 
+*Pre-steaming. Coffee cans are good airtight containers for this step*<br>
+   <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/poststeam.jpg" width="300"/><br>
+*Post-steaming*
  6. Remove about 2/3 total seeds from insides of peppers. 
  
  7. Blend peppers, garlic, oil, and salt on high ("liquify") for 30 seconds or until very smooth (and oil does not separate)<br>
