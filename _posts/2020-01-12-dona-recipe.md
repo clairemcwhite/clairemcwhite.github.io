@@ -4,14 +4,14 @@ title: Imitation Tacodeli Doña sauce
 ---
 
 ### Doña sauce
-<img src = "https://cdn.vox-cdn.com/thumbor/N9PxU3yObBcLh4aa6EFi7UvJC5U=/0x0:5184x3456/1220x813/filters:focal(2040x1323:2868x2151):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/54613965/IMG_3125.0.jpg" width ="500"/>
+<img src = "https://cdn.vox-cdn.com/thumbor/N9PxU3yObBcLh4aa6EFi7UvJC5U=/0x0:5184x3456/1220x813/filters:focal(2040x1323:2868x2151):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/54613965/IMG_3125.0.jpg" width ="300"/><br>
 <i>Source: https://austin.eater.com/2017/5/4/15536524/tacodeli-salsas-packaged</i>
 
 This is my attempt to replicate Tacodeli's salsa Doña, created by Bertha Gonzales (<a href="https://www.austin360.com/article/20121204/ENTERTAINMENT/312049688">history here</a>). Tacodeli recently started selling the containers of salsa Doña, but currently only in Whole Foods in Texas, Louisiana, Oklahoma and Arkansas.
 
 Since I need this sauce constantly, and not only in Texas, Louisiana, Oklahoma, and Arkansas, this is my attempt to replicate it. 
 
-<img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="400"/>
+<img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="400"/><br>
 *Left: Original doña sauce, Right: This recipe*
 
 There are several doña recipes online, but some include extra ingredients or steps. From my comparison to the original sauce I've found a few key things:
@@ -24,7 +24,7 @@ There are several doña recipes online, but some include extra ingredients or st
   
 It's basically a jalapeño/garlic emulsion. For me, the spice level is great with something substantial like a breakfast taco, but is too spicy for eating with tortilla chips. For version meant for a dip, reduce the number of added jalapeño seeds even further. 
 
-#### Recipe
+### Recipe
 
  - 5 jalapeños 
  - 5 cloves garlic (skin on)
@@ -43,44 +43,44 @@ It's basically a jalapeño/garlic emulsion. For me, the spice level is great wit
  3. Remove garlic from oven
  
  4. Flip jalapeños and continue to broil on low another 10-15 minutes, or until peppers have somewhat internally collapsed
-  <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/collapsing.jpg" width="400"/>
+  <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/collapsing.jpg" width="300"/><br>
 *Jalapeños are done - charred somewhat and begun to collapse in on themselves*
 
  5. Place garlic and peppers in a closed container with a splash of water and let steam at least 15 minutes
-  <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/presteam.jpg" width="400"/>
+  <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/presteam.jpg" width="300"/><br>
 *Pre-steaming. Coffee cans are good airtight containers for this step.*
  
  6. Remove about 2/3 total seeds from insides of peppers. 
  
  7. Blend peppers, garlic, oil, and salt on high ("liquify") for 30 seconds or until very smooth (and oil does not separate).
-   <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/blended.jpg" width="400"/>
+   <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/blended.jpg" width="300"/><br>
 *Fully blended*
 
  8. Refrigerate over night (or at minimum until cool) 
  
-#### Results of experiments
+### Results of experiments
  
- Round 1: 
+#### Round 1: 
   - Roasted fully de-seeded jalapeños, added lime juice
   - 3 jalapenos/3 garlic/0.5 tsp salt/3 tbsp oil/2 tsp lime juice
   - Not spicy enough, missing flavor/spice from jalapeno seeds
   - Also salsa doña definitely doesn't have lime juice (what was I thinking?)
   - However this sauce was delicious, and the low spice level would make it a great party dip
   
- Round 2 (after acquiring doña sauce for comparison purposes) : 
+####  Round 2 (after acquiring doña sauce for comparison purposes) : 
    - Roasted whole jalapeños, removed skins
    - 3 jalapeños/6 cloves garlic/0.5 tsp salt/3 tbsp oil
    - Much closer to original flavor, but too spicy
    - Consistency is too smooth (the original has more bits in it (likely jalapeño skins)
   
-<img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/toosmooth.jpg" width="400"/>
+<img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/toosmooth.jpg" width="300"/><br>
 *Left: Original doña sauce, Right: Round 2 sauce. Original has more bits of jalapeño*
   
- Round 3:
+#### Round 3:
    - Roasted whole jalapeños, kept skins on, removed approximately 2/3rds of seeds
    - 5 jalapeños/5 garlic cloves/5 tbs oil/1 tsp salt
 
- <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="400"/>
+ <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="300"/><br>
 *Left: Original doña sauce, Right: Round 3 sauce*
   
  
