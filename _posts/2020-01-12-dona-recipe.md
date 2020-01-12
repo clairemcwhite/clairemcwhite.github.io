@@ -64,7 +64,9 @@ It's basically a jalapeño/garlic emulsion. For me, the spice level is great wit
   - 3 jalapenos/3 garlic/0.5 tsp salt/3 tbsp oil/2 tsp lime juice
   - Not spicy enough, missing flavor/spice from jalapeno seeds
   - Also salsa doña definitely doesn't have lime juice 
-  - However this sauce was delicious, and the low spice level would make it a great party dip
+  - However this sauce was delicious, and the low spice level would make it a great party dip<br>
+  <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/round1.jpg" width="300"/><br>
+*Left: Original doña sauce, Right: Round 1 sauce. Very good tortilla chip dip, but definitely not salsa doña*
   
 ####  Round 2 (after acquiring doña sauce for comparison purposes) : 
    - Roasted whole jalapeños, removed skins
