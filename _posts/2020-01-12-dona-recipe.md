@@ -37,16 +37,16 @@ It's basically a jalapeño/garlic emulsion. For me, the spice level is great wit
   
  2. Broil on low for 10-15 minutes, or until garlic is squishable. Broilers vary, so time may vary.
  
- <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/roasted garlic.jpg" width="400"/>
+ <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/roasted garlic.jpg" width="300"/><br>
 *Garlic is ready to go*
 
  3. Remove garlic from oven
  
- 4. Flip jalapeños and continue to broil on low another 10-15 minutes, or until peppers have somewhat internally collapsed
+ 4. Flip jalapeños and continue to broil on low another 10-15 minutes, or until peppers have somewhat internally collapsed<br>
   <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/collapsing.jpg" width="300"/><br>
 *Jalapeños are done - charred somewhat and begun to collapse in on themselves*
 
- 5. Place garlic and peppers in a closed container with a splash of water and let steam at least 15 minutes
+ 5. Place garlic and peppers in a closed container with a splash of water and let steam at least 15 minutes<br>
   <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/presteam.jpg" width="300"/><br>
 *Pre-steaming. Coffee cans are good airtight containers for this step.*
  
