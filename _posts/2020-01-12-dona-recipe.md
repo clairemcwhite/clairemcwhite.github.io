@@ -4,7 +4,7 @@ title: Imitation Tacodeli Salsa Doña
 ---
 
 <img src = "https://cdn.vox-cdn.com/thumbor/N9PxU3yObBcLh4aa6EFi7UvJC5U=/0x0:5184x3456/1220x813/filters:focal(2040x1323:2868x2151):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/54613965/IMG_3125.0.jpg" width ="300"/><br>
-<i>Source: https://austin.eater.com/2017/5/4/15536524/tacodeli-salsas-packaged</i>
+<i>Image source: https://austin.eater.com/2017/5/4/15536524/tacodeli-salsas-packaged</i>
 
 Salsa doña is essentially a roasted jalapeño/garlic emulsion that is rich, spicy, and delicious. It was created by Bertha Gonzales for the Austin chain Tacodeli and you can read its <a href="https://www.austin360.com/article/20121204/ENTERTAINMENT/312049688">history here</a>). Tacodeli recently started selling containers of salsa doña, but currently only in Whole Foods in Texas, Louisiana, Oklahoma, and Arkansas.
 
