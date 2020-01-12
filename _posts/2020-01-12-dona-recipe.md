@@ -15,7 +15,7 @@ Since I want this sauce constantly, and not only in Texas, Louisiana, Oklahoma, 
 
 There are several salsa doña recipes online, but many include extra ingredients or steps. From my comparison to the original sauce I've found a few key things:
 
-1. The ingredients are only roasted jalapeños, roasted garlic, salt, and vegetable oil (or other neutral oil). i.e. no cilantro or lime in the original recipe, but it is very good with added lime.
+1. The ingredients are only roasted jalapeños, roasted garlic, salt, and vegetable oil (or other neutral oil). i.e. no cilantro or lime in the original recipe
 2. The original sauce includes jalapeño seeds, not just jalapeño flesh  
 3. However, using all seeds from all peppers makes a sauce that is much spicier than the original (and the original is very spicy)
 4. It doesn't seem like Tacodeli removes the jalapeño skins before blending
