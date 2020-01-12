@@ -27,7 +27,7 @@ For me, the spice level is great with something substantial like a breakfast tac
 ### Final recipe
 
  - 5 jalapeños 
- - 5 cloves garlic (skin on)
+ - 10 cloves garlic (skin on) (As few as 5 cloves are fine)
  - 1 teaspoon salt (5mL)
  - 5 tablespoon vegetable oil (1/3 cup or 75mL)
  
@@ -81,7 +81,7 @@ For me, the spice level is great with something substantial like a breakfast tac
   
 #### Round 3:
    - Roasted whole jalapeños, kept skins on, removed approximately 2/3rds of seeds
-   - 5 jalapeños/5 garlic cloves/5 tbs oil/1 tsp salt<br><br>
+   - 5 jalapeños/10 garlic cloves/5 tbs oil/1 tsp salt<br><br>
 <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="300"/><br>
 *Left: Original doña sauce, Right: Round 3 sauce. Very close in appearance and flavor*
   
