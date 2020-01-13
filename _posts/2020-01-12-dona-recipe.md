@@ -49,7 +49,7 @@ For me, the spice level is great with something substantial like a breakfast tac
    <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/poststeam.jpg" width="300"/><br>
 *Post-steaming*
 
- 6. Remove about 2/3 total seeds from insides of peppers. 
+ 6. Remove about 9/10th total seeds from insides of peppers. 
  
  7. Remove skins from garlic cloves
  
