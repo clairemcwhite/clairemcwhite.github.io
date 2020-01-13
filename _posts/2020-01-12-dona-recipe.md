@@ -82,7 +82,7 @@ For me, the spice level is great with something substantial like a breakfast tac
    - Roasted whole jalapeños, kept skins on, removed approximately 2/3rds of seeds
    - 5 jalapeños/10 garlic cloves/5 tbs oil/1 tsp salt<br><br>
 <img src="https://raw.githubusercontent.com/clairemcwhite/clairemcwhite.github.io/master/images/finalcomparison.jpg" width="300"/><br>
-*Left: Original doña sauce, Right: Round 3 sauce. Very close in appearance and flavor*
+*Left: Original doña sauce, Right: Round 3 sauce. Very close in appearance and flavor, but still somewhat too spicy. Using 9/10ths of seeds in final recipe*
   
  
  
