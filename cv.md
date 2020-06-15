@@ -27,8 +27,9 @@ output: pdf_document
 
 * (2008-2012) Dr. Ilona Linnoila Research Group, Experimental Pathology Section, Repeated internships. Projects related to lung epithelial cells in abnormal lesions and chemical injury.
  
-**Awards**
+**Fellowhips and scholarships**
 
+* Lewis-Sigler Scholar, Princeton University, beginning Fall 2020
 * NIH F31 Graduate Fellowship, "Proteomics of ciliopathy protein complexes" Impact score: 10, Percentile: 1% , 1/2018-
 * Graduate School Summer Fellowship, Summer, 2017
 * Honorable Mention, NSF Graduate Research Fellowship Program (2016)
@@ -47,11 +48,10 @@ output: pdf_document
 * Best Poster, UT Austin Institute for Cellular and Molecular Biology Retreat, 9/2015
 * Best Poster, Big Data in Biology Symposium, Center for Computational Biology and Bioinformatics, Austin, Texas, 5/2015
 
-\pagebreak
 
 **Publications**
 
-* CD McWhite,O Papoulas, K Drew, RM Cox, V June, OX Dong, T Kwon, C Wan, ML Salmi, SJ Roux, KS Browning, ZJ Chen, PC Ronald, EM Marcotte, "A pan-plant protein complex map reveals deep conservation and novel assemblies", submitted 2019
+* CD McWhite,O Papoulas, K Drew, RM Cox, V June, OX Dong, T Kwon, C Wan, ML Salmi, SJ Roux, KS Browning, ZJ Chen, PC Ronald, EM Marcotte, "A pan-plant protein complex map reveals deep conservation and novel assemblies", Cell 181:2 2020 
 * CD DuPai, CD McWhite, CB Smith, R Garten, S Maurer-Stroh, CO Wilke, "Influenza passaging annotations: what they tell us and why we should listen", Virus evolution 5 (1), vez016 2019
 * A Zeileis, JC Fisher, K Hornik, R Ihaka, CD McWhite, P Murrell, R Stauffer, CO Wilke, "colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes" arXiv preprint arXiv:1903.06490 1 2019
 * W Zhao, B Bachhav, C McWhite, L Segatori, "A yeast selection system for the detection of proteasomal activation", Protein Engineering, Design and Selection 31 (11), 437-445
@@ -103,9 +103,9 @@ output: pdf_document
  
 **Groups**
 
+* R-Ladies Austin
 * Quest for Orthologs Consortium
 * Plant Cell Atlas
-* R-Ladies Austin
 
 
 **References**
