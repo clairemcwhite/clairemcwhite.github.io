@@ -44,8 +44,15 @@ Advisors: Mona Singh, Martin Jonikas, Joshua Akey
  
 
 **Publications**
-* CD McWhite, M Singh, “Vector-clustering Multiple Sequence Alignment: Aligning into the twilight zone of protein sequence similarity with protein language models”, BioRXiv 2022.10.21.513099, 2022
-* CD McWhite, W Sae-Lee, Y Yuan, AL Mallam, NA Gort-Freitas, S Ramundo, M Onishi, EM Marcotte, "Alternative proteoforms and proteoform-dependent assemblies in humans and plants", BioRXiv 2022.09.21.508930, 2022
+* A Shamail, CD McWhite, “A General Algorithm for Detecting Higher-Order Interactions via Random Sequential Additions”, arXiv:2511.21614, 2025
+* A Shamail, CD McWhite, “Automated Protein Motif Localization using Concept Activation Vectors in Protein Language Model Embedding Space”, arXiv:2511.21614, 2025
+* R Shaw, SD Love, CD McWhite, “Evaluating pretrained protein language model embeddings as proxies for functional similarity”, Journal of Molecular Evolution, 1–12, 2025
+* S Majidian, A Hadziahmetovic, F Langschied, S Pascarelli, … CD McWhite, … et al., “Quest for orthologs in the era of data deluge and AI: challenges and innovations in orthology prediction and data integration”, Journal of Molecular Evolution, 1–18, 2025
+* H Xu, R Bierman, D Akey, C Koers, T Comi, CD McWhite, JM Akey, “Landscape of human protein-coding somatic mutations across tissues and individuals”, bioRxiv 2025.01.07.631808, 2025 (In review at Science)
+* V Dang, B Voigt, D Yang, G Hoogerbrugge, M Lee, R Cox, O Papoulas, CD McWhite, R Pradeep, JC Leggere, RS Gray, EM Marcotte, “VerteBrain reveals novel neural and non-neural protein assemblies conserved across vertebrate evolution”, bioRxiv 2025.05.26.656196, 2025 (Accepted, Cell Reports)
+* CD McWhite, W Sae-Lee, Y Yuan, AL Mallam, NA Gort-Freitas, S Ramundo, M Onishi, EM Marcotte, “Alternative proteoforms and proteoform-dependent assemblies in humans and plants”, Molecular Systems Biology, 1–19, 2024
+* RM Cox, O Papoulas, S Shril, C Lee, T Gardner, AM Battenhouse, M Lee, K Drew, CD McWhite, D Yang, JC Leggere, D Durand, F Hildebrandt, JB Wallingford, EM Marcotte, “Ancient eukaryotic protein interactions illuminate modern genetic traits and disorders”, bioRxiv 2024.05.26.595818, 2024
+* CD McWhite, I Armour-Garb, M Singh, “Leveraging protein language models for accurate multiple sequence alignment”, Genome Research, 33(7):1145–1153, 2023
 * L Wang, W Patena, KA Van Baalen, Y Xie, ER Singer, S Gavrilenko, M WarrenWilliams, L Han, HR Harrigan, V Chen, VTNP Ton, S Kyin, HH Shwe, MH Cahn, AT Wilson, J Hu, DJ Schnell, CD McWhite, M Jonikas, "A Chloroplast Protein Atlas Reveals Novel Structures and Spatial Organization of Biosynthetic Pathways", BioRXiv
 2022.05.31.493820v1, 2022
 * V de Crécy-Lagard, …, CD McWhite, …, “A roadmap for the functional annotation of protein families: a community perspective”, Database baac062, 2022
