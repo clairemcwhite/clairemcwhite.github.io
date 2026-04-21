@@ -1,23 +1,48 @@
 ---
 permalink: /
 title: ""
-excerpt: "About me"
+excerpt: "McWhite Lab"
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
 
+## McWhite Lab
 
-### About 
+We develop computational approaches to understand protein function, evolution, and organization — with a focus on interpretability of large language models of biomolecules and gene expression.
 
-I'm interested in the acquisition of novel protein function across evolution. It is possible to model protein sequences as a language, viewing amino acids as words and whole proteins as sentences. As in human language where words have meaning based on context, amino acids have function based on the context of their surrounding amino acids. These models are a powerful tool to interpret both mutation effects and protein functional divergence. I'm broadly focused on developing frameworks to interpret biological properties through the lens of protein language. 
+**Areas of Research**: Protein language model interpretability, agentic programming, algorithms for bioinformatics, systems biology, proteomics, evolution
 
-**Areas of Research**: Systems Biology, protein language models, evolution, plants, proteomics
+---
+
+## Recent News
+
+{% for item in site.data.news %}
+**{{ item.date }}** — {{ item.authors }}, "{% if item.url != "" %}<a href="{{ item.url }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}", *{{ item.venue }}*, {{ item.pages }}
+
+{% endfor %}
+
+---
+
+## Lab Members
+
+**Principal Investigator**
+
+Claire McWhite, Ph.D. — Assistant Professor, Department of Molecular and Cellular Biology, University of Arizona
+
+**Graduate Students**
+
+- Samuel Love
+- Robert Shaw
+- Ahmad Shamail
+
+[Meet the full team →](/people/)
+
+---
 
 #### Contact
 
-clairemcwhite@arizona.edu
-Department of Molecular and Cellular Biology
+clairemcwhite@arizona.edu  
+Department of Molecular and Cellular Biology  
 The University of Arizona
-

@@ -7,10 +7,10 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Claire McWhite"
+title                    : "McWhite Lab"
 title_separator          : "-"
-name                     : &name "Claire McWhite"
-description              : &description "Assistant Professor at the University of Arizona"
+name                     : &name "McWhite Lab"
+description              : &description "McWhite Lab at the University of Arizona"
 url                      : https://clairemcwhite.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "clairemcwhite/clairemcwhite.github.io"
