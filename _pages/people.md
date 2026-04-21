@@ -11,8 +11,6 @@ author_profile: true
 Assistant Professor, Department of Molecular and Cellular Biology, University of Arizona  
 clairemcwhite@arizona.edu
 
-[Photo placeholder]
-
 ---
 
 ## Graduate Students
