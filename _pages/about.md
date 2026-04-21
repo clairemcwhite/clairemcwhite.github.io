@@ -42,14 +42,7 @@ Claire McWhite, Ph.D. — Assistant Professor, Department of Molecular and Cellu
 
 ## Consulting
 
-Claire McWhite is available for consulting in protein language models, single-cell sequencing analysis, and bioinformatics.
-
-**Protein language model expertise includes:**
-- Interpreting and applying pretrained protein language models (ESM, ProtTrans, etc.)
-- Using protein language model embeddings to assess functional similarity
-- Concept activation vectors for automated motif localization in embedding space
-- Multiple sequence alignment leveraging protein language models
-- Applying protein language models to novel biological questions
+Claire McWhite is available for consulting in protein language models, single-cell language models, and bioinformatics, including building intuition for how protein and single-cell foundation models work internally, and applications of language models to biological problems.
 
 Please reach out at clairemcwhite@arizona.edu.
 
