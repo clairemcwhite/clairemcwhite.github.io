@@ -40,9 +40,9 @@ Claire McWhite, Ph.D. — Assistant Professor, Department of Molecular and Cellu
 
 ---
 
-## Consulting
+## Availability
 
-Claire McWhite is available for consulting in protein language models, single-cell language models, and bioinformatics, including building intuition for how protein and single-cell foundation models work internally, and applications of language models to biological problems.
+Claire McWhite is available for consulting, advising, and talks in protein language models, single-cell language models, and bioinformatics, including building intuition for how protein and single-cell foundation models work internally, and applications of language models to biological problems.
 
 Please reach out at clairemcwhite@arizona.edu.
 
