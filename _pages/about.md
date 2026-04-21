@@ -37,7 +37,6 @@ Claire McWhite, Ph.D. — Assistant Professor, Department of Molecular and Cellu
 - Robert Shaw
 - Ahmad Shamail
 
-[Meet the full team →](/people/)
 
 ---
 
