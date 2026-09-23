@@ -63,33 +63,34 @@ Princeton University, Princeton, NJ, USA
 
 **Publications**
 
-1. A Shamail and CD McWhite, "A General Algorithm for Detecting Higher-Order Interactions via Random Sequential Additions", arXiv:2511.21614, 2025
-2. A Shamail and CD McWhite, "Automated Protein Motif Localization using Concept Activation Vectors in Protein Language Model Embedding Space", arXiv:2511.21614, 2025
-3. R Shaw, SD Love, CD McWhite, "Evaluating pretrained protein language model embeddings as proxies for functional similarity", Journal of Molecular Evolution, 1–12, 2025
-4. S Majidian, A Hadziahmetovic, F Langschied, S Pascarelli, … CD McWhite, … et al., "Quest for orthologs in the era of data deluge and AI: challenges and innovations in orthology prediction and data integration", Journal of Molecular Evolution, 1–18, 2025
-5. H Xu, R Bierman, D Akey, C Koers, T Comi, CD McWhite, JM Akey, "Landscape of human protein-coding somatic mutations across tissues and individuals", bioRxiv, 2025.01.07.631808, 2025. *In Review at Science*
-6. V Dang, B Voigt, D Yang, G Hoogerbrugge, M Lee, R Cox, O Papoulas, CD McWhite, R Pradeep, JC Leggere, RS Gray, EM Marcotte, "VerteBrain reveals novel neural and non-neural protein assemblies conserved across vertebrate evolution", bioRxiv, 2025.05.26.656196, 2025. *In Review as a Cell Press Multi-Journal Submission*
-7. CD McWhite, W Sae-Lee, Y Yuan, AL Mallam, NA Gort-Freitas, S Ramundo, M Onishi, EM Marcotte, "Alternative proteoforms and proteoform-dependent assemblies in humans and plants", Molecular Systems Biology, 1–19, 2024
-8. RM Cox, O Papoulas, S Shril, C Lee, T Gardner, AM Battenhouse, M Lee, K Drew, CD McWhite, D Yang, JC Leggere, D Durand, F Hildebrandt, JB Wallingford, EM Marcotte, "Ancient eukaryotic protein interactions illuminate modern genetic traits and disorders", bioRxiv, 2024.05.26.595818, 2024. *In Review at Cell Genomics*
-9. ES Wallner, A Mair, D Handler, CD McWhite, SL Xu, L Dolan, DC Bergmann, "Spatially resolved proteomics of the Arabidopsis stomatal lineage identifies polarity complexes for cell divisions and stomatal pores", Developmental Cell, 10.1016/j.devcel.2024.03.001, 2024
-10. CD McWhite, I Armour-Garb, M Singh, "Leveraging protein language models for accurate multiple sequence alignment", Genome Research, 33(7):1145-1153, 2023
-11. M Kafri, W Patena, L Martin, L Wang, G Gomer, AK Sirkejyan, A Goh, AT Wilson, SE Gavrilenko, M Breker, A Roichman, CD McWhite, JD Rabinowitz, FR Cross, M Wuhr, MC Jonikas, "Systematic identification and characterization of novel genes in the regulation and biogenesis of photosynthetic machinery", Cell 186 (25), 5638–5655.e25, 2023
-12. L Wang, W Patena, KA Van Baalen, Y Xie, ER Singer, S Gavrilenko, M Warren-Williams, L Han, HR Harrigan, LD Hartz, V Chen, VTNP Ton, S Kyin, HH Shwe, MH Cahn, AT Wilson, M Onishi, J Hu, DJ Schnell, CD McWhite, MC Jonikas, "A chloroplast protein atlas reveals punctate structures and spatial organization of biosynthetic pathways", Cell, S0092-8674(23)00676-1, 2023
-13. V de Crecy-Lagard, ..., CD McWhite, ..., "A roadmap for the functional annotation of protein families: a community perspective", Database, baac062, 2022
-14. W Sae-Lee, CL McCafferty, EJ Verbeke, PC Havugimana, O Papoulas, CD McWhite, JR Houser, K Vanuytsel, G Murphy, K Drew, A Emili, DW Taylor, EM Marcotte, "The protein organization of a red blood cell", Cell Reports 40(3):111103, 2022
-15. CD McWhite, O Papoulas, K Drew, V Dang, JC Leggere, W Sae-Lee, EM Marcotte, "Co-Fractionation Mass Spectrometry to Identify Protein Complexes", STAR Protocols 2:1, 2021
-16. A Zeileis, JC Fisher, K Hornik, R Ihaka, CD McWhite, P Murrell, R Stauffer, CO Wilke, "colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes", Journal of Statistical Software, 96:1, 2020
-17. K Drew, C Lee, RM Cox, V Dang, CC Devitt, CD McWhite, O Papoulas, RL Huizar, EM Marcotte, JB Wallingford, "A systematic, label-free method for identifying RNA-associated proteins in vivo provides insights into vertebrate ciliary beating machinery", Developmental Biology 467:1-2, 2020
-18. CD McWhite, O Papoulas, K Drew, RM Cox, V June, OX Dong, T Kwon, C Wan, ML Salmi, SJ Roux, KS Browning, ZJ Chen, PC Ronald, EM Marcotte, "A pan-plant protein complex map reveals deep conservation and novel assemblies", Cell 181:2, 2020
-19. CD DuPai, CD McWhite, CB Smith, R Garten, S Maurer-Stroh, CO Wilke, "Influenza passaging annotations: what they tell us and why we should listen", Virus Evolution 5 (1), vez016, 2019
-20. W Zhao, B Bachhav, CD McWhite, L Segatori, "A yeast selection system for the detection of proteasomal activation", Protein Engineering, Design and Selection 31 (11), 437–445, 2018
-21. AH Kachroo, JM Laurent, A Akhmetov, M Szilagyi-Jones, CD McWhite, A Zhao, EM Marcotte, "Systematic bacterialization of yeast genes identifies a near-universally swappable pathway", eLife 6:e25093, 2017
-22. KS Drew, C Lee, RL Huizar, F Tu, B Borgeson, CD McWhite, Y Ma, JB Wallingford, EM Marcotte, "Integration of over 9,000 mass spectrometry experiments builds a global map of human protein complexes", Molecular Systems Biology 13:932, 2017
-23. BJ Liebeskind, CD McWhite, EM Marcotte, "Towards Consensus Gene Ages", Genome Biology and Evolution 8 (6): 1812–1823, 2016
-24. CD McWhite, AG Meyer, CO Wilke, "Sequence amplification via cell passaging creates spurious signals of positive adaptation in influenza virus H3N2 hemagglutinin", Virus Evolution 2 (2):vew026, 2016
-25. BJ Liebeskind, CD McWhite, EM Marcotte, "Applications of comparative evolution to human disease genetics", Current Opinion in Genetics & Development 35, 16–24, 2015
-26. W Zhao, M Bonem, CD McWhite, JJ Silberg, L Segatori, "Sensitive detection of proteasomal activation using the Deg-On mammalian synthetic gene circuit", Nature Communications 5, 2014
-27. A Demelash, P Rudrabhatla, HC Pant, X Wang, ND Amin, CD McWhite, X Naizhen, RI Linnoila, "Achaete-scute homologue-I (ASH1) stimulates migration of lung cancer cells through Cdk5/p35 pathway", Molecular Biology of the Cell 23 (15), 2856–2866, 2012
+1. M Catalano, G Pepe, G Ausiello, C McWhite, G Gambosi, M Helmer-Citterich, PF Gherardini, "Cross-Attention Over RNA And Protein Sequences Enables Generalizable Interaction Prediction", bioRxiv, 2026.04.22.720174, 2026
+2. V Dang, B Voigt, D Yang, G Hoogerbrugge, M Lee, RM Cox, O Papoulas, CD McWhite, R Pradeep, JC Leggere, BA Neely, RS Gray, EM Marcotte, "A cross-vertebrate brain protein interaction map identifies conserved neural and non-neural complexes", Cell Reports 45 (6), 117422, 2026
+3. RM Cox, O Papoulas, S Shril, C Lee, TP Gardner, ZT Ansari, AM Battenhouse, M Lee, K Drew, CD McWhite, D Yang, JC Leggere, D Durand, F Hildebrandt, JB Wallingford, EM Marcotte, "A protein interactome for the last eukaryotic common ancestor illuminates the biochemical basis of modern genetic diseases", Cell Genomics 6 (6), 101254, 2026
+4. A Shamail and CD McWhite, "A General Algorithm for Detecting Higher-Order Interactions via Random Sequential Additions", arXiv:2511.21614, 2025
+5. A Shamail and CD McWhite, "Automated Protein Motif Localization using Concept Activation Vectors in Protein Language Model Embedding Space", arXiv:2511.21614, 2025
+6. R Shaw, SD Love, CD McWhite, "Evaluating pretrained protein language model embeddings as proxies for functional similarity", Journal of Molecular Evolution, 1–12, 2025
+7. S Majidian, A Hadziahmetovic, F Langschied, S Pascarelli, … CD McWhite, … et al., "Quest for orthologs in the era of data deluge and AI: challenges and innovations in orthology prediction and data integration", Journal of Molecular Evolution, 1–18, 2025
+8. H Xu, R Bierman, D Akey, C Koers, T Comi, CD McWhite, JM Akey, "Landscape of human protein-coding somatic mutations across tissues and individuals", bioRxiv, 2025.01.07.631808, 2025. *In Review at Science*
+9. CD McWhite, W Sae-Lee, Y Yuan, AL Mallam, NA Gort-Freitas, S Ramundo, M Onishi, EM Marcotte, "Alternative proteoforms and proteoform-dependent assemblies in humans and plants", Molecular Systems Biology, 1–19, 2024
+10. ES Wallner, A Mair, D Handler, CD McWhite, SL Xu, L Dolan, DC Bergmann, "Spatially resolved proteomics of the Arabidopsis stomatal lineage identifies polarity complexes for cell divisions and stomatal pores", Developmental Cell, 10.1016/j.devcel.2024.03.001, 2024
+11. CD McWhite, I Armour-Garb, M Singh, "Leveraging protein language models for accurate multiple sequence alignment", Genome Research, 33(7):1145-1153, 2023
+12. M Kafri, W Patena, L Martin, L Wang, G Gomer, AK Sirkejyan, A Goh, AT Wilson, SE Gavrilenko, M Breker, A Roichman, CD McWhite, JD Rabinowitz, FR Cross, M Wuhr, MC Jonikas, "Systematic identification and characterization of novel genes in the regulation and biogenesis of photosynthetic machinery", Cell 186 (25), 5638–5655.e25, 2023
+13. L Wang, W Patena, KA Van Baalen, Y Xie, ER Singer, S Gavrilenko, M Warren-Williams, L Han, HR Harrigan, LD Hartz, V Chen, VTNP Ton, S Kyin, HH Shwe, MH Cahn, AT Wilson, M Onishi, J Hu, DJ Schnell, CD McWhite, MC Jonikas, "A chloroplast protein atlas reveals punctate structures and spatial organization of biosynthetic pathways", Cell, S0092-8674(23)00676-1, 2023
+14. V de Crecy-Lagard, ..., CD McWhite, ..., "A roadmap for the functional annotation of protein families: a community perspective", Database, baac062, 2022
+15. W Sae-Lee, CL McCafferty, EJ Verbeke, PC Havugimana, O Papoulas, CD McWhite, JR Houser, K Vanuytsel, G Murphy, K Drew, A Emili, DW Taylor, EM Marcotte, "The protein organization of a red blood cell", Cell Reports 40(3):111103, 2022
+16. CD McWhite, O Papoulas, K Drew, V Dang, JC Leggere, W Sae-Lee, EM Marcotte, "Co-Fractionation Mass Spectrometry to Identify Protein Complexes", STAR Protocols 2:1, 2021
+17. A Zeileis, JC Fisher, K Hornik, R Ihaka, CD McWhite, P Murrell, R Stauffer, CO Wilke, "colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes", Journal of Statistical Software, 96:1, 2020
+18. K Drew, C Lee, RM Cox, V Dang, CC Devitt, CD McWhite, O Papoulas, RL Huizar, EM Marcotte, JB Wallingford, "A systematic, label-free method for identifying RNA-associated proteins in vivo provides insights into vertebrate ciliary beating machinery", Developmental Biology 467:1-2, 2020
+19. CD McWhite, O Papoulas, K Drew, RM Cox, V June, OX Dong, T Kwon, C Wan, ML Salmi, SJ Roux, KS Browning, ZJ Chen, PC Ronald, EM Marcotte, "A pan-plant protein complex map reveals deep conservation and novel assemblies", Cell 181:2, 2020
+20. CD DuPai, CD McWhite, CB Smith, R Garten, S Maurer-Stroh, CO Wilke, "Influenza passaging annotations: what they tell us and why we should listen", Virus Evolution 5 (1), vez016, 2019
+21. W Zhao, B Bachhav, CD McWhite, L Segatori, "A yeast selection system for the detection of proteasomal activation", Protein Engineering, Design and Selection 31 (11), 437–445, 2018
+22. AH Kachroo, JM Laurent, A Akhmetov, M Szilagyi-Jones, CD McWhite, A Zhao, EM Marcotte, "Systematic bacterialization of yeast genes identifies a near-universally swappable pathway", eLife 6:e25093, 2017
+23. KS Drew, C Lee, RL Huizar, F Tu, B Borgeson, CD McWhite, Y Ma, JB Wallingford, EM Marcotte, "Integration of over 9,000 mass spectrometry experiments builds a global map of human protein complexes", Molecular Systems Biology 13:932, 2017
+24. BJ Liebeskind, CD McWhite, EM Marcotte, "Towards Consensus Gene Ages", Genome Biology and Evolution 8 (6): 1812–1823, 2016
+25. CD McWhite, AG Meyer, CO Wilke, "Sequence amplification via cell passaging creates spurious signals of positive adaptation in influenza virus H3N2 hemagglutinin", Virus Evolution 2 (2):vew026, 2016
+26. BJ Liebeskind, CD McWhite, EM Marcotte, "Applications of comparative evolution to human disease genetics", Current Opinion in Genetics & Development 35, 16–24, 2015
+27. W Zhao, M Bonem, CD McWhite, JJ Silberg, L Segatori, "Sensitive detection of proteasomal activation using the Deg-On mammalian synthetic gene circuit", Nature Communications 5, 2014
+28. A Demelash, P Rudrabhatla, HC Pant, X Wang, ND Amin, CD McWhite, X Naizhen, RI Linnoila, "Achaete-scute homologue-I (ASH1) stimulates migration of lung cancer cells through Cdk5/p35 pathway", Molecular Biology of the Cell 23 (15), 2856–2866, 2012
 
 **Grants and Scholarships**
 
@@ -145,8 +146,9 @@ Princeton University, Princeton, NJ, USA
 
 **Conferences and Seminars**
 
-- 2026 – Nobel Symposium, Umeå University, Sweden (upcoming)
-- 2026 – Plant Biology 2026, Ottawa, Canada (upcoming)
+- 2026 – University of Utah (upcoming)
+- 2026 – Nobel Symposium, Umeå University, Sweden
+- 2026 – Plant Biology 2026, Ottawa, Canada
 - 2025 – SynBio Young Speaker Series, virtual
 - 2025 – Human Technopole, Milan, Italy
 - 2024 – Applied Math Colloquium, University of Arizona, USA
