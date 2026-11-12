@@ -3,194 +3,516 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LLM-Discovered Protein Repeat Motifs — McWhite Lab</title>
+<title>Protein Repeat Motif Screen — McWhite Lab</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.2/3Dmol-min.js"></script>
 <style>
-  :root {
-    --bg:#ffffff;--bg2:#f8f9fb;--bg3:#f0f2f6;--text:#0f172a;--text2:#475569;
-    --text3:#94a3b8;--accent:#2563eb;--border:#e2e8f0;
-    --card-shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
-    --card-shadow-hover:0 8px 25px rgba(0,0,0,.12),0 3px 6px rgba(0,0,0,.06);
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
-  header{background:var(--bg);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(8px);}
-  .lab-logo{font-weight:700;font-size:.9rem;color:var(--text);letter-spacing:-.01em;text-decoration:none;}
-  .lab-logo span{color:#2563eb;}
-  nav a{color:var(--text2);text-decoration:none;font-size:.85rem;margin-left:1.5rem;transition:color .15s;}
-  nav a:hover{color:#2563eb;}
-  .hero{padding:5rem 2rem 4rem;max-width:900px;margin:0 auto;}
-  .hero-label{display:inline-block;background:#eff6ff;color:#2563eb;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .75rem;border-radius:100px;border:1px solid #bfdbfe;margin-bottom:1.25rem;}
-  h1{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:1.25rem;}
-  .hero-desc{font-size:1.1rem;color:var(--text2);max-width:640px;margin-bottom:2.5rem;line-height:1.7;}
-  .stats-row{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:3rem;}
-  .stat{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;min-width:140px;}
-  .stat-number{font-size:2.2rem;font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:.3rem;}
-  .stat-label{font-size:.8rem;color:var(--text2);font-weight:500;}
-  .section{max-width:980px;margin:0 auto;padding:3rem 2rem;}
-  .section-title{font-size:1.5rem;font-weight:700;letter-spacing:-.025em;margin-bottom:.5rem;}
-  .section-subtitle{color:var(--text2);font-size:.95rem;margin-bottom:2.5rem;max-width:600px;}
-  .divider{border:none;border-top:1px solid var(--border);}
-  .protein-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;}
-  .protein-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:1.75rem;box-shadow:var(--card-shadow);transition:box-shadow .2s,transform .2s;}
-  .protein-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-1px);}
-  .protein-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap;}
-  .protein-name{font-size:1.3rem;font-weight:700;letter-spacing:-.02em;}
-  .protein-accession{font-size:.8rem;color:var(--text3);font-family:'SF Mono','Fira Code',monospace;margin-top:.1rem;}
-  .protein-desc{font-size:.85rem;color:var(--text2);margin-top:.25rem;}
-  .badge-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;}
-  .badge{font-size:.72rem;font-weight:600;padding:.2rem .6rem;border-radius:100px;white-space:nowrap;}
-  .badge-blue{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
-  .badge-amber{background:#fffbeb;color:#b45309;border:1px solid #fde68a;}
-  .badge-green{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
-  .badge-violet{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;}
-  .badge-gray{background:var(--bg2);color:var(--text2);border:1px solid var(--border);}
-  .seq-map-wrap{margin:1.25rem 0;}
-  .seq-map-label{font-size:.75rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;}
-  .seq-map-container{position:relative;height:56px;}
-  canvas.seq-canvas{width:100%;height:56px;border-radius:8px;display:block;cursor:crosshair;}
-  .seq-tooltip{position:fixed;background:#0f172a;color:#fff;font-size:.75rem;padding:.5rem .75rem;border-radius:8px;pointer-events:none;z-index:100;max-width:300px;line-height:1.5;white-space:pre-line;display:none;box-shadow:0 4px 12px rgba(0,0,0,.2);}
-  .seq-tooltip .tt-seq{font-family:'SF Mono','Fira Code',monospace;font-size:.72rem;color:#93c5fd;display:block;margin-top:.2rem;word-break:break-all;}
-  .motif-list{display:flex;flex-direction:column;gap:.75rem;margin-top:1.25rem;}
-  .motif-item{display:flex;align-items:flex-start;gap:.75rem;padding:.9rem 1rem;border-radius:10px;background:var(--bg2);border:1px solid var(--border);}
-  .motif-swatch{width:10px;min-width:10px;height:10px;border-radius:3px;margin-top:4px;}
-  .motif-consensus{font-family:'SF Mono','Fira Code',monospace;font-size:.78rem;font-weight:600;word-break:break-all;line-height:1.4;}
-  .motif-meta{font-size:.75rem;color:var(--text2);margin-top:.25rem;}
-  .method-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-top:3rem;}
-  .method-box h3{font-size:1rem;font-weight:700;margin-bottom:.75rem;}
-  .method-box p{font-size:.88rem;color:var(--text2);line-height:1.7;}
-  .method-box p+p{margin-top:.6rem;}
-  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.8rem;color:var(--text3);margin-top:4rem;}
-  footer a{color:var(--text2);text-decoration:none;}
-  footer a:hover{color:#2563eb;}
-  @media(max-width:600px){.stats-row{gap:.75rem;}.stat{min-width:110px;padding:1rem 1.1rem;}.stat-number{font-size:1.8rem;}h1{font-size:1.7rem;}}
+:root{
+  --bg:#fff;--bg2:#f8f9fb;--bg3:#eef2f8;
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+  --accent:#2563eb;--border:#e2e8f0;
+  --rad:14px;--rad-sm:9px;
+  --shadow:0 1px 4px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.05);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+/* Nav */
+nav.top{background:var(--bg);border-bottom:1px solid var(--border);padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30;backdrop-filter:blur(10px)}
+.logo{font-weight:700;font-size:.9rem;text-decoration:none;color:var(--text)}.logo b{color:var(--accent)}
+nav.top a.nl{color:var(--text2);text-decoration:none;font-size:.82rem;margin-left:1.5rem}
+nav.top a.nl:hover{color:var(--accent)}
+/* Hero */
+.hero{padding:4.5rem 2rem 3rem;max-width:980px;margin:0 auto}
+.pill{display:inline-block;background:#eff6ff;color:var(--accent);font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.25rem .7rem;border-radius:100px;border:1px solid #bfdbfe;margin-bottom:1.1rem}
+h1.main{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:1rem}
+.hero-sub{font-size:1rem;color:var(--text2);max-width:640px;line-height:1.75;margin-bottom:2.4rem}
+.stats-row{display:flex;gap:1rem;flex-wrap:wrap}
+.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad-sm);padding:1rem 1.3rem;min-width:120px}
+.stat-n{font-size:1.9rem;font-weight:800;letter-spacing:-.04em;line-height:1}
+.stat-l{font-size:.73rem;color:var(--text2);font-weight:500;margin-top:.2rem}
+/* Section */
+.section{max-width:980px;margin:0 auto;padding:3rem 2rem}
+.sec-hd{display:flex;align-items:baseline;gap:.7rem;margin-bottom:.4rem}
+.sec-num{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);background:#eff6ff;border:1px solid #bfdbfe;padding:.15rem .5rem;border-radius:100px}
+.sec-title{font-size:1.22rem;font-weight:700;letter-spacing:-.025em}
+.sec-sub{font-size:.86rem;color:var(--text2);max-width:600px;margin-bottom:1.6rem;line-height:1.65}
+hr.div{border:none;border-top:1px solid var(--border)}
+/* Cards */
+.card-grid{display:grid;gap:1.2rem;grid-template-columns:1fr}
+/* Individual protein card */
+.pcard{background:var(--bg);border:1px solid var(--border);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s,transform .2s}
+.pcard:hover{box-shadow:var(--shadow-lg);transform:translateY(-1px)}
+.pcard-head{padding:1.3rem 1.5rem 0;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.pcard-gene{font-size:1.3rem;font-weight:800;letter-spacing:-.025em}
+.pcard-acc{font-size:.73rem;color:var(--text3);font-family:'SF Mono','Fira Code',monospace;margin-top:.05rem}
+.pcard-desc{font-size:.8rem;color:var(--text2);margin-top:.2rem}
+.badges{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.5rem}
+.badge{font-size:.67rem;font-weight:600;padding:.15rem .5rem;border-radius:100px;white-space:nowrap}
+.b-blue{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+.b-amber{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+.b-green{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.b-violet{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe}
+.b-gray{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.b-rose{background:#fff1f2;color:#be123c;border:1px solid #fecdd3}
+.pcard-body{padding:1rem 1.5rem 1.3rem}
+.pcard-insight{font-size:.86rem;color:var(--text2);line-height:1.68;margin-bottom:1rem;border-left:3px solid #bfdbfe;padding-left:.8rem}
+/* Seq map */
+.map-label{font-size:.68rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
+.map-wrap{position:relative;height:52px;margin-bottom:.9rem;cursor:crosshair}
+.map-canvas{width:100%;height:52px;border-radius:var(--rad-sm);display:block}
+/* UniProt annotation bar */
+.up-bar-wrap{margin-bottom:.9rem}
+.up-bar-label{font-size:.68rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem}
+.up-bar-label .status{font-weight:400;color:var(--text3);font-size:.65rem;letter-spacing:0;text-transform:none}
+.up-bar-canvas{width:100%;height:30px;border-radius:var(--rad-sm);display:block}
+/* 3D structure */
+.struct-row{display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem;flex-wrap:wrap}
+.struct-btn{font-size:.78rem;padding:.38rem .8rem;border-radius:var(--rad-sm);border:1px solid var(--border);background:var(--bg2);cursor:pointer;color:var(--text);font-weight:500}
+.struct-btn:hover{border-color:var(--accent);color:var(--accent)}
+.struct-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.struct-wrap{width:100%;height:320px;border:1px solid var(--border);border-radius:var(--rad-sm);overflow:hidden;position:relative;display:none;background:#1a1a2e}
+.struct-wrap.open{display:block}
+.struct-status{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.82rem;color:#94a3b8;text-align:center;padding:1rem;line-height:1.5}
+/* Motif detail rows */
+.motif-rows{display:flex;flex-direction:column;gap:.55rem}
+.motif-row{display:flex;align-items:flex-start;gap:.6rem;padding:.7rem .9rem;border-radius:var(--rad-sm);background:var(--bg2);border:1px solid var(--border)}
+.swatch{width:9px;min-width:9px;height:9px;border-radius:2px;margin-top:3px;flex-shrink:0}
+.m-name{font-size:.77rem;font-weight:600}
+.m-cons{font-family:'SF Mono','Fira Code',monospace;font-size:.68rem;color:var(--text2);word-break:break-all;line-height:1.4;margin-top:.12rem}
+.m-insts{margin-top:.35rem;display:flex;flex-wrap:wrap;gap:.3rem}
+.inst-chip{font-family:'SF Mono','Fira Code',monospace;font-size:.62rem;padding:.12rem .4rem;border-radius:4px;border:1px solid;cursor:default;white-space:nowrap}
+/* Tooltip */
+.tt{position:fixed;background:#0f172a;color:#fff;font-size:.73rem;padding:.45rem .75rem;border-radius:9px;pointer-events:none;z-index:999;max-width:300px;line-height:1.5;white-space:pre-line;display:none;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.tt-seq{font-family:'SF Mono','Fira Code',monospace;font-size:.67rem;color:#93c5fd;display:block;margin-top:.2rem;word-break:break-all}
+/* Footer */
+footer{border-top:1px solid var(--border);padding:1.75rem 2rem;text-align:center;font-size:.77rem;color:var(--text3);margin-top:3rem}
+footer a{color:var(--text2);text-decoration:none}footer a:hover{color:var(--accent)}
+@media(max-width:600px){.hero{padding:3rem 1.25rem 2rem}.section{padding:2.5rem 1.25rem}.pcard-head,.pcard-body{padding-left:1rem;padding-right:1rem}.stats-row{gap:.6rem}.stat-box{min-width:95px;padding:.75rem 1rem}.stat-n{font-size:1.6rem}}
 </style>
 </head>
 <body>
-<header>
-  <a class="lab-logo" href="https://mcwhitelab.org">McWhite<span>Lab</span></a>
-  <nav>
-    <a href="https://clairemcwhite.github.io">Research</a>
-    <a href="https://clairemcwhite.github.io/repeats/">Curation Tool</a>
-  </nav>
-</header>
+<nav class="top">
+  <a class="logo" href="https://mcwhitelab.org">McWhite<b>Lab</b></a>
+  <div>
+    <a class="nl" href="https://mcwhitelab.org">Research</a>
+    <a class="nl" href="https://clairemcwhite.github.io/repeats/">Curation Tool ↗</a>
+  </div>
+</nav>
 <main>
 <div class="hero">
-  <div class="hero-label">Research Highlight · 2024</div>
-  <h1>LLM-Guided Discovery of Protein Repeat Motifs in Intrinsically Disordered Regions</h1>
-  <p class="hero-desc">A systematic screen applying large language model reasoning to discover short linear motifs (SLiMs) and IDR motifs in human proteins — finding structured repeat architectures that traditional bioinformatics tools miss.</p>
+  <div class="pill">Research Highlight · 2024</div>
+  <h1 class="main">LLM-Guided Discovery of Protein Repeat Motifs</h1>
+  <p class="hero-sub">A screen applying large language model reasoning to discover short linear motifs (SLiMs) and IDR motifs in human proteins — capturing structured repeat architectures that traditional bioinformatics tools miss. Live UniProt annotations and AlphaFold structures are loaded for each protein.</p>
   <div class="stats-row">
-    <div class="stat"><div class="stat-number">45</div><div class="stat-label">Proteins screened</div></div>
-    <div class="stat"><div class="stat-number">15</div><div class="stat-label">New repeat motifs found</div></div>
-    <div class="stat"><div class="stat-number">9–77</div><div class="stat-label">Amino acids per unit</div></div>
-    <div class="stat"><div class="stat-number">100%</div><div class="stat-label">Manually verified</div></div>
+    <div class="stat-box"><div class="stat-n">45</div><div class="stat-l">Proteins screened</div></div>
+    <div class="stat-box"><div class="stat-n">15</div><div class="stat-l">With verified repeats</div></div>
+    <div class="stat-box"><div class="stat-n">9–91</div><div class="stat-l">aa per repeat unit</div></div>
+    <div class="stat-box"><div class="stat-n">6</div><div class="stat-l">Motif categories</div></div>
   </div>
 </div>
-<hr class="divider">
-<section class="section">
-  <h2 class="section-title">Featured Discoveries</h2>
-  <p class="section-subtitle">Hover over sequence maps to explore individual repeat instances. Each colored block represents a verified repeat unit.</p>
-  <div class="protein-grid" id="protein-grid"></div>
+<hr class="div">
+
+<!-- SECTION CONTAINERS (populated by JS) -->
+<section class="section" id="sec1">
+  <div class="sec-hd"><span class="sec-num">01</span><h2 class="sec-title">Matching known repeat families</h2></div>
+  <p class="sec-sub">The LLM correctly identifies well-characterized structured repeat domains — benchmark recovery confirming the approach captures known biology before surfacing novel discoveries.</p>
+  <div class="card-grid" id="grid-sec1"></div>
 </section>
-<section class="section" style="padding-top:0">
-  <div class="method-box">
-    <h3>Approach</h3>
-    <p>Traditional bioinformatics tools for repeat detection rely on exact or near-exact sequence similarity, making them blind to motifs that vary considerably between instances — the hallmark of biologically functional short linear motifs in intrinsically disordered regions.</p>
-    <p>We prompted a large language model (LLM) with protein sequences and asked it to reason about recurring structural or functional patterns, then generate a consensus notation describing each discovered motif. The LLM approach naturally handles the ambiguity and variation characteristic of real SLiMs, finding motifs like zinc-finger C₂H₂ variants, proline-rich repeats, and large helical repeats that share function but diverge in sequence.</p>
-    <p>All candidate motifs were manually curated and verified against known protein literature and AlphaFold structures before inclusion in this dataset. Full sequences, instance coordinates, and curation notes are available in the <a href="index.html" style="color:#2563eb">interactive curation tool</a>.</p>
+<hr class="div">
+<section class="section" id="sec2">
+  <div class="sec-hd"><span class="sec-num">02</span><h2 class="sec-title">Matching known SLiMs</h2></div>
+  <p class="sec-sub">Short linear motifs with established functional roles — found as dispersed repeats even when instances are separated by hundreds of residues in disordered regions.</p>
+  <div class="card-grid" id="grid-sec2"></div>
+</section>
+<hr class="div">
+<section class="section" id="sec3">
+  <div class="sec-hd"><span class="sec-num">03</span><h2 class="sec-title">New dispersed SLiMs in IDRs</h2></div>
+  <p class="sec-sub">Novel short linear motifs scattered through intrinsically disordered regions — including proteins where the LLM found two entirely distinct SLiM families in a single sequence.</p>
+  <div class="card-grid" id="grid-sec3"></div>
+</section>
+<hr class="div">
+<section class="section" id="sec4">
+  <div class="sec-hd"><span class="sec-num">04</span><h2 class="sec-title">Long N-terminal tandem solenoids</h2></div>
+  <p class="sec-sub">Extended head-to-tail structural repeat arrays — multiple consecutive copies forming solenoid folds at the protein N-terminus.</p>
+  <div class="card-grid" id="grid-sec4"></div>
+</section>
+<hr class="div">
+<section class="section" id="sec5">
+  <div class="sec-hd"><span class="sec-num">05</span><h2 class="sec-title">Extended tandem arrays: twelve or more copies</h2></div>
+  <p class="sec-sub">Proteins with twelve or more contiguous repeat units — these long tandem arrays tend to be pre-annotated on UniProt, confirming the method captures even densely repetitive sequences.</p>
+  <div class="card-grid" id="grid-sec5"></div>
+</section>
+<hr class="div">
+<section class="section" id="sec6">
+  <div class="sec-hd"><span class="sec-num">06</span><h2 class="sec-title">Candidate new structural domain</h2></div>
+  <p class="sec-sub">The most compelling novel finding: dispersed repeats with a conserved tryptophan-centered hydrophobic core, suggesting a repeated structural fold absent from current domain databases.</p>
+  <div class="card-grid" id="grid-sec6"></div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:1.5rem 1.75rem;margin-top:1.4rem">
+    <div style="font-size:.88rem;font-weight:700;margin-bottom:.5rem">About this screen</div>
+    <p style="font-size:.83rem;color:var(--text2);line-height:1.72">Traditional repeat-detection tools require sequence similarity — they miss motifs that vary between copies, the hallmark of real SLiMs in IDRs. We prompted a large language model with protein sequences and asked it to reason about recurring structural or functional patterns, generating a consensus notation for each discovery. All 15 candidates shown here were manually curated against UniProt and AlphaFold structures. The full dataset of 2,271 screened proteins with 1,124 predicted-repeat proteins is available in the <a href="index.html" style="color:var(--accent)">interactive curation tool</a>.</p>
   </div>
 </section>
 </main>
 <footer>
   <p>McWhite Lab · University of Arizona · <a href="https://mcwhitelab.org">mcwhitelab.org</a></p>
-  <p style="margin-top:.3rem">Data and curation tool: <a href="https://clairemcwhite.github.io/repeats/">clairemcwhite.github.io/repeats/</a></p>
+  <p style="margin-top:.3rem">Curation tool: <a href="https://clairemcwhite.github.io/repeats/">clairemcwhite.github.io/repeats/</a></p>
 </footer>
-<div class="seq-tooltip" id="tooltip"></div>
+<div class="tt" id="tt"></div>
+
 <script>
-const PROTEINS=[{gene:'ZNF25',accession:'P17030',length:456,description:'Zinc finger protein 25',highlight:'Twelve tandem C₂H₂ zinc finger repeats spanning the entire binding domain — each unit 28 amino acids, perfectly spaced.',motifs:[{label:'C₂H₂ Zinc Finger',type:'tandem',consensus:'x[EDG]Kx[YFC]xCx[EKQ]Cx[KE]xFxx[KNL]xx[LF]xxH[QL][KRH]xH[TSA]',unit:28,colorIdx:0,instances:[{start:114,end:141,seq:'TEKACECKECGKFFCQKSALIVHQHTHS'},{start:142,end:169,seq:'KGKSYDCDKCGKSFSKNEDLIRHQKIHT'},{start:170,end:197,seq:'RDKTYECKECKKIFYHLSSLSRHLRTHA'},{start:198,end:225,seq:'GEKPYECNQCEKSFYQKPHLTEHQKTHT'},{start:226,end:253,seq:'GEKPFECTECGKFFYVKAYLMVHQKTHT'},{start:254,end:281,seq:'GEKPYECKECGKAFSQKSHLTVHQRMHT'},{start:282,end:309,seq:'GEKPYKCKECGKFFSRNSHLKTHQRSHT'},{start:310,end:337,seq:'GEKPYECKECRKCFYQKSALTVHQRTHT'},{start:338,end:365,seq:'GEKPFECNKCGKTFYYKSDLTKHQRKHT'},{start:366,end:393,seq:'GEKPYECTECGKSFAVNSVLRLHQRTHT'},{start:394,end:421,seq:'GEKPYACKECGKSFSQKSHFIIHQRKHT'},{start:422,end:449,seq:'GEKPYECQECGETFIQKSQLTAHQKTHT'}]}],badges:[{text:'12 repeats',cls:'badge-blue'},{text:'Tandem',cls:'badge-green'},{text:'28 aa unit',cls:'badge-gray'}]},{gene:'ZFP36',accession:'P26651',length:326,description:'mRNA decay activator protein ZFP36 (Tristetraprolin)',highlight:'Two distinct repeat motifs independently discovered in the same protein: tandem zinc finger coordination sites and proline-rich PPPPG spacers dispersed throughout the IDR.',motifs:[{label:'Zinc Finger (C₃H type)',type:'tandem',consensus:'+YKTELC[RH]xFxxoGRCxYG[AS]+CxFφH',unit:26,colorIdx:0,instances:[{start:103,end:128,seq:'RYKTELCRTFSESGRCRYGAKCQFAH'},{start:141,end:166,seq:'KYKTELCHKFYLQGRCPYGSRCHFIH'}]},{label:'Proline-rich PPPPG',type:'dispersed',consensus:'PPPPGxφ[PG][LP]',unit:9,colorIdx:1,instances:[{start:71,end:79,seq:'PPPPGFAPL'},{start:198,end:206,seq:'PPPPGLAGP'},{start:219,end:227,seq:'PPPPGDLPL'}]}],badges:[{text:'2 motif types',cls:'badge-amber'},{text:'Dispersed',cls:'badge-blue'},{text:'IDR',cls:'badge-violet'}]},{gene:'DNAAF1',accession:'Q8NEP3',length:725,description:'Dynein axonemal assembly factor 1',highlight:'Two architecturally distinct motifs in separate protein regions: N-terminal LH-box helical repeats and C-terminal tandem PEPEGTLPAE units linked by a conserved PVxK anchor.',motifs:[{label:'LH-box (helical)',type:'dispersed',consensus:'xLxψxx[NK]xφxxxE[NDI]ψ(x){5,8}L[RDN]',unit:22,colorIdx:2,instances:[{start:111,end:132,seq:'TLYLHFKGFDRIENLEEYTGLR'},{start:133,end:154,seq:'CLWLQSNGIQKIENLEAQTELR'},{start:155,end:176,seq:'CLFLQMNLLRKIENLEPLQKLD'},{start:177,end:198,seq:'ALNLSNNYIKTIENLSCLPVLN'},{start:199,end:222,seq:'CLNLQSNYIKRLENLEAQAALS'},{start:224,end:248,seq:'CLNLKTNYIKHIKNLDAQTKLR'}]},{label:'PEPEGTLPAE (tandem)',type:'tandem',consensus:'PV[EK][AV]K[RG]EDG[DG]xEPEGTLPAE[TA][LP][LP][LP][SP][SP]',unit:26,colorIdx:1,instances:[{start:400,end:425,seq:'PVEAKREDGGPEPEGTLPAETLLLSS'},{start:426,end:451,seq:'PVEVKGEDGDGEPEGTLPAEAPPPPP'},{start:452,end:477,seq:'PVEVKGEDGDQEPEGTLPAETLLLSP'},{start:478,end:503,seq:'PVKVKGEDGDREPEGTLPAEAPPPPP'}]}],badges:[{text:'2 motif types',cls:'badge-amber'},{text:'10 total instances',cls:'badge-green'},{text:'Axonemal dynein',cls:'badge-gray'}]},{gene:'GTF2I',accession:'P78347',length:998,description:'General transcription factor II-I (Williams syndrome TF)',highlight:'Six massive 77-amino-acid dispersed repeat domains spanning the full length of the protein — the largest repeat units in this screen. This Williams syndrome gene harbors a remarkable repeat architecture not previously characterized.',motifs:[{label:'TFII-I repeat domain',type:'dispersed',consensus:'L+xxVxxφFxx[KC]x[AG]xA[LI][GK]xx...φ[VY]V[EDQ]G[LS]',unit:77,colorIdx:3,instances:[{start:112,end:188,seq:'LRKTVEDYFCFCYGKALGKSTVVPVPYEKMLRDQS...'},{start:361,end:437,seq:'LRKQVEELFERKYAQAIKAKGPVTIPYPLFQSHVE...'},{start:466,end:542,seq:'LRKMVDQLFCKKFAEALGSTEAKAVPYQKFEAHPN...'},{start:571,end:647,seq:'LRKQVEEIFNLKFAQALGLTEAVKVPYPVFESNPE...'},{start:733,end:809,seq:'LRKLVDELF...'},{start:868,end:944,seq:'LRKMVEDVF...'}]}],badges:[{text:'77 aa unit',cls:'badge-violet'},{text:'6 repeats',cls:'badge-blue'},{text:'Williams syndrome',cls:'badge-amber'}]}];
+// ── Protein data ──────────────────────────────────────────────────────────
+const PROT_DATA = [{"seq_id": "SEQ_00007", "accession": "P26651", "gene_name": "ZFP36", "description": "mRNA decay activator protein ZFP36", "length": 326, "motifs": [{"consensus": "+YKTELC[RH]xFxxoGRCxYG[AS]+CxF\u03c6H", "unit_length": 26, "sequence_context": "structured_like", "instances": [{"start": 103, "end": 128, "seq": "RYKTELCRTFSESGRCRYGAKCQFAH"}, {"start": 141, "end": 166, "seq": "KYKTELCHKFYLQGRCPYGSRCHFIH"}]}, {"consensus": "PPPPGx\u03c6[PG][LP]", "unit_length": 9, "sequence_context": "disordered_like", "instances": [{"start": 71, "end": 79, "seq": "PPPPGFAPL"}, {"start": 198, "end": 206, "seq": "PPPPGLAGP"}, {"start": 219, "end": 227, "seq": "PPPPGDLPL"}]}]}, {"seq_id": "SEQ_00032", "accession": "Q9UHD8", "gene_name": "SEPTIN9", "description": "Septin-9", "length": 586, "motifs": [{"consensus": "+R[VTA]E\u03c8", "unit_length": 5, "sequence_context": "disordered_like", "instances": [{"start": 91, "end": 95, "seq": "RRVEL"}, {"start": 106, "end": 110, "seq": "RRTEL"}, {"start": 133, "end": 137, "seq": "KRAEV"}, {"start": 148, "end": 152, "seq": "RRTEI"}, {"start": 186, "end": 190, "seq": "KRVEI"}]}]}, {"seq_id": "SEQ_00034", "accession": "Q9UKT9", "gene_name": "IKZF3", "description": "Zinc finger protein Aiolos", "length": 509, "motifs": [{"consensus": "[FYM]xCxxCxxxxxxxxx[LF]xxH(x){3,5}[HC]", "unit_length": "23-25", "sequence_context": "structured_like", "instances": [{"start": 118, "end": 140, "seq": "MNCDVCGLSCISFNVLMVHKRSH"}, {"start": 146, "end": 168, "seq": "FQCNQCGASFTQKGNLLRHIKLH"}, {"start": 174, "end": 196, "seq": "FKCHLCNYACQRRDALTGHLRTH"}, {"start": 202, "end": 224, "seq": "YKCEFCGRSYKQRSSLEEHKERC"}, {"start": 452, "end": 474, "seq": "YRCDHCRVLFLDYVMFTIHMGCH"}, {"start": 480, "end": 504, "seq": "FECNMCGYRSHDRYEFSSHIARGEH"}]}]}, {"seq_id": "SEQ_00041", "accession": "P78347", "gene_name": "GTF2I", "description": "General transcription factor II-I", "length": 998, "motifs": [{"consensus": "L+xxVxx\u03c6Fxx[KC]x[AG]xA[LI][GK]xxxx[VK]x[VI]P[YF]xx\u03c6xxxxxx\u03c6[VY]V[EDQ]G[LM]P[EP][GN][IV]xF+xP[STE]x\u03c6[GDE][IL]xx[LM]xxI\u03c8xxxxxI[KRS]Fx[IV][KI]+[PH][EF]", "unit_length": 77, "sequence_context": "structured_like", "instances": [{"start": 112, "end": 188, "seq": "LRKTVEDYFCFCYGKALGKSTVVPVPYEKMLRDQS"}, {"start": 361, "end": 437, "seq": "LRKQVEELFERKYAQAIKAKGPVTIPYPLFQSHVE"}, {"start": 466, "end": 542, "seq": "LRKMVDQLFCKKFAEALGSTEAKAVPYQKFEAHPN"}, {"start": 571, "end": 647, "seq": "LRKQVEEIFNLKFAQALGLTEAVKVPYPVFESNPE"}, {"start": 733, "end": 809, "seq": "LKQKVENLFNEKCGEALGLKQAVKVPFALFESFPE"}, {"start": 868, "end": 944, "seq": "LREQVNDLFSRKFGEAIGMGFPVKVPYRKITINPG"}]}]}, {"seq_id": "SEQ_00046", "accession": "P17030", "gene_name": "ZNF25", "description": "Zinc finger protein 25", "length": 456, "motifs": [{"consensus": "x[EDG]Kx[YFC]xCx[EKQ]Cx[KE]xFxx[KNL]xx[LF]xxH[QL][KRH]xH[TSA]", "unit_length": 28, "sequence_context": "structured_like", "instances": [{"start": 114, "end": 141, "seq": "TEKACECKECGKFFCQKSALIVHQHTHS"}, {"start": 142, "end": 169, "seq": "KGKSYDCDKCGKSFSKNEDLIRHQKIHT"}, {"start": 170, "end": 197, "seq": "RDKTYECKECKKIFYHLSSLSRHLRTHA"}, {"start": 198, "end": 225, "seq": "GEKPYECNQCEKSFYQKPHLTEHQKTHT"}, {"start": 226, "end": 253, "seq": "GEKPFECTECGKFFYVKAYLMVHQKTHT"}, {"start": 254, "end": 281, "seq": "GEKPYECKECGKAFSQKSHLTVHQRMHT"}, {"start": 282, "end": 309, "seq": "GEKPYKCKECGKFFSRNSHLKTHQRSHT"}, {"start": 310, "end": 337, "seq": "GEKPYECKECRKCFYQKSALTVHQRTHT"}, {"start": 338, "end": 365, "seq": "GEKPFECNKCGKTFYYKSDLTKHQRKHT"}, {"start": 366, "end": 393, "seq": "GEKPYECTECGKSFAVNSVLRLHQRTHT"}, {"start": 394, "end": 421, "seq": "GEKPYACKECGKSFSQKSHFIIHQRKHT"}, {"start": 422, "end": 449, "seq": "GEKPYECQECGETFIQKSQLTAHQKTHT"}]}]}, {"seq_id": "SEQ_00056", "accession": "O76094", "gene_name": "SRP72", "description": "Signal recognition particle subunit SRP72", "length": 671, "motifs": [{"consensus": "xxxxx[AVF]xxxxxxGxxxxA\u03c8xx\u03c6xxxxxxxxxxx(x){0,1}", "unit_length": "33-34", "sequence_context": "structured_like", "instances": [{"start": 13, "end": 46, "seq": "ALWSEVNRYGQNGDFTRALKTVNKILQINKDDVT"}, {"start": 47, "end": 79, "seq": "ALHCKVVCLIQNGSFKEALNVINTHTKVLANNS"}, {"start": 80, "end": 112, "seq": "LSFEKAYCEYRLNRIENALKTIESANQQTDKLK"}, {"start": 113, "end": 146, "seq": "ELYGQVLYRLERYDECLAVYRDLVRNSQDDYDEE"}, {"start": 178, "end": 211, "seq": "LCYNTACALIGQGQLNQAMKILQKAEDLCRRSLS"}, {"start": 228, "end": 261, "seq": "IHGQMAYILQLQGRTEEALQLYNQIIKLKPTDVG"}, {"start": 303, "end": 336, "seq": "LQAIEFNKALLAMYTNQAEQCRKISASLQSQSPE"}, {"start": 340, "end": 373, "seq": "PVLIQAAQLCREKQHTKAIELLQEFSDQHPENAA"}, {"start": 375, "end": 407, "seq": "IKLTMAQLKISQGNISKACLILRSIEELKHKPG"}, {"start": 408, "end": 441, "seq": "MVSALVTMYSHEEDIDSAIEVFTQAIQWYQNHQP"}, {"start": 449, "end": 482, "seq": "LIREAANFKLKYGRKKEAISDLQQLWKQNPKDIH"}]}]}, {"seq_id": "SEQ_00064", "accession": "P0C7N4", "gene_name": "TMEM191B", "description": "Transmembrane protein 191B", "length": 346, "motifs": [{"consensus": "LPPIVxxx[AS]RRx", "unit_length": 12, "sequence_context": "disordered_like", "instances": [{"start": 10, "end": 21, "seq": "LPPIVIQPARRS"}, {"start": 22, "end": 33, "seq": "LPPIVTPASRRL"}]}]}, {"seq_id": "SEQ_00068", "accession": "Q8NEP3", "gene_name": "DNAAF1", "description": "Dynein axonemal assembly factor 1", "length": 725, "motifs": [{"consensus": "PV[EK][AV]K[RG]EDG[DG]xEPEGTLPAE[TA][LP][LP][LP][SP][SP]", "unit_length": 26, "sequence_context": "disordered_like", "instances": [{"start": 400, "end": 425, "seq": "PVEAKREDGGPEPEGTLPAETLLLSS"}, {"start": 426, "end": 451, "seq": "PVEVKGEDGDGEPEGTLPAEAPPPPP"}, {"start": 452, "end": 477, "seq": "PVEVKGEDGDQEPEGTLPAETLLLSP"}, {"start": 478, "end": 503, "seq": "PVKVKGEDGDREPEGTLPAEAPPPPP"}]}, {"consensus": "xLx\u03c8xx[NK]x\u03c6xxxE[NDI]\u03c8(x){5,8}L[RDN]", "unit_length": "22-25", "sequence_context": "structured_like", "instances": [{"start": 111, "end": 132, "seq": "TLYLHFKGFDRIENLEEYTGLR"}, {"start": 133, "end": 154, "seq": "CLWLQSNGIQKIENLEAQTELR"}, {"start": 155, "end": 176, "seq": "CLFLQMNLLRKIENLEPLQKLD"}, {"start": 177, "end": 198, "seq": "ALNLSNNYIKTIENLSCLPVLN"}, {"start": 199, "end": 221, "seq": "TLQMAHNHLETVEDIQHLQECLR"}, {"start": 224, "end": 248, "seq": "VLDLSHNKLSDPEILSILESMPDLR"}]}]}, {"seq_id": "SEQ_00003", "accession": "Q9H9H4", "gene_name": "VPS37B", "description": "Vacuolar protein sorting-associated protein 37B", "length": 285, "motifs": [{"consensus": "[AP]PLP[PQ]R", "unit_length": 6, "sequence_context": "disordered_like", "instances": [{"start": 174, "end": 179, "seq": "APLPPR"}, {"start": 241, "end": 246, "seq": "PPLPPR"}, {"start": 265, "end": 270, "seq": "PPLPQR"}]}]}, {"seq_id": "SEQ_00017", "accession": "Q5VT79", "gene_name": "ANXA8L1", "description": "Annexin A8-like protein 1", "length": 327, "motifs": [{"consensus": "[DEF]AxxL[YH]xA(x){4,5}GTx-xx\u03c6Ixx[LI]x[KST]R[ST]xxx[LR]xx[IV]xxx[FY][KE]xx\u03c6[GN][KS][DST][LI][EST][EDS]x[IL]xx-[TL][SH]Gx\u03c6[EK]x\u03c6\u03c8[VL]x[LV]\u03c8", "unit_length": "66-67", "sequence_context": "structured_like", "instances": [{"start": 26, "end": 91, "seq": "DAETLYKAMKGIGTNEQAIIDVLTKRSNTQRQQIA"}, {"start": 98, "end": 163, "seq": "EAKELHDAMKGLGTKEGVIIEILASRTKNQLREIM"}, {"start": 182, "end": 248, "seq": "DAQDLYAAGEKIRGTDEMKFITILCTRSATHLLRV"}, {"start": 258, "end": 323, "seq": "FAERLYYAMKGAGTRDGTLIRNIVSRSEIDLNLIK"}]}]}, {"seq_id": "SEQ_00019", "accession": "Q8WVS4", "gene_name": "DYNC2I1", "description": "Cytoplasmic dynein 2 intermediate chain 1", "length": 1066, "motifs": [{"consensus": "[VK]oxxx[LFW]SP[FLT](x){4,12}\u03c6\u03c6[ASV]xxxx[GS]x\u03c8x\u03c8[WH]x[LV]x", "unit_length": "29-37", "sequence_context": "structured_like", "instances": [{"start": 699, "end": 727, "seq": "VTCCCLSPLKAFLLFAGTAHGSVVVWDLR"}, {"start": 778, "end": 814, "seq": "KQSFVLSPFSTQEEMSGLSFHIASLDESGVLNVWV"}, {"start": 912, "end": 940, "seq": "VNVIDFSPFGEPIFLAGCSDGSIRLHQLS"}, {"start": 957, "end": 985, "seq": "VTGLQWSPTRPAVFLVQDDTSNIYIWDLL"}]}]}, {"seq_id": "SEQ_00021", "accession": "Q9NXK8", "gene_name": "FBXL12", "description": "F-box/LRR-repeat protein 12", "length": 326, "motifs": [{"consensus": "[LV]xx[LI]x\u03c8xxxxx(x){5,16}xxxxxx", "unit_length": "22-33", "sequence_context": "structured_like", "instances": [{"start": 71, "end": 103, "seq": "LHSLRMGGYLFSGSQAPQLSPALLRALGQKCPN"}, {"start": 104, "end": 125, "seq": "LKRLCLHVADLSMVPITSLPST"}, {"start": 126, "end": 152, "seq": "LRTLELHSCEISMAWLHKQQDPTVLPL"}, {"start": 153, "end": 177, "seq": "LECIVLDRVPAFRDEHLQGLTRFRA"}, {"start": 178, "end": 203, "seq": "LRSLVLGGTYRVTETGLDAGLQELSY"}, {"start": 204, "end": 229, "seq": "LQRLEVLGCTLSADSTLLAISRHLRD"}, {"start": 230, "end": 253, "seq": "VRKIRLTVRGLSAPGLAVLEGMPA"}, {"start": 254, "end": 283, "seq": "LESLCLQGPLVTPEMPSPTEILSSCLTMPK"}, {"start": 284, "end": 310, "seq": "LRVLELQGLGWEGQEAEKILCKGLPHC"}]}]}, {"seq_id": "SEQ_00022", "accession": "Q15057", "gene_name": "ACAP2", "description": "Arf-GAP with coiled-coil, ANK repeat and PH domain-containing protein 2", "length": 778, "motifs": [{"consensus": "[GK]xxPLxxA[VT]xx[GA]xxxxxx[FL][FL]xxxx\u03c6Nxxxx-x[EQ]", "unit_length": 33, "sequence_context": "structured_like", "instances": [{"start": 641, "end": 673, "seq": "KATPLIQAVLGGSLVTCEFLLQNGANVNQRDVQ"}, {"start": 674, "end": 706, "seq": "GRGPLHHATVLGHTGQVCLFLKRGANQHATDEE"}, {"start": 707, "end": 739, "seq": "GKDPLSIAVEAANADIVTLLRLARMNEEMRESE"}]}]}, {"seq_id": "SEQ_00023", "accession": "P01854", "gene_name": "IGHE", "description": "Immunoglobulin heavy constant epsilon", "length": 546, "motifs": [{"consensus": "[TQ][LI]xCL[AVI]xx\u03c6xP(x){2,4}[VI]x\u03c8[TQ]W(x){34,37}W(x){4,5}[FY]xC[RQ][VA]x[HY]", "unit_length": "64-68", "sequence_context": "structured_like", "instances": [{"start": 26, "end": 89, "seq": "TLGCLATGYFPEPVMVTWDTGSLNGTTMTLPATTL"}, {"start": 132, "end": 197, "seq": "QLLCLVSGYTPGTINITWLEDGQVMDVDLSTASTT"}, {"start": 236, "end": 303, "seq": "TITCLVVDLAPSKGTVNLTWSRASGKPVNHSTRKE"}, {"start": 342, "end": 409, "seq": "TLACLIQNFMPEDISVQWLHNEVQLPDARHSTTQP"}]}]}, {"seq_id": "SEQ_00024", "accession": "Q13520", "gene_name": "AQP6", "description": "Aquaporin-6", "length": 282, "motifs": [{"consensus": "[LV]x[AV]E[FL]LxTxx\u03c6V[FL]xxxxS[VT](x){27,31}[ST]GxxxNPA(x){22,23}L[VM]GAx[VL][GA][AS]L[LI]", "unit_length": "86-91", "sequence_context": "structured_like", "instances": [{"start": 27, "end": 117, "seq": "LFAEFLATGLYVFFGVGSVMRWPTALPSVLQIAIT"}, {"start": 145, "end": 230, "seq": "VAVELLLTLQLVLCVFASTDSRQTSGSPATMIGIS"}]}]}];
+const CAT_DATA  = [{"gene_name": "ZFP36", "section": 3, "cat_label": "New dispersed SLiMs", "cat_desc": "Dual motif: zinc finger + novel IDR proline SLiM", "badge_class": "b-amber", "insight": "Two entirely distinct motif families in one protein: the known C3H zinc finger (structured) AND a novel PPPPG proline SLiM dispersed in the flanking IDR \u2014 the LLM independently discovered both."}, {"gene_name": "SEPTIN9", "section": 2, "cat_label": "Known SLiM", "cat_desc": "Dibasic hydrophobic motif (+RxE\u03c8)", "badge_class": "b-blue", "insight": "Five dispersed +RxE\u03c8 motifs in the N-terminal IDR, matching the known GTP-binding and coiled-coil targeting dibasic motif in the septin family."}, {"gene_name": "IKZF3", "section": 2, "cat_label": "Known SLiM", "cat_desc": "C2H2 zinc finger repeats", "badge_class": "b-blue", "insight": "Six C2H2 zinc fingers with the diagnostic CXXC and HXXXH coordination pattern \u2014 recovered without being told the protein is a zinc finger transcription factor."}, {"gene_name": "GTF2I", "section": 1, "cat_label": "Known repeat family", "cat_desc": "TFII-I helix-loop-helix repeats", "badge_class": "b-green", "insight": "Six ~77-aa helix-loop-helix repeats forming the TFII-I domain array \u2014 the LLM recovered both the structural unit length and the conserved \"LRKMV\" anchor."}, {"gene_name": "ZNF25", "section": 5, "cat_label": "Extended tandem array", "cat_desc": "12 C2H2 zinc finger repeats (annotated UniProt)", "badge_class": "b-gray", "insight": "Twelve consecutive C2H2 zinc fingers (28 aa each, residues 114\u2013449) \u2014 a maximally repetitive array where every unit is confirmed annotated on UniProt, validating detection sensitivity."}, {"gene_name": "SRP72", "section": 4, "cat_label": "N-term tandem solenoid", "cat_desc": "11\u00d7 alpha-solenoid HEAT-like repeats", "badge_class": "b-violet", "insight": "Eleven 33\u201334 aa repeats forming an extended alpha-solenoid covering the entire N-terminal RNA-binding domain \u2014 consistent with a HEAT/ARM repeat scaffold for SRP RNA binding."}, {"gene_name": "TMEM191B", "section": 3, "cat_label": "New dispersed SLiMs", "cat_desc": "Novel 12-aa tandem duplication", "badge_class": "b-amber", "insight": "A 12-aa segment duplicated in direct tandem at the protein N-terminus \u2014 identified by the LLM as a \"near-perfect tandem duplication\" before any structural data."}, {"gene_name": "DNAAF1", "section": 3, "cat_label": "New dispersed SLiMs", "cat_desc": "Novel PEPEGTLPAE IDR tandem + N-term LH-box", "badge_class": "b-amber", "insight": "Novel PEPEGTLPAE tandem in the C-terminal IDR (4 copies) plus a separate LH-box repeat in the N-terminal helical domain (6 copies) \u2014 two independent repeat architectures in one protein."}, {"gene_name": "VPS37B", "section": 2, "cat_label": "Known SLiM", "cat_desc": "ESCRT-I PPxP proline-rich motif", "badge_class": "b-blue", "insight": "Three copies of the PPxPR motif in the disordered N-terminus \u2014 the established ESCRT-I ubiquitin-binding SLiM, found dispersed over 100 residues."}, {"gene_name": "ANXA8L1", "section": 1, "cat_label": "Known repeat family", "cat_desc": "Annexin repeat array", "badge_class": "b-green", "insight": "Four canonical annexin repeats: each contains the invariant GXGT(38 residues)D/E motif known to coordinate calcium."}, {"gene_name": "DYNC2I1", "section": 6, "cat_label": "Candidate new domain", "cat_desc": "Trp-centered hydrophobic domain repeats", "badge_class": "b-rose", "insight": "Four 29\u201337 aa repeats in the C-terminal domain with a conserved [WH]xLV hydrophobic core \u2014 every instance ends in a tryptophan or histidine-centered aromatic knot not found in Pfam/SMART. Candidate novel structural domain."}, {"gene_name": "FBXL12", "section": 1, "cat_label": "Known repeat family", "cat_desc": "Leucine-rich repeat (LRR) array", "badge_class": "b-green", "insight": "Nine leucine-rich repeats forming a classic curved solenoid, correctly identified against the well-characterized LRR consensus."}, {"gene_name": "ACAP2", "section": 3, "cat_label": "New dispersed SLiMs", "cat_desc": "Novel PL-anchored ANK-like IDR repeats", "badge_class": "b-amber", "insight": "Three PL-anchored 33-aa repeats in the C-terminal tail with conserved [FL][FL] hydrophobic pairs \u2014 ANK-like architecture not annotated in any domain database."}, {"gene_name": "IGHE", "section": 1, "cat_label": "Known repeat family", "cat_desc": "Immunoglobulin (Ig) domain repeats", "badge_class": "b-green", "insight": "Four immunoglobulin constant domains with conserved disulfide-bonding cysteines and tryptophan core \u2014 benchmark recovery of antibody architecture."}, {"gene_name": "AQP6", "section": 3, "cat_label": "New dispersed SLiMs", "cat_desc": "Aquaporin internal channel duplication", "badge_class": "b-amber", "insight": "The LLM detected the internal sequence duplication of the aquaporin fold \u2014 both NPA-motif half-channels recovered as a repeated unit, spanning the transmembrane channel."}];
 
-const COLORS=[{fill:'#3b82f6',light:'#dbeafe'},{fill:'#f59e0b',light:'#fef3c7'},{fill:'#10b981',light:'#d1fae5'},{fill:'#8b5cf6',light:'#ede9fe'},{fill:'#ef4444',light:'#fee2e2'},{fill:'#06b6d4',light:'#cffafe'}];
+// ── Palette ───────────────────────────────────────────────────────────────
+const PAL = [
+  {f:'#3b82f6',l:'rgba(59,130,246,.12)',lc:'#bfdbfe'},
+  {f:'#f59e0b',l:'rgba(245,158,11,.12)', lc:'#fde68a'},
+  {f:'#10b981',l:'rgba(16,185,129,.12)', lc:'#bbf7d0'},
+  {f:'#8b5cf6',l:'rgba(139,92,246,.12)', lc:'#ddd6fe'},
+  {f:'#ef4444',l:'rgba(239,68,68,.12)',  lc:'#fecdd3'},
+  {f:'#06b6d4',l:'rgba(6,182,212,.12)', lc:'#cffafe'},
+];
 
-const grid=document.getElementById('protein-grid');
-const tooltip=document.getElementById('tooltip');
+const GRIDS = {1:'grid-sec1',2:'grid-sec2',3:'grid-sec3',4:'grid-sec4',5:'grid-sec5',6:'grid-sec6'};
 
-PROTEINS.forEach((prot,pi)=>{
-  const card=document.createElement('div');
-  card.className='protein-card';
-  const badgesHtml=prot.badges.map(b=>`<span class="badge ${b.cls}">${b.text}</span>`).join('');
-  const motifsHtml=prot.motifs.map(m=>{
-    const c=COLORS[m.colorIdx];
-    return`<div class="motif-item"><div class="motif-swatch" style="background:${c.fill}"></div><div><div class="motif-consensus">${m.label}: <span style="color:#64748b">${esc(m.consensus)}</span></div><div class="motif-meta">${m.type.charAt(0).toUpperCase()+m.type.slice(1)} · ${m.unit} aa unit · ${m.instances.length} verified instances</div></div></div>`;
-  }).join('');
-  card.innerHTML=`<div class="protein-header"><div><div class="protein-name">${prot.gene}</div><div class="protein-accession">${prot.accession} · ${prot.length} aa</div><div class="protein-desc">${prot.description}</div></div><div class="badge-row">${badgesHtml}</div></div><p style="font-size:.88rem;color:#475569;line-height:1.65;margin-bottom:1rem">${prot.highlight}</p><div class="seq-map-wrap"><div class="seq-map-label">Sequence map — hover to explore</div><div class="seq-map-container"><canvas class="seq-canvas" id="canvas-${pi}" data-pi="${pi}"></canvas></div></div><div class="motif-list">${motifsHtml}</div>`;
-  grid.appendChild(card);
+// merge by gene_name
+const PROTS = PROT_DATA.map(p => {
+  const c = CAT_DATA.find(c => c.gene_name === p.gene_name) || {};
+  return {...p, ...c};
 });
 
-function drawCanvas(pi){
-  const prot=PROTEINS[pi];
-  const canvas=document.getElementById(`canvas-${pi}`);
-  if(!canvas)return;
-  const dpr=window.devicePixelRatio||1;
-  const W=canvas.parentElement.offsetWidth;
-  const H=56;
-  canvas.width=W*dpr;canvas.height=H*dpr;
-  canvas.style.width=W+'px';canvas.style.height=H+'px';
-  const ctx=canvas.getContext('2d');
+// ── Tooltip ───────────────────────────────────────────────────────────────
+const TT = document.getElementById('tt');
+function showTT(e, html){ TT.innerHTML=html; TT.style.display='block'; moveTT(e); }
+function moveTT(e){ TT.style.left=(e.clientX+16)+'px'; TT.style.top=(e.clientY-8)+'px'; }
+function hideTT(){ TT.style.display='none'; }
+
+// ── Canvas helpers ────────────────────────────────────────────────────────
+function rr(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
+  ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);
+  ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);
+  ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+
+// ── Draw repeat track ─────────────────────────────────────────────────────
+function drawRepeatMap(canvas, prot, dpr=window.devicePixelRatio||1){
+  const W = canvas.clientWidth || canvas.parentElement.offsetWidth;
+  if(!W) return;
+  const H = 52;
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  const ctx = canvas.getContext('2d');
   ctx.scale(dpr,dpr);
-  ctx.fillStyle='#e2e8f0';
-  rr(ctx,0,H/2-5,W,10,5);ctx.fill();
-  prot.motifs.forEach(m=>{
-    const c=COLORS[m.colorIdx];
+  // backbone
+  ctx.fillStyle='#e2e8f0'; rr(ctx,0,H/2-4,W,8,3); ctx.fill();
+  prot.motifs.forEach((m,mi)=>{
+    const col = PAL[mi%PAL.length];
     m.instances.forEach((inst,ii)=>{
       const x1=(inst.start/prot.length)*W;
       const x2=(inst.end/prot.length)*W;
-      const bW=Math.max(x2-x1,4);
-      const bH=24;const bY=H/2-bH/2;
-      ctx.shadowColor=c.fill+'44';ctx.shadowBlur=4;
-      ctx.fillStyle=c.fill;
-      rr(ctx,x1,bY,bW,bH,4);ctx.fill();
+      const bW=Math.max(x2-x1,4), bH=28, bY=(H-bH)/2;
+      ctx.shadowColor=col.f+'55'; ctx.shadowBlur=4;
+      ctx.fillStyle=col.f; rr(ctx,x1,bY,bW,bH,4); ctx.fill();
       ctx.shadowBlur=0;
       if(bW>18){
-        ctx.fillStyle='#fff';ctx.font=`bold ${Math.min(10,bW-4)}px system-ui`;
-        ctx.textAlign='center';ctx.textBaseline='middle';
-        ctx.fillText(ii+1,x1+bW/2,H/2);
+        ctx.fillStyle='rgba(255,255,255,.85)';
+        ctx.font=`bold ${Math.min(10,bW-4)}px system-ui`;
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText(ii+1, x1+bW/2, H/2);
       }
     });
   });
-  ctx.fillStyle='#94a3b8';ctx.font='9px system-ui';ctx.textBaseline='bottom';
-  const tk=prot.length<=500?100:200;
+  // tick labels
+  ctx.fillStyle='#94a3b8'; ctx.font='9px system-ui'; ctx.textBaseline='bottom';
+  const tk=prot.length<=400?100:prot.length<=800?200:prot.length<=1500?500:1000;
   for(let pos=0;pos<=prot.length;pos+=tk){
     const x=(pos/prot.length)*W;
-    ctx.textAlign=pos===0?'left':pos===prot.length?'right':'center';
-    ctx.fillText(pos,x,H-2);
+    ctx.textAlign=pos===0?'left':pos>=prot.length-50?'right':'center';
+    ctx.fillText(pos,x,H-1);
   }
 }
 
-document.querySelectorAll('.seq-canvas').forEach(canvas=>{
-  canvas.addEventListener('mousemove',e=>{
-    const pi=parseInt(canvas.dataset.pi);
-    const prot=PROTEINS[pi];
-    const rect=canvas.getBoundingClientRect();
-    const pos=Math.round(((e.clientX-rect.left)/rect.width)*prot.length);
-    let hit=null;
-    for(const m of prot.motifs){for(const inst of m.instances){if(pos>=inst.start&&pos<=inst.end){hit={motif:m,inst};break;}}if(hit)break;}
-    if(hit){
-      const c=COLORS[hit.motif.colorIdx];
-      tooltip.style.display='block';
-      tooltip.style.left=(e.clientX+14)+'px';
-      tooltip.style.top=(e.clientY-10)+'px';
-      tooltip.style.borderLeft=`3px solid ${c.fill}`;
-      tooltip.innerHTML=`<strong>${hit.motif.label}</strong>\nPositions ${hit.inst.start}–${hit.inst.end} (${hit.inst.end-hit.inst.start} aa)<span class="tt-seq">${hit.inst.seq}</span>`;
-    }else{tooltip.style.display='none';}
+// ── Draw UniProt annotation bar ────────────────────────────────────────────
+const UP_CACHE = {};
+async function fetchAndDrawUniProt(canvas, accession, prot){
+  if(!accession){ canvas.parentElement.style.display='none'; return; }
+  const statusEl = canvas.parentElement.previousElementSibling.querySelector('.status');
+  if(statusEl) statusEl.textContent = 'fetching…';
+  
+  if(!UP_CACHE[accession]){
+    try{
+      const r = await fetch(`https://rest.uniprot.org/uniprotkb/${accession}.json`);
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const data = await r.json();
+      const feats=[];
+      for(const f of (data.features||[])){
+        const s=f.location?.start?.value, e=f.location?.end?.value;
+        if(s&&e) feats.push({type:f.type,desc:f.description||f.type,start:+s,end:+e});
+      }
+      UP_CACHE[accession]={features:feats};
+    }catch(err){
+      if(statusEl) statusEl.textContent='UniProt unavailable';
+      return;
+    }
+  }
+  
+  const feats = UP_CACHE[accession].features;
+  if(statusEl) statusEl.textContent = feats.length+' features loaded';
+  drawUniProtCanvas(canvas, prot, feats);
+}
+
+function drawUniProtCanvas(canvas, prot, feats){
+  const W = canvas.clientWidth||canvas.parentElement.offsetWidth;
+  if(!W) return;
+  const dpr=window.devicePixelRatio||1;
+  // group by type for rows
+  const TYPE_ROWS = [
+    {label:'Domains & ZF',  types:['Domain','Zinc finger'],     col:'#6366f1'},
+    {label:'Repeats',       types:['Repeat'],                    col:'#f59e0b'},
+    {label:'Regions/Motifs',types:['Region','Motif','Compositional bias'],col:'#10b981'},
+    {label:'TM/Signal',     types:['Transmembrane','Signal','Propeptide'],col:'#94a3b8'},
+  ];
+  const rows = TYPE_ROWS.filter(tr=>feats.some(f=>tr.types.includes(f.type)));
+  const nRows = Math.max(1, rows.length);
+  const rowH = 20, padV=4, H=(nRows*rowH)+(nRows+1)*padV;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.fillStyle='#f8f9fb'; ctx.fillRect(0,0,W,H);
+  // backbone line in center of each row
+  rows.forEach((tr,ri)=>{
+    const y=padV+ri*(rowH+padV);
+    ctx.fillStyle='#e2e8f0'; ctx.fillRect(0,y+rowH/2-2,W,4);
+    // row label
+    ctx.fillStyle='#94a3b8'; ctx.font='8px system-ui'; ctx.textBaseline='top';
+    ctx.fillText(tr.label,2,y+1);
+    // features for this row
+    feats.filter(f=>tr.types.includes(f.type)).forEach(f=>{
+      const x1=(f.start/prot.length)*W;
+      const x2=Math.max((f.end/prot.length)*W, x1+3);
+      ctx.fillStyle=tr.col;
+      rr(ctx,x1,y+4,x2-x1,rowH-8,2); ctx.fill();
+    });
   });
-  canvas.addEventListener('mouseleave',()=>{tooltip.style.display='none';});
-});
+  if(rows.length===0){
+    ctx.fillStyle='#cbd5e1'; ctx.font='11px system-ui'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('No domain/repeat features in UniProt',W/2,H/2);
+  }
+  // hover on canvas
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)/rect.width*prot.length;
+    const my=(e.clientY-rect.top);
+    const ri=Math.floor(my/(rowH+padV));
+    if(ri<0||ri>=rows.length){hideTT();return;}
+    const tr=rows[ri];
+    const hit=feats.filter(f=>tr.types.includes(f.type)).find(f=>mx>=f.start&&mx<=f.end);
+    if(hit) showTT(e,`<strong>${hit.type}</strong>\n${hit.desc}\n<span style="color:#93c5fd">pos ${hit.start}–${hit.end} (${hit.end-hit.start+1} aa)</span>`);
+    else hideTT();
+  });
+  canvas.addEventListener('mouseleave',hideTT);
+}
 
-function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+// ── 3D AlphaFold viewer (3Dmol) ───────────────────────────────────────────
+const AF_CACHE = {};
+async function loadAlphaFold(containerId, accession, prot){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  wrap.classList.add('open');
+  const status = wrap.querySelector('.struct-status');
+  if(typeof $3Dmol === 'undefined'){
+    if(status) status.textContent='3Dmol.js not loaded (check internet)'; return;
+  }
+  if(AF_CACHE[accession]?.pdbText){
+    renderPDB(wrap, AF_CACHE[accession].pdbText, prot);
+    return;
+  }
+  if(status) status.textContent='Fetching AlphaFold structure for '+accession+'…';
+  try{
+    let url=`https://alphafold.ebi.ac.uk/files/AF-${accession}-F1-model_v4.pdb`;
+    try{
+      const api=await fetch(`https://alphafold.ebi.ac.uk/api/prediction/${accession}`);
+      if(api.ok){const j=await api.json();if(Array.isArray(j)&&j[0]?.pdbUrl)url=j[0].pdbUrl;}
+    }catch(_){}
+    const resp=await fetch(url);
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const pdbText=await resp.text();
+    AF_CACHE[accession]={pdbText};
+    renderPDB(wrap, pdbText, prot);
+  }catch(err){
+    if(status) status.textContent='AlphaFold unavailable: '+err.message;
+  }
+}
 
-function drawAll(){PROTEINS.forEach((_,i)=>drawCanvas(i));}
-drawAll();
-let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(drawAll,100);});
+function renderPDB(wrap, pdbText, prot){
+  const inner = wrap.querySelector('.struct-inner');
+  if(!inner) return;
+  const W=inner.offsetWidth, H=inner.offsetHeight;
+  const viewer=$3Dmol.createViewer(inner,{defaultcolors:$3Dmol.rasmolElementColors,backgroundColor:'#1a1a2e',antialias:true,cartoonQuality:5});
+  viewer.addModel(pdbText,'pdb');
+  // pLDDT base coloring
+  viewer.setStyle({},{cartoon:{color:'spectrum',opacity:0.35}});
+  // Color each motif
+  prot.motifs.forEach((m,mi)=>{
+    const col=PAL[mi%PAL.length].f;
+    m.instances.forEach(inst=>{
+      viewer.setStyle({resi:`${inst.start}-${inst.end}`},{cartoon:{color:col,opacity:1}});
+    });
+  });
+  viewer.zoomTo();viewer.render();
+  wrap.querySelector('.struct-status').style.display='none';
+  // spin button
+  const btn=wrap.closest('.pcard')?.querySelector('.af-spin-btn');
+  if(btn){
+    let spinning=false;
+    btn.addEventListener('click',()=>{
+      spinning=!spinning;
+      if(spinning){viewer.spin('y',1);btn.textContent='Stop spin';}
+      else{viewer.spin(false);btn.textContent='Spin 3D';}
+    });
+  }
+}
+
+// ── Build protein card ────────────────────────────────────────────────────
+let cardCount=0;
+function buildCard(p){
+  const id='pcard-'+cardCount++;
+  const afId='af-'+id;
+  const mapId='map-'+id;
+  const upId='up-'+id;
+  const col=PAL[0]; // primary motif color
+
+  const badgeHtml=`<span class="badge ${p.badge_class||'b-gray'}">${p.cat_label||''}</span>`+
+    p.motifs.map((m,mi)=>`<span class="badge b-gray">${m.instances.length} ${mi>0?'+ motif 2: ':''}${m.instances.length===1?'copy':'copies'}</span>`).join('');
+
+  const motifRows=p.motifs.map((m,mi)=>{
+    const c=PAL[mi%PAL.length];
+    const chips=m.instances.map((inst,ii)=>
+      `<span class="inst-chip" style="border-color:${c.lc};background:${c.l};color:${c.f}" title="${inst.seq}">${inst.start}–${inst.end}</span>`
+    ).join('');
+    return `<div class="motif-row">
+      <div class="swatch" style="background:${c.f}"></div>
+      <div style="flex:1;min-width:0">
+        <div class="m-name">${m.sequence_context==='disordered_like'?'IDR motif':'Structured motif'} · ${m.instances.length} verified ${m.instances.length===1?'copy':'copies'} · ${m.unit_length} aa</div>
+        <div class="m-cons">${m.consensus.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <div class="m-insts">${chips}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `<div class="pcard" id="${id}">
+    <div class="pcard-head">
+      <div>
+        <div class="pcard-gene">${p.gene_name}</div>
+        <div class="pcard-acc">${p.accession} · ${p.length} aa</div>
+        <div class="pcard-desc">${(p.description||'').substring(0,120)}</div>
+        <div class="badges">${badgeHtml}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.4rem;align-items:flex-end;flex-shrink:0">
+        <a href="https://alphafold.ebi.ac.uk/entry/${p.accession}" target="_blank" rel="noopener" class="struct-btn">AlphaFold ↗</a>
+        <a href="https://www.uniprot.org/uniprotkb/${p.accession}" target="_blank" rel="noopener" class="struct-btn">UniProt ↗</a>
+      </div>
+    </div>
+    <div class="pcard-body">
+      <p class="pcard-insight">${p.insight||''}</p>
+      
+      <div class="map-label">Repeat instances</div>
+      <div class="map-wrap"><canvas class="${mapId}" data-id="${mapId}" style="width:100%;height:52px;border-radius:9px"></canvas></div>
+      
+      <div class="up-bar-wrap">
+        <div class="up-bar-label">UniProt annotations <span class="status" id="upstatus-${id}">loading…</span></div>
+        <canvas class="${upId}" data-id="${upId}" style="width:100%;border-radius:9px;display:block"></canvas>
+      </div>
+
+      <div class="struct-row">
+        <button class="struct-btn" onclick="toggleAF('${afId}','${p.accession}',PROTS.find(x=>x.gene_name==='${p.gene_name}'))">
+          View 3D structure (AlphaFold)
+        </button>
+        <button class="af-spin-btn struct-btn" style="display:none">Spin 3D</button>
+      </div>
+      <div class="struct-wrap" id="${afId}">
+        <div class="struct-status">Click "View 3D structure" to load AlphaFold model</div>
+        <div class="struct-inner" style="width:100%;height:100%"></div>
+      </div>
+      
+      <div class="motif-rows" style="margin-top:.8rem">${motifRows}</div>
+    </div>
+  </div>`;
+}
+
+function toggleAF(afId, acc, prot){
+  const wrap=document.getElementById(afId);
+  if(!wrap) return;
+  const btn=wrap.previousElementSibling.querySelector('.af-spin-btn');
+  if(wrap.classList.contains('open')){ wrap.classList.remove('open'); if(btn)btn.style.display='none'; return; }
+  if(btn) btn.style.display='';
+  loadAlphaFold(afId, acc, prot);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+function init(){
+  // Render cards into sections
+  PROTS.forEach(p=>{
+    const sec=p.section||3;
+    const grid=document.getElementById(GRIDS[sec]);
+    if(!grid) return;
+    grid.insertAdjacentHTML('beforeend', buildCard(p));
+  });
+
+  // After DOM is built, draw canvases and fetch UniProt
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    PROTS.forEach(p=>{
+      const grid=document.getElementById(GRIDS[p.section]);
+      if(!grid) return;
+      const cards=grid.querySelectorAll('.pcard');
+      // find this protein's card (by gene name text)
+      const card=Array.from(cards).find(c=>c.querySelector('.pcard-gene')?.textContent===p.gene_name);
+      if(!card) return;
+      // repeat map canvas
+      const mapC=card.querySelector('[class^="map-"]');
+      if(mapC) drawRepeatMap(mapC, p);
+      // UniProt canvas
+      const upC=card.querySelector('[class^="up-"]');
+      const upStatusEl=card.querySelector('[id^="upstatus-"]');
+      if(upC){
+        upC.style.height=''; // height set by draw function
+        fetchAndDrawUniProt(upC, p.accession, p).catch(()=>{});
+      }
+    });
+  }));
+
+  // Auto-load structure for the showcase protein (DYNC2I1)
+  setTimeout(()=>{
+    const dyn=PROTS.find(p=>p.gene_name==='DYNC2I1');
+    if(dyn){
+      const grid=document.getElementById(GRIDS[dyn.section]);
+      const card=grid&&Array.from(grid.querySelectorAll('.pcard')).find(c=>c.querySelector('.pcard-gene')?.textContent==='DYNC2I1');
+      if(card){
+        const afWrap=card.querySelector('.struct-wrap');
+        const btn=card.querySelector('.af-spin-btn');
+        if(afWrap&&btn){btn.style.display=''; loadAlphaFold(afWrap.id, dyn.accession, dyn);}
+      }
+    }
+  }, 800);
+}
+
+// Resize handler
+let _rt; window.addEventListener('resize',()=>{clearTimeout(_rt);_rt=setTimeout(()=>{
+  PROTS.forEach(p=>{
+    const grid=document.getElementById(GRIDS[p.section]); if(!grid) return;
+    const card=Array.from(grid.querySelectorAll('.pcard')).find(c=>c.querySelector('.pcard-gene')?.textContent===p.gene_name);
+    if(!card) return;
+    const mapC=card.querySelector('[class^="map-"]'); if(mapC) drawRepeatMap(mapC, p);
+    const upC=card.querySelector('[class^="up-"]');
+    if(upC&&UP_CACHE[p.accession]) drawUniProtCanvas(upC, p, UP_CACHE[p.accession].features);
+  });
+},200);});
+
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
