@@ -3,403 +3,299 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reading Repeats Blind · McWhite Lab</title>
-<meta name="description" content="A language-model screen for repeated motifs and domains across human proteins with long disordered regions. Interactive preview.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex">
+<title>Repeat screen · McWhite Lab</title>
+<meta name="description" content="A blinded language-model screen for repeats in human proteins with long disordered regions. Research preview.">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.2/3Dmol-min.js"></script>
 <style>
 :root{
-  --paper:#f7f5f0; --paper-2:#efece4; --card:#fffdf9; --ink:#15171c; --ink-2:#3a3d46; --muted:#6c707b; --faint:#9a9ea8;
-  --rule:#e3dfd4; --rule-2:#d6d1c4; --night:#0e1015; --night-2:#171a22;
-  --c-str:#5562e0; --c-dis:#e5603f; --c-mix:#17a088;
-  --accent:#e5603f;
-  --serif:"Newsreader", Georgia, "Times New Roman", serif;
-  --sans:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --maxw:1180px;
+  --text:#494e52; --strong:#313538; --gray:#7a8288; --light:#bdc1c4; --lighter:#f2f3f3; --code:#fafafa;
+  --link:#52adc8; --link-hover:#3d8296;
+  --c-str:#4e79a7; --c-dis:#e15759; --c-mix:#59a14f;
+  --sans:-apple-system,".SFNSText-Regular","San Francisco","Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
+  --mono:Monaco,Consolas,"Lucida Console",Menlo,monospace;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:inherit}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
-@media (max-width:640px){.wrap{padding:0 16px}}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+@media (min-width:1024px){html{font-size:17px}}
+body{margin:0;background:#fff;color:var(--text);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none}
+a:hover{color:var(--link-hover);text-decoration:underline}
+.container{max-width:1180px;margin:0 auto;padding:0 1.25em}
+@media (max-width:640px){.container{padding:0 16px}}
 
-/* nav */
-.nav{position:sticky;top:0;z-index:50;background:rgba(247,245,240,.86);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
-.nav.scrolled{border-bottom-color:var(--rule)}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
-.brand{font-family:var(--serif);font-size:19px;font-weight:500;text-decoration:none;letter-spacing:-.01em;white-space:nowrap}
-.brand span{color:var(--muted);font-weight:400}
-.nav-links{display:flex;gap:22px;font-size:13.5px;color:var(--ink-2)}
-.nav-links a{text-decoration:none;opacity:.8}
-.nav-links a:hover{opacity:1}
-@media (max-width:860px){.nav-links{display:none}}
+/* masthead: mirrors the main site */
+.masthead{border-bottom:1px solid var(--lighter);background:#fff}
+.masthead .container{display:flex;align-items:center;gap:2em;padding-top:1em;padding-bottom:1em;flex-wrap:wrap}
+.masthead a{color:var(--gray);text-decoration:none}
+.masthead a:hover{color:#4e5357}
+.masthead .site{font-weight:700;color:var(--strong)}
+.masthead nav{display:flex;gap:1.5em;font-size:.95em}
 
-/* hero */
-.hero{padding:56px 0 40px}
-.hero-grid{display:grid;grid-template-columns:1.02fr 1fr;gap:56px;align-items:center}
-@media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:32px}}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
-.pill-preview{font-size:11px;letter-spacing:.08em;padding:3px 9px;border-radius:99px;background:#fbe3da;color:#a63a1d;font-weight:600}
-h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5.6vw,68px);line-height:1.02;letter-spacing:-.025em;margin:18px 0 18px}
-h1 em{font-style:italic;color:var(--accent)}
-.lede{font-family:var(--serif);font-size:clamp(19px,1.9vw,22px);line-height:1.45;color:var(--ink-2);margin:0 0 22px;max-width:36em;font-weight:350}
-.authors{font-size:14.5px;color:var(--ink-2);margin:0 0 24px}
-.authors b{font-weight:600;color:var(--ink)}
-.btns{display:flex;flex-wrap:wrap;gap:10px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:99px;font-size:14px;font-weight:500;text-decoration:none;border:1px solid var(--rule-2);background:var(--card);color:var(--ink);transition:transform .15s, background .15s, border-color .15s;cursor:pointer}
-.btn:hover{transform:translateY(-1px);border-color:var(--ink-2)}
-.btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
-.btn.dark:hover{background:#000}
-.btn.disabled{opacity:.5;pointer-events:none}
-.btn svg{width:15px;height:15px}
+/* title block */
+.page-head{padding:2.4em 0 1.6em;border-bottom:1px solid var(--lighter)}
+.kicker{font-size:.75em;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin:0 0 .6em}
+.kicker .flag{color:#b8433f;margin-left:.6em}
+h1{font-size:2em;line-height:1.2;color:var(--strong);margin:0 0 .5em;font-weight:700;max-width:30em}
+.byline{color:var(--gray);margin:0 0 1.2em;font-size:.95em}
+.abstract{max-width:46em;margin:0 0 1.3em}
+.links{font-size:.95em}
+.links a,.links span{white-space:nowrap}
+.links .sep{color:var(--light);margin:0 .55em}
+.links .off{color:var(--gray)}
 
-.hero-fig{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,#1d2130 0%,var(--night) 60%);box-shadow:0 30px 60px -30px rgba(20,22,30,.55),0 0 0 1px rgba(255,255,255,.04) inset;aspect-ratio:1/0.92}
-.hero-fig .v{position:absolute;inset:0}
-.hero-fig .cap{position:absolute;left:18px;right:18px;bottom:16px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;color:#c9cdd8;font-size:12.5px;pointer-events:none}
-.hero-fig .cap b{color:#fff;font-weight:600;font-family:var(--mono);font-size:13px}
-.hero-fig .tagline{position:absolute;left:18px;top:16px;color:#9aa0ae;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-.hero-fig .status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8c92a1;font-size:13px;text-align:center;padding:24px}
-.hero-strip{position:absolute;left:18px;width:calc(100% - 36px);top:40px;height:12px;pointer-events:none;opacity:.9}
-
-/* tldr + stats */
-.tldr{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:34px 0;margin-top:20px}
-.tldr-grid{display:grid;grid-template-columns:150px 1fr;gap:28px}
-@media (max-width:720px){.tldr-grid{grid-template-columns:1fr;gap:8px}}
-.label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-top:6px}
-.tldr p{font-family:var(--serif);font-size:21px;line-height:1.5;margin:0;font-weight:350;max-width:44em}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:36px 0 0}
-@media (max-width:720px){.stats{grid-template-columns:repeat(2,1fr);row-gap:22px}}
-.stat{padding:0 18px;border-left:1px solid var(--rule)}
-.stat:first-child{border-left:0;padding-left:0}
-@media (max-width:720px){.stat:nth-child(3){border-left:0;padding-left:0}}
-.stat .n{font-family:var(--serif);font-size:clamp(34px,4vw,48px);line-height:1;letter-spacing:-.02em;font-weight:400}
-.stat .t{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.35}
+.numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:1.8em 0 0;border-top:1px solid var(--lighter)}
+@media (max-width:720px){.numbers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.numbers div{padding:.9em 1em .2em 0}
+.numbers b{display:block;font-size:1.6em;color:var(--strong);font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
+.numbers span{font-size:.82em;color:var(--gray);line-height:1.35;display:block;max-width:15em}
 
 /* sections */
-section.block{padding:84px 0 20px}
-.sec-head{display:grid;grid-template-columns:150px 1fr;gap:28px;margin-bottom:34px}
-@media (max-width:720px){.sec-head{grid-template-columns:1fr;gap:6px}}
-h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.4vw,42px);line-height:1.08;letter-spacing:-.02em;margin:0 0 12px}
-.sec-head p{margin:0;color:var(--ink-2);max-width:42em;font-size:16.5px}
+section{padding:2.6em 0 .4em}
+h2{font-size:1.25em;color:var(--strong);margin:0 0 .9em;padding-bottom:.45em;border-bottom:1px solid var(--lighter);font-weight:700}
+h3{font-size:1.05em;color:var(--strong);margin:0 0 .3em}
+p{margin:0 0 1em}
+.lead{max-width:46em}
+figure{margin:0}
+figcaption{font-size:.82em;color:var(--gray);margin-top:.7em;max-width:52em;line-height:1.45}
+figcaption b{color:var(--text)}
+
+/* figure 1 */
+.fig1{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:2em;align-items:start}
+@media (max-width:960px){.fig1{grid-template-columns:1fr}}
+#ovCanvas{display:block;width:100%;height:500px;cursor:crosshair;border:1px solid var(--lighter)}
+.key{display:flex;flex-wrap:wrap;gap:1.2em;font-size:.82em;margin-top:.6em}
+.key i{display:inline-block;width:.75em;height:.75em;margin-right:.4em;vertical-align:-.05em}
+.panels{display:grid;gap:1.6em}
+.panel-l{font-size:.82em;color:var(--strong);font-weight:600;margin-bottom:.4em}
+.panel-l span{color:var(--gray);font-weight:400}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.ctxbar{display:flex;height:12px;margin:.3em 0 .5em}
+.ctxrow{display:flex;flex-wrap:wrap;gap:.3em 1.2em;font-size:.82em}
 
 /* method */
-.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;position:relative}
-@media (max-width:980px){.steps{grid-template-columns:1fr 1fr}}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--lighter)}
+@media (max-width:980px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.steps{grid-template-columns:1fr}}
-.step{background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:20px 18px 18px;position:relative}
-.step .num{font-family:var(--mono);font-size:12px;color:var(--muted)}
-.step h3{font-family:var(--serif);font-weight:500;font-size:21px;margin:6px 0 8px;letter-spacing:-.01em}
-.step p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5}
-.step .ill{height:54px;margin:2px 0 10px;display:flex;align-items:center}
-.notation{margin-top:22px;background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:18px 20px;display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start}
-@media (max-width:720px){.notation{grid-template-columns:1fr;gap:10px}}
-.notation h4{margin:0;font-family:var(--serif);font-weight:500;font-size:18px}
-.notation h4 small{display:block;font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:400;margin-top:4px;line-height:1.4}
-.sym{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13.5px;color:var(--ink-2)}
-.sym span{white-space:nowrap}
-.sym code{font-family:var(--mono);font-weight:600;color:var(--ink);background:var(--paper-2);padding:1px 7px;border-radius:6px;margin-right:6px}
-
-/* overview */
-.ov-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:22px}
-@media (max-width:960px){.ov-grid{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--rule);border-radius:18px;padding:20px}
-.card h4{margin:0 0 2px;font-size:14px;font-weight:600}
-.card .sub{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.45}
-.ov-canvas-wrap{position:relative}
-#ovCanvas{display:block;width:100%;height:520px;border-radius:10px;cursor:crosshair}
-.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--ink-2);margin-top:12px}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
-.mini{display:grid;gap:22px}
-.chart svg{display:block;width:100%;height:auto;overflow:visible}
-.ctxbar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:10px 0 8px}
-.ctxbar div{height:100%}
-.ctxrow{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-2);gap:10px;flex-wrap:wrap}
+.step{padding:1em 1.2em 1em 0;border-bottom:1px solid var(--lighter)}
+.step .n{font-family:var(--mono);font-size:.75em;color:var(--gray)}
+.step .ill{height:44px;margin:.4em 0 .5em}
+.step p{font-size:.88em;margin:0}
+.symbols{margin-top:1.4em;font-size:.88em}
+.symbols code{font-family:var(--mono);background:var(--code);border:1px solid var(--lighter);padding:0 .35em;color:var(--strong)}
+.symbols .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(13em,1fr));gap:.25em 1.4em}
 
 /* explorer */
-.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:18px}
+.tabs{display:flex;border-bottom:1px solid var(--lighter);overflow-x:auto;scrollbar-width:none;margin-bottom:1.1em}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;border:1px solid var(--rule-2);background:transparent;border-radius:99px;padding:8px 15px;font:500 13.5px var(--sans);color:var(--ink-2);cursor:pointer;display:flex;gap:8px;align-items:center;transition:all .15s}
-.tab .k{font-family:var(--mono);font-size:11.5px;color:var(--faint)}
-.tab:hover{border-color:var(--ink-2)}
-.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.tab.on .k{color:#9ea3b0}
-.sec-blurb{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;margin-bottom:16px}
-@media (max-width:720px){.sec-blurb{grid-template-columns:1fr}}
-.sec-blurb h3{font-family:var(--serif);font-weight:400;font-size:28px;margin:0 0 4px;letter-spacing:-.015em}
-.sec-blurb p{margin:0;color:var(--ink-2);max-width:46em;font-size:15.5px}
-.prots{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-.prot{border:1px solid var(--rule);background:var(--card);border-radius:12px;padding:8px 13px;cursor:pointer;text-align:left;font:inherit;transition:all .15s;min-width:0}
-.prot b{display:block;font-family:var(--mono);font-size:13.5px;font-weight:600}
-.prot span{display:block;font-size:12px;color:var(--muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.prot:hover{border-color:var(--ink-2)}
-.prot.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink) inset;background:#fff}
+.tab{flex:0 0 auto;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:.55em 0;margin-right:1.6em;font:inherit;font-size:.92em;color:var(--gray);cursor:pointer}
+.tab .k{font-family:var(--mono);font-size:.85em;margin-right:.45em;color:var(--light)}
+.tab:hover{color:var(--strong)}
+.tab.on{color:var(--strong);border-bottom-color:var(--strong);font-weight:600}
+.cat-intro{max-width:46em;margin-bottom:.9em}
+.cat-intro h3{margin-bottom:.15em}
+.cat-intro p{margin:0}
+.prots{display:flex;flex-wrap:wrap;gap:.3em 1.3em;margin:0 0 1.1em;font-size:.92em}
+.prot{background:none;border:0;padding:.2em 0;font:inherit;color:var(--link);cursor:pointer;border-bottom:1px solid transparent}
+.prot b{font-family:var(--mono);font-weight:400;font-size:.95em}
+.prot span{color:var(--gray);margin-left:.4em;font-size:.9em}
+.prot:hover{color:var(--link-hover)}
+.prot.on{color:var(--strong);border-bottom-color:var(--strong)}
+.prot.on b{font-weight:700}
 
-.panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:0;background:var(--card);border:1px solid var(--rule);border-radius:22px;overflow:hidden;box-shadow:0 24px 50px -38px rgba(20,22,30,.35)}
-@media (max-width:980px){.panel{grid-template-columns:1fr}}
-.viewer{position:sticky;top:57px;align-self:start;height:min(680px,calc(100vh - 57px));min-height:440px;background:radial-gradient(120% 90% at 30% 15%,#1d2130 0%,var(--night) 62%)}
-@media (max-width:980px){.viewer{position:relative;top:0;height:440px;min-height:0}}
-.panel{align-items:start}
-.vcol{align-self:stretch;background:var(--night);min-width:0}
-.viewer .v{position:absolute;inset:0}
-.viewer .status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8c92a1;font-size:13px;text-align:center;padding:24px;pointer-events:none}
-.vbar{position:absolute;left:14px;right:14px;top:14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;pointer-events:none}
-.vbar > *{pointer-events:auto}
-.vbar,.vlegend,.viewer .status,.hero-fig .cap,.hero-fig .tagline,.hero-strip,.hero-fig .status{z-index:3}
-.seg{display:inline-flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:99px;padding:3px}
-.seg button{border:0;background:transparent;color:#aeb3c0;font:500 12px var(--sans);padding:5px 11px;border-radius:99px;cursor:pointer}
-.seg button.on{background:rgba(255,255,255,.14);color:#fff}
-.vlegend{position:absolute;left:14px;right:14px;bottom:14px;display:flex;flex-wrap:wrap;gap:6px 14px;color:#c9cdd8;font-size:12px;pointer-events:none}
-.vlegend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
-.vlegend .pl i{border-radius:2px}
+.explorer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:2em;align-items:start;border-top:1px solid var(--lighter);padding-top:1.4em}
+@media (max-width:980px){.explorer{grid-template-columns:1fr;gap:1.2em}}
+.viewer{position:sticky;top:12px;border:1px solid var(--lighter);background:#fff}
+@media (max-width:980px){.viewer{position:relative;top:0}}
+.vbox{position:relative;height:min(600px,calc(100vh - 110px));min-height:380px}
+@media (max-width:980px){.vbox{height:400px}}
+.vbox .v{position:absolute;inset:0}
+.vbox .status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:.85em;text-align:center;padding:1.5em;z-index:3;pointer-events:none}
+.vtools{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5em;padding:.5em .7em;border-top:1px solid var(--lighter);font-size:.8em;align-items:center}
+.vtools .grp{display:flex;gap:.2em;align-items:center}
+.vtools .grp span{color:var(--gray);margin-right:.4em}
+.vtools button{font:inherit;background:none;border:1px solid transparent;color:var(--gray);padding:.15em .55em;cursor:pointer;border-radius:3px}
+.vtools button:hover{color:var(--strong)}
+.vtools button.on{border-color:var(--light);color:var(--strong)}
+.vlegend{display:flex;flex-wrap:wrap;gap:.2em 1em;padding:.5em .7em;border-top:1px solid var(--lighter);font-size:.78em}
+.vlegend i{display:inline-block;width:.8em;height:.8em;margin-right:.4em;vertical-align:-.08em}
 
-.side{padding:24px 26px 26px;min-width:0}
-@media (max-width:640px){.side{padding:20px 16px}}
-.ph{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
-.ph .g{font-family:var(--serif);font-size:34px;line-height:1;letter-spacing:-.02em}
-.ph .d{color:var(--ink-2);font-size:14.5px;margin-top:6px}
-.ph .meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:6px}
-.ext{display:flex;gap:6px;flex-shrink:0}
-.ext a{font-size:12px;text-decoration:none;border:1px solid var(--rule-2);border-radius:99px;padding:4px 10px;color:var(--ink-2);white-space:nowrap}
-.ext a:hover{border-color:var(--ink-2);color:var(--ink)}
-.note{margin:14px 0 0;font-family:var(--serif);font-size:17px;line-height:1.5;color:var(--ink-2)}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.chip{font-size:11.5px;padding:3px 9px;border-radius:99px;background:var(--paper-2);color:var(--ink-2);font-weight:500}
-.chip.src{background:#e8ecff;color:#3440b0}
-
-.tracks{margin-top:20px;position:relative}
-.tracks svg{display:block;width:100%;overflow:visible}
+.side{min-width:0}
+.ph h3{font-size:1.35em;margin:0}
+.ph .d{margin:.1em 0}
+.ph .meta{font-family:var(--mono);font-size:.78em;color:var(--gray)}
+.ph .meta a{margin-left:.9em}
+.note{margin:.8em 0 0;max-width:40em}
+.facts{font-size:.82em;color:var(--gray);margin-top:.5em}
+.tracks{margin-top:1.2em}
+.tracks svg{display:block;overflow:visible}
 .tracks text{font-family:var(--sans)}
 .tracks .hit{cursor:pointer}
-.tracks .hit:hover{filter:brightness(1.12)}
-
-.fams{margin-top:22px;display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
-.fam{min-width:0;border:1px solid var(--rule);border-radius:14px;padding:14px 14px 12px;background:#fff}
-.fam-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.fam-h .dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
-.fam-h .nm{font-weight:600;font-size:13.5px}
-.fam-h .mt{font-size:12.5px;color:var(--muted)}
-.cons{font-family:var(--mono);font-size:13.5px;margin:8px 0 10px;word-break:break-all;line-height:1.5;color:var(--ink)}
-.cons .x{color:#b8bcc6}
-.cons .cls{color:#b5451f;font-weight:600}
-.cons .br{color:#4250c9}
-.aln{overflow-x:auto;border-top:1px dashed var(--rule);padding-top:8px}
-.aln-row{display:flex;align-items:center;gap:10px;padding:2px 4px;border-radius:7px;cursor:pointer;white-space:nowrap}
-.aln-row:hover,.aln-row.on{background:var(--paper-2)}
-.aln-row .pos{font-family:var(--mono);font-size:11.5px;color:var(--muted);width:78px;flex-shrink:0;text-align:right}
-.aln-row .sq{font-family:var(--mono);font-size:12.5px;letter-spacing:.02em}
-.sq span{display:inline-block;width:1.02em;text-align:center;border-radius:3px}
-.r-h{background:#fdebc8;color:#7a4e00}.r-a{background:#f7d2bd;color:#93300f;font-weight:600}.r-p{background:#d7e3ff;color:#1d3fa8}
-.r-n{background:#fbd3d3;color:#931c1c}.r-o{background:#d6f0e1;color:#14643a}.r-P{background:#eadff7;color:#6a249f}.r-G{background:#ececec;color:#4a4a4a}.r-C{background:#fff0a0;color:#6b5800}
-.why{margin:10px 0 0;padding:10px 12px;background:var(--paper);border-radius:10px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
-.why b{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px;font-weight:600}
-.reslegend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11.5px;color:var(--muted);margin-top:14px}
-.reslegend span{font-family:var(--mono);padding:0 5px;border-radius:3px;margin-right:4px}
+.tracks .hit:hover{opacity:.8}
+.fams{display:grid;grid-template-columns:minmax(0,1fr);gap:1.4em;margin-top:1.4em}
+.fam{min-width:0}
+.fam-h{font-size:.88em;display:flex;align-items:baseline;gap:.6em;flex-wrap:wrap}
+.fam-h .sw{width:.8em;height:.8em;display:inline-block;align-self:center}
+.fam-h b{color:var(--strong)}
+.fam-h span{color:var(--gray)}
+.cons{font-family:var(--mono);font-size:.85em;margin:.35em 0 .5em;word-break:break-all;color:var(--strong)}
+.cons .x{color:var(--light)}
+.cons .cls{color:#b8433f}
+.cons .br{color:var(--c-str)}
+.aln{overflow-x:auto;border-left:2px solid var(--lighter);padding-left:.6em}
+.aln-row{display:flex;gap:.8em;white-space:nowrap;cursor:pointer;padding:.05em 0;align-items:center}
+.aln-row:hover{background:var(--code)}
+.aln-row.on{background:#eef7fa}
+.aln-row .pos{font-family:var(--mono);font-size:.72em;color:var(--gray);width:6.2em;text-align:right;flex-shrink:0}
+.aln-row .sq{font-family:var(--mono);font-size:.8em;letter-spacing:.05em}
+.r-h{color:#9a6b00}.r-a{color:#c2410c;font-weight:700}.r-p{color:#1d4ed8}.r-n{color:#b91c1c}.r-o{color:#15803d}.r-P{color:#7e22ce;font-weight:700}.r-G{color:#7a8288}.r-C{color:#a16207;font-weight:700}
+.why{margin:.6em 0 0;font-size:.85em;max-width:44em}
+.why em{color:var(--gray);font-style:normal}
+.reslegend{font-size:.75em;color:var(--gray);margin-top:1.3em;font-family:var(--mono)}
+.reslegend span{margin-right:1em}
 
 /* catalog */
-.cat-controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;align-items:center}
-.cat-controls input,.cat-controls select{font:inherit;font-size:14px;padding:9px 13px;border:1px solid var(--rule-2);border-radius:10px;background:var(--card);color:var(--ink)}
-.cat-controls input{flex:1 1 260px;min-width:0}
-.cat-count{font-size:13px;color:var(--muted);margin-left:auto}
-.table-wrap{background:var(--card);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
-table{width:100%;border-collapse:collapse;font-size:13.5px}
-th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:12px 14px;border-bottom:1px solid var(--rule);background:var(--paper)}
-td{padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
-tr.row{cursor:pointer}
-tr.row:hover td{background:#fbf9f4}
-td .gn{font-family:var(--mono);font-weight:600}
-td .ac{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
-td .ds{color:var(--ink-2);max-width:280px}
-.cc{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;margin:2px 8px 2px 0;max-width:100%}
-.cc i{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.cc span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px}
-.cc em{font-style:normal;color:var(--muted)}
+.controls{display:flex;flex-wrap:wrap;gap:.6em;margin-bottom:.9em;align-items:center}
+.controls input,.controls select{font:inherit;font-size:.9em;padding:.4em .6em;border:1px solid var(--light);border-radius:3px;background:#fff;color:var(--text)}
+.controls input{flex:1 1 18em;min-width:0}
+.count{font-size:.82em;color:var(--gray);margin-left:auto}
+table.cat{width:100%;border-collapse:collapse;font-size:.88em}
+.cat th{text-align:left;font-weight:600;color:var(--strong);padding:.5em .8em .5em 0;border-bottom:1px solid var(--light);font-size:.92em}
+.cat td{padding:.55em .8em .55em 0;border-bottom:1px solid var(--lighter);vertical-align:top}
+.cat tr.row{cursor:pointer}
+.cat tr.row:hover td{background:var(--code)}
+.cat .gn{font-family:var(--mono);color:var(--link)}
+.cat .ac{font-family:var(--mono);font-size:.85em;color:var(--gray)}
+.cc{display:inline-flex;gap:.4em;align-items:center;font-family:var(--mono);font-size:.88em;margin:.1em 1em .1em 0;max-width:100%}
+.cc i{width:.6em;height:.6em;flex-shrink:0}
+.cc span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:22em;color:var(--strong)}
+.cc em{font-style:normal;color:var(--gray)}
 @media (max-width:760px){.hide-sm{display:none}}
-.more{display:flex;justify-content:center;padding:16px}
-.cat-empty{padding:40px;text-align:center;color:var(--muted)}
+.more{padding:1em 0}
+.btn{font:inherit;font-size:.88em;background:#fff;border:1px solid var(--light);border-radius:3px;padding:.35em .9em;color:var(--text);cursor:pointer}
+.btn:hover{border-color:var(--gray)}
+.empty{padding:2em 0;color:var(--gray)}
 
-/* cite & footer */
-pre.bib{background:var(--night);color:#d7dae2;border-radius:16px;padding:20px 22px;font-family:var(--mono);font-size:13px;line-height:1.6;overflow-x:auto;margin:0;position:relative}
-.copy{position:absolute;top:12px;right:12px;font:500 12px var(--sans);background:rgba(255,255,255,.1);color:#fff;border:0;padding:6px 11px;border-radius:99px;cursor:pointer}
-footer{margin-top:90px;border-top:1px solid var(--rule);padding:30px 0 50px;color:var(--muted);font-size:13.5px}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+pre.bib{background:var(--code);border:1px solid var(--lighter);padding:1em;font-family:var(--mono);font-size:.8em;line-height:1.55;overflow-x:auto;color:var(--strong);margin:0}
+footer{margin-top:3.5em;border-top:1px solid var(--lighter);padding:1.5em 0 2.5em;font-size:.8em;color:var(--gray)}
+footer .container{display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap}
 
-#tip{position:fixed;z-index:100;pointer-events:none;background:var(--night);color:#e7e9ef;padding:8px 11px;border-radius:9px;font-size:12.5px;line-height:1.45;max-width:320px;box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transition:opacity .1s}
-#tip b{color:#fff}
-#tip .m{font-family:var(--mono);font-size:11.5px;color:#aab0bf;word-break:break-all}
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease, transform .7s ease}
-.reveal.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+#tip{position:fixed;z-index:100;pointer-events:none;background:#fff;color:var(--text);border:1px solid var(--light);padding:.45em .65em;font-size:.8em;line-height:1.4;max-width:320px;box-shadow:0 2px 8px rgba(0,0,0,.08);opacity:0}
+#tip b{color:var(--strong)}
+#tip .m{font-family:var(--mono);font-size:.92em;color:var(--gray);word-break:break-all}
 </style>
 </head>
 <body>
 
-<nav class="nav" id="nav">
-  <div class="wrap">
-    <a class="brand" href="#top">McWhite Lab <span>/ repeats</span></a>
-    <div class="nav-links">
-      <a href="#method">Method</a><a href="#screen">The screen</a><a href="#explore">Highlights</a><a href="#catalog">Catalog</a><a href="#cite">Cite</a>
-    </div>
-    <a class="btn" href="./index.html" style="padding:6px 13px;font-size:13px">Curation tool ↗</a>
-  </div>
-</nav>
-
-<header class="hero" id="top">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="eyebrow">Research preview <span class="pill-preview">Preliminary</span></div>
-      <h1>Reading repeats <em>blind</em> across the disordered proteome</h1>
-      <p class="lede">We hid every protein's name and annotations, asked a language model to read the raw sequence for anything that recurs, and kept only the copies that exist verbatim. It recovers known repeat families, finds short motifs scattered through disordered regions, and turns up a few things we can't yet name.</p>
-      <p class="authors"><b>McWhite Lab</b> · University of Arizona</p>
-      <div class="btns">
-        <a class="btn dark" href="#explore">Explore highlights
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-        <a class="btn" href="#catalog">Browse all <span data-stat="with">1,124</span></a>
-        <a class="btn" href="catalog.json" download>Data (JSON)</a>
-        <span class="btn disabled">Preprint · soon</span>
-      </div>
-    </div>
-    <div class="hero-fig" id="heroFig">
-      <div class="v" id="heroV"></div>
-      <div class="status" id="heroStatus">Loading AlphaFold model…</div>
-      <div class="tagline">Featured · candidate new domain</div>
-      <canvas class="hero-strip" id="heroStrip"></canvas>
-      <div class="cap"><span><b id="heroGene">DYNC2I1</b> &nbsp;AlphaFold model, repeat units highlighted</span><span id="heroCount"></span></div>
-    </div>
+<header class="masthead">
+  <div class="container">
+    <a class="site" href="/">McWhite Lab</a>
+    <nav><a href="/people/">People</a><a href="/cv/">CV</a><a href="/year-archive/">Blog Posts</a></nav>
   </div>
 </header>
 
-<div class="wrap">
-  <div class="tldr reveal">
-    <div class="tldr-grid">
-      <div class="label">In short</div>
-      <p>Repeats in disordered regions are hard to find by alignment because copies are short, degenerate and scattered. Reading sequences the way a person would, scanning for anchored patterns rather than aligning them, picks them up alongside the classic structured arrays. Every result here survived a strict check: each reported copy has to appear, letter for letter, in the real sequence.</p>
+<main class="container">
+  <div class="page-head">
+    <p class="kicker">Research preview<span class="flag">Preliminary · work in progress</span></p>
+    <h1>A blinded language-model screen for repeats in human disordered proteins</h1>
+    <p class="byline">McWhite Lab, Department of Molecular and Cellular Biology, University of Arizona</p>
+    <p class="abstract">Repeated motifs in intrinsically disordered regions are hard to find by alignment: the copies are short, differ from one another, and are spread out along the sequence. We gave a language model anonymized human protein sequences, with names and annotations removed, and asked it to describe any recurring pattern as a consensus together with the copies it was based on. A script then located each reported copy in the sequence and discarded any that could not be found. The screen recovers known repeat families and short linear motifs, and points to repeated motifs and units that are not currently annotated.</p>
+    <div class="links">
+      <a href="#explore">Highlights</a><span class="sep">·</span><a href="#catalog">Catalog</a><span class="sep">·</span><a href="./index.html">Curation tool</a><span class="sep">·</span><a href="catalog.json" download>Data (JSON)</a><span class="sep">·</span><span class="off">Preprint in preparation</span>
     </div>
-    <div class="stats">
-      <div class="stat"><div class="n" data-count="screened">0</div><div class="t">human proteins screened, each with ≥100 aa of predicted disorder</div></div>
-      <div class="stat"><div class="n" data-count="with">0</div><div class="t">with at least one verified repeat family</div></div>
-      <div class="stat"><div class="n" data-count="families">0</div><div class="t">distinct repeat families, all copies verified verbatim</div></div>
-      <div class="stat"><div class="n" data-count="dis">0</div><div class="t">families sitting in disordered sequence context</div></div>
-    </div>
-  </div>
-</div>
-
-<section class="block" id="method">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="label">Method</div>
-      <div><h2>Five steps, with the answers kept out of reach</h2>
-      <p>The pipeline keeps the reading step honest. Scripts handle cohort selection, blinding and verification and contain no motif-finding logic; the model sees only an anonymous sequence.</p></div>
-    </div>
-    <div class="steps reveal">
-      <div class="step"><div class="num">01</div><div class="ill" data-ill="cohort"></div><h3>Pick the cohort</h3><p>Human proteins with ≥100 aa of disorder, from UniProt / MobiDB-lite regions or a TOP-IDP propensity window.</p></div>
-      <div class="step"><div class="num">02</div><div class="ill" data-ill="blind"></div><h3>Blind</h3><p>Strip names and annotations, shuffle to anonymous IDs, and keep the key in a separate place.</p></div>
-      <div class="step"><div class="num">03</div><div class="ill" data-ill="read"></div><h3>Read twice</h3><p>One scan for long structural repeats, then an independent scan of disordered stretches for short anchored motifs (≥5 aa, ≥3 copies).</p></div>
-      <div class="step"><div class="num">04</div><div class="ill" data-ill="verify"></div><h3>Verify verbatim</h3><p>Each reported copy must occur exactly in the sequence. Coordinates are computed here; anything that doesn't match is dropped.</p></div>
-      <div class="step"><div class="num">05</div><div class="ill" data-ill="unblind"></div><h3>Unblind &amp; compare</h3><p>Only now attach identities, then check against UniProt features and AlphaFold models.</p></div>
-    </div>
-    <div class="notation reveal">
-      <h4>Reading a consensus<small>One symbol per residue position, written by the model.</small></h4>
-      <div class="sym">
-        <span><code>W</code>fixed residue</span><span><code>[ST]</code>one of these</span><span><code>x</code>any residue</span>
-        <span><code>φ</code>hydrophobic (AVILMFWY)</span><span><code>ψ</code>large aliphatic (VILM)</span><span><code>Ω</code>aromatic (FWY)</span>
-        <span><code>+</code>basic (KR)</span><span><code>-</code>acidic (DE)</span><span><code>o</code>polar (STNQ)</span><span><code>(x){4,13}</code>variable loop</span>
-      </div>
+    <div class="numbers">
+      <div><b data-stat="screened"></b><span>proteins screened, each with ≥100 aa of predicted disorder</span></div>
+      <div><b data-stat="with"></b><span>with at least one repeat family</span></div>
+      <div><b data-stat="families"></b><span>repeat families, every copy located in the sequence</span></div>
+      <div><b data-stat="dis"></b><span>families in a disordered context</span></div>
     </div>
   </div>
-</section>
 
-<section class="block" id="screen">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="label">The screen</div>
-      <div><h2>Every verified repeat, in every protein</h2>
-      <p>Each line is one protein, sorted by length; colored blocks are verified repeat copies. Hover to identify a protein, click to open it in the explorer.</p></div>
-    </div>
-    <div class="ov-grid reveal">
-      <div class="card">
-        <h4 id="ovTitle">Proteins with verified repeats</h4>
-        <div class="sub">Residue position on the x-axis (proteins longer than 2,500 aa are cut off at the edge).</div>
-        <div class="ov-canvas-wrap"><canvas id="ovCanvas"></canvas></div>
-        <div class="legend"><span><i style="background:var(--c-str)"></i>Structured context</span><span><i style="background:var(--c-dis)"></i>Disordered context</span><span><i style="background:var(--c-mix)"></i>Mixed</span></div>
-      </div>
-      <div class="mini">
-        <div class="card chart"><h4>Where the repeats sit</h4><div class="sub">Sequence context the model assigned to each family.</div><div id="ctxChart"></div></div>
-        <div class="card chart"><h4>Repeat unit length</h4><div class="sub">Residues per unit; ranges use their midpoint.</div><div id="unitChart"></div></div>
-        <div class="card chart"><h4>Copies per family</h4><div class="sub">Verified copies of each repeat family.</div><div id="copyChart"></div></div>
+  <section id="screen">
+    <h2>The screen at a glance</h2>
+    <div class="fig1">
+      <figure>
+        <canvas id="ovCanvas" aria-label="Every protein with repeats, as a row"></canvas>
+        <div class="key"><span><i style="background:var(--c-str)"></i>Structured context</span><span><i style="background:var(--c-dis)"></i>Disordered context</span><span><i style="background:var(--c-mix)"></i>Mixed</span></div>
+        <figcaption><b>Figure 1.</b> <span id="ovCaption"></span> Each row is one protein (gray), sorted by length; colored segments are located repeat copies, colored by the sequence context the model assigned. Proteins longer than 2,500 aa are truncated. Hover to identify a protein; click to open it below.</figcaption>
+      </figure>
+      <div class="panels">
+        <div class="chart"><div class="panel-l">A. Sequence context <span>(per family)</span></div><div id="ctxChart"></div></div>
+        <div class="chart"><div class="panel-l">B. Repeat unit length <span>(aa; ranges at midpoint)</span></div><div id="unitChart"></div></div>
+        <div class="chart"><div class="panel-l">C. Copies per family</div><div id="copyChart"></div></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="block" id="explore">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="label">Highlights</div>
-      <div><h2>Six kinds of repeat, from the textbook to the unnamed</h2>
-      <p>Hand-picked proteins, one tab per category. Each shows the AlphaFold model with the repeat copies colored, the repeat map against UniProt's own annotation, and the copies themselves. Click any copy to fly to it in 3D.</p></div>
+  <section id="method">
+    <h2>Method</h2>
+    <p class="lead">Scripts handle cohort selection, blinding and coordinate lookup and contain no motif-finding logic. The model sees only an anonymous sequence.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="ill" data-ill="cohort"></div><h3>Cohort</h3><p>Human proteins with ≥100 aa of disorder, from UniProt / MobiDB-lite regions or a TOP-IDP propensity window.</p></div>
+      <div class="step"><div class="n">2</div><div class="ill" data-ill="blind"></div><h3>Blinding</h3><p>Names and annotations are removed and sequences get shuffled anonymous IDs. The key is kept separately.</p></div>
+      <div class="step"><div class="n">3</div><div class="ill" data-ill="read"></div><h3>Two-pass reading</h3><p>One pass for long structural repeats, then an independent pass over disordered stretches for short anchored motifs (≥5 aa, usually ≥3 copies).</p></div>
+      <div class="step"><div class="n">4</div><div class="ill" data-ill="locate"></div><h3>Locating copies</h3><p>The model quotes each copy it reports. A script finds each quote in the sequence and records its coordinates; quotes that aren't in the sequence are dropped. Copies need not match each other.</p></div>
+      <div class="step"><div class="n">5</div><div class="ill" data-ill="unblind"></div><h3>Unblinding</h3><p>Identities are attached only afterwards, then results are compared with UniProt features and AlphaFold models.</p></div>
     </div>
+    <div class="symbols">
+      <p style="margin-bottom:.4em"><b>Consensus notation.</b> One symbol per residue position.</p>
+      <div class="grid">
+        <span><code>W</code> fixed residue</span><span><code>[ST]</code> one of these</span><span><code>x</code> any residue</span><span><code>(x){4,13}</code> variable loop</span>
+        <span><code>φ</code> hydrophobic (AVILMFWY)</span><span><code>ψ</code> large aliphatic (VILM)</span><span><code>Ω</code> aromatic (FWY)</span>
+        <span><code>+</code> basic (KR)</span><span><code>-</code> acidic (DE)</span><span><code>o</code> polar (STNQ)</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="explore">
+    <h2>Highlights</h2>
+    <p class="lead">Selected proteins in six categories. For each: the AlphaFold model with repeat copies colored; copy positions alongside UniProt annotations and a TOP-IDP disorder profile; and the copies themselves with the model's description. Click a copy to center it in the structure.</p>
     <div class="tabs" id="tabs"></div>
-    <div class="sec-blurb"><div><h3 id="secTitle"></h3><p id="secText"></p></div></div>
+    <div class="cat-intro"><h3 id="secTitle"></h3><p id="secText"></p></div>
     <div class="prots" id="prots"></div>
-    <div class="panel">
-      <div class="vcol"><div class="viewer" id="exViewer">
-        <div class="v" id="exV"></div>
-        <div class="status" id="exStatus"></div>
-        <div class="vbar">
-          <div class="seg" id="colorSeg"><button data-mode="repeats" class="on">Repeats</button><button data-mode="plddt">pLDDT</button></div>
-          <div class="seg"><button id="spinBtn">Spin</button><button id="resetBtn">Reset</button></div>
+    <div class="explorer">
+      <div class="viewer">
+        <div class="vbox"><div class="v" id="exV"></div><div class="status" id="exStatus"></div></div>
+        <div class="vtools">
+          <div class="grp" id="colorSeg"><span>Color</span><button data-mode="repeats" class="on">Repeats</button><button data-mode="plddt">pLDDT</button></div>
+          <div class="grp"><button id="spinBtn">Spin</button><button id="resetBtn">Reset view</button></div>
         </div>
         <div class="vlegend" id="exLegend"></div>
-      </div></div>
+      </div>
       <div class="side" id="side"></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="block" id="catalog">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="label">Catalog</div>
-      <div><h2>The full catalog</h2>
-      <p>All proteins with at least one verified repeat family. Search by gene, protein name or consensus, then open any row in the explorer above.</p></div>
-    </div>
-    <div class="cat-controls">
-      <input id="q" type="search" placeholder="Search gene, protein or consensus (e.g. ZFP36, kinase, PPPPG)" autocomplete="off">
+  <section id="catalog">
+    <h2>Catalog</h2>
+    <p class="lead">Every protein with at least one repeat family. Search by gene, protein name or consensus; click a row to open it in the explorer.</p>
+    <div class="controls">
+      <input id="q" type="search" placeholder="Gene, protein or consensus (e.g. ZFP36, kinase, PPPPG)" autocomplete="off">
       <select id="fCtx"><option value="">Any context</option><option value="disordered_like">Disordered</option><option value="structured_like">Structured</option><option value="mixed">Mixed</option></select>
       <select id="fCopies"><option value="0">Any copies</option><option value="3">≥3 copies</option><option value="5">≥5 copies</option><option value="10">≥10 copies</option></select>
       <select id="fSort"><option value="copies">Most copies</option><option value="fams">Most families</option><option value="len">Longest</option><option value="gene">Gene A–Z</option></select>
-      <span class="cat-count" id="catCount"></span>
+      <span class="count" id="catCount"></span>
     </div>
-    <div class="table-wrap">
-      <table><thead><tr><th>Gene</th><th class="hide-sm">Protein</th><th class="hide-sm">Length</th><th>Repeat families</th></tr></thead><tbody id="catBody"><tr><td colspan="4" class="cat-empty">Loading catalog…</td></tr></tbody></table>
-      <div class="more" id="moreWrap" style="display:none"><button class="btn" id="moreBtn">Show more</button></div>
-    </div>
-  </div>
-</section>
+    <table class="cat"><thead><tr><th>Gene</th><th class="hide-sm">Protein</th><th class="hide-sm">Length</th><th>Repeat families (consensus, copies)</th></tr></thead><tbody id="catBody"><tr><td colspan="4" class="empty">Loading catalog…</td></tr></tbody></table>
+    <div class="more" id="moreWrap" style="display:none"><button class="btn" id="moreBtn">Show more</button></div>
+  </section>
 
-<section class="block" id="cite">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="label">Cite</div>
-      <div><h2>Citation</h2><p>This is a preview of work in progress; the screen is still running and numbers will change. Please get in touch before citing.</p></div>
-    </div>
-    <pre class="bib reveal" id="bib"><button class="copy" id="copyBib">Copy</button>@misc{mcwhite_repeats_preview,
-  title  = {Reading repeats blind across the disordered proteome},
+  <section id="cite">
+    <h2>Citation</h2>
+    <p class="lead">This is a preview of work in progress; the screen is still running and the numbers will change. Please get in touch before citing.</p>
+<pre class="bib">@misc{mcwhite_repeats_preview,
+  title  = {A blinded language-model screen for repeats in human disordered proteins},
   author = {{McWhite Lab}},
   year   = {2026},
   note   = {Research preview},
   url    = {https://clairemcwhite.github.io/repeats/highlights.html}
 }</pre>
-  </div>
-</section>
+  </section>
+</main>
 
 <footer>
-  <div class="wrap">
-    <span>McWhite Lab · University of Arizona</span>
+  <div class="container">
+    <span>© McWhite Lab, University of Arizona</span>
     <span>Structures: AlphaFold DB · Annotations: UniProt · Viewer: 3Dmol.js · Data as of <span id="asof"></span></span>
   </div>
 </footer>
@@ -411,39 +307,40 @@ const DATA = {"stats":{"screened":2271,"with":1124,"catalog_proteins":1124,"fami
 /* ── Editable text ─────────────────────────────────────────────────────── */
 const SECTIONS = [
   {n:1, short:'Known families', title:'Known repeat families',
-   text:"A sanity check first. Read blind, with no names or annotations, the model recovers classic structured repeat architectures with sensible unit lengths and consensus anchors."},
+   text:"Classic structured repeat architectures, recovered from sequence alone with sensible unit lengths and consensus anchors."},
   {n:2, short:'Known SLiMs', title:'Known short linear motifs',
-   text:"Short motifs with established roles, found as copies dispersed through disordered sequence, where alignment-based repeat finders have little to grab onto."},
-  {n:3, short:'New dispersed SLiMs', title:'New motifs scattered through disorder',
-   text:"Patterns we did not go looking for: short anchored motifs that recur across disordered stretches, sometimes alongside an unrelated structured repeat in the same protein."},
-  {n:4, short:'N-terminal tandems', title:'Long N-terminal tandem repeats',
-   text:"Head-to-tail arrays of structured units at the N-terminus, stacking into extended helical solenoids."},
+   text:"Short motifs with established roles, found as copies dispersed through disordered sequence."},
+  {n:3, short:'New dispersed SLiMs', title:'New motifs dispersed through disordered regions',
+   text:"Short anchored motifs that recur across disordered stretches, sometimes alongside an unrelated structured repeat in the same protein."},
+  {n:4, short:'N-terminal tandem', title:'Long N-terminal tandem repeats',
+   text:"Head-to-tail arrays of structured units at the N-terminus."},
   {n:5, short:'A dozen in a row', title:'A dozen or more in a row',
-   text:"Long, regular tandem arrays. These are usually annotated already, which makes them a good check that the model keeps count."},
+   text:"Long, regular tandem arrays. These are usually annotated already, which makes them a check that the model keeps count."},
   {n:6, short:'Candidate new domain', title:'Candidate new structural domain',
-   text:"Tryptophan-centred units recurring through a folded region. The open question: do they define a domain of their own?"},
+   text:"Tryptophan-centred units recurring through a folded region."},
 ];
 // Per-protein captions. Leave '' to show only the data-derived summary.
 const NOTES = {
-  FBXL12:"Leucine-rich repeats, recovered from sequence alone.",
-  IGHE:"Immunoglobulin constant domains: long, divergent copies held together by a few conserved anchors.",
-  ANXA8L1:"The four annexin repeats of the annexin core.",
+  FBXL12:"Leucine-rich repeats.",
+  IGHE:"Immunoglobulin constant domains: long, divergent copies held together by a few conserved positions.",
+  ANXA8L1:"The four repeats of the annexin core.",
   GTF2I:"The ~77-residue repeats of the TFII-I family.",
   VPS37B:"", SEPTIN9:"",
-  IKZF3:"C2H2 zinc fingers, with the cysteine and histidine spacing picked out in the consensus.",
+  IKZF3:"C2H2 zinc fingers; the cysteine and histidine spacing is picked out in the consensus.",
   ZFP36:"Two unrelated families in one protein: the CCCH tandem zinc-finger pair, and a PPPPG-anchored motif dispersed through the disordered flanks.",
-  DNAAF1:"A tandem motif in the disordered tail, plus a separate structured repeat family.",
+  DNAAF1:"A motif repeated in the disordered tail, plus a separate structured repeat family.",
   ACAP2:"", TMEM191B:"",
   AQP6:"The internal two-fold duplication of the aquaporin fold.",
   SRP72:"An N-terminal array of helical repeats.",
   ZNF25:"A long tandem run of C2H2 zinc fingers.",
-  DYNC2I1:"Six 29–38 residue units in the C-terminal region, each built around an [SL]P turn and a tryptophan-rich hydrophobic core.",
+  DYNC2I1:"Six 29–38 residue units in the C-terminal region, each with an [SL]P turn and a tryptophan-rich hydrophobic core.",
 };
-const HERO_GENE = 'DYNC2I1';
+const START = {sec:6, gene:'DYNC2I1'};
 
-/* ── Constants & helpers ───────────────────────────────────────────────── */
-const FAM = ['#ff7a59','#7c8cff','#2ec4a6','#f2b632','#c77dff','#4fb0f0'];
-const CTX = {structured_like:{c:'#5562e0',l:'Structured'},disordered_like:{c:'#e5603f',l:'Disordered'},mixed:{c:'#17a088',l:'Mixed'}};
+/* ── Helpers ───────────────────────────────────────────────────────────── */
+const FAM = ['#4e79a7','#e15759','#59a14f','#f28e2b','#b07aa1','#76b7b2'];
+const BASE = '#d5d8db';
+const CTX = {structured_like:{c:'#4e79a7',l:'Structured'},disordered_like:{c:'#e15759',l:'Disordered'},mixed:{c:'#59a14f',l:'Mixed'}};
 const $ = s=>document.querySelector(s);
 const esc = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = n=>Number(n).toLocaleString('en-US');
@@ -453,7 +350,6 @@ function showTip(e,html){tip.innerHTML=html;tip.style.opacity=1;moveTip(e)}
 function moveTip(e){const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;tip.style.left=x+'px';tip.style.top=y+'px'}
 function hideTip(){tip.style.opacity=0}
 const famName = i=>'Family '+String.fromCharCode(65+i);
-function unitLabel(u){return (u==null?'?':String(u))+' aa'}
 function resClass(c){
   if('AVILM'.includes(c))return 'r-h'; if('FWY'.includes(c))return 'r-a'; if('KRH'.includes(c))return 'r-p';
   if('DE'.includes(c))return 'r-n'; if('STNQ'.includes(c))return 'r-o'; if(c==='P')return 'r-P'; if(c==='G')return 'r-G'; if(c==='C')return 'r-C'; return '';
@@ -471,15 +367,15 @@ function consHTML(c){
   }
   return out;
 }
-function seqHTML(s){return [...s].map(c=>`<span class="${resClass(c)}">${c}</span>`).join('')}
+function seqHTML(s){return [...s].map(c=>{const k=resClass(c);return k?`<span class="${k}">${c}</span>`:c}).join('')}
 const TOPIDP={W:-0.884,F:-0.697,Y:-0.510,I:-0.486,M:-0.397,L:-0.326,V:-0.121,N:0.007,C:0.020,T:0.059,A:0.060,G:0.166,R:0.180,D:0.192,H:0.303,Q:0.318,K:0.586,S:0.341,E:0.736,P:0.987};
-function disorderProfile(seq,win=21){
-  const n=seq.length,v=[...seq].map(a=>TOPIDP[a]??0),out=new Array(n),h=win>>1;
-  const pre=[0];for(let i=0;i<n;i++)pre.push(pre[i]+v[i]);
+function disorderProfile(seq,win=41){
+  const n=seq.length,v=[...seq].map(a=>TOPIDP[a]??0),out=new Array(n),h=win>>1,pre=[0];
+  for(let i=0;i<n;i++)pre.push(pre[i]+v[i]);
   for(let i=0;i<n;i++){const a=Math.max(0,i-h),b=Math.min(n,i+h+1);out[i]=(pre[b]-pre[a])/(b-a)}
   return out;
 }
-function famSummary(m){return `${m.i.length} copies · ${unitLabel(m.u)} · ${m.sp||''} · ${(CTX[m.x]||{l:m.x}).l.toLowerCase()}`}
+function famSummary(m){return [`${m.i.length} copies`,`${m.u??'?'} aa unit`,m.sp,(CTX[m.x]||{l:m.x}).l.toLowerCase()].filter(Boolean).join(' · ')}
 
 /* ── External data: AlphaFold + UniProt (cached) ───────────────────────── */
 const pdbCache={}, upCache={};
@@ -506,103 +402,67 @@ function getUniProt(acc){
 }
 const PLDDT=b=>b>=90?'#0053D6':b>=70?'#65CBF3':b>=50?'#FFDB13':'#FF7D45';
 function styleModel(v,p,mode,focus){
-  v.setStyle({},{cartoon:{color:'#4a5163'}});
-  if(mode==='plddt'){v.setStyle({},{cartoon:{colorfunc:a=>PLDDT(a.b)}})}
+  v.setStyle({},{cartoon:{color:BASE}});
+  if(mode==='plddt')v.setStyle({},{cartoon:{colorfunc:a=>PLDDT(a.b)}});
   else p.m.forEach((m,i)=>m.i.forEach(([s,e])=>v.setStyle({resi:rng(s,e)},{cartoon:{color:FAM[i%FAM.length]}})));
   if(focus){
     const [s,e]=focus.range;
-    v.addStyle({resi:rng(s,e),resn:['TRP','PHE','TYR','LEU','ILE','VAL','MET','PRO','CYS','HIS']},{stick:{radius:.2,colorscheme:mode==='plddt'?'default':{prop:'elem',map:{C:FAM[focus.fam%FAM.length],N:'#8fa8ff',O:'#ff8a8a',S:'#ffd966'}}}});
+    v.addStyle({resi:rng(s,e),resn:['TRP','PHE','TYR','LEU','ILE','VAL','MET','PRO','CYS','HIS']},{stick:{radius:.18,colorscheme:mode==='plddt'?'default':{prop:'elem',map:{C:FAM[focus.fam%FAM.length],N:'#3b5bdb',O:'#d6336c',S:'#e8a400'}}}});
   }
 }
 
-/* ── Hero ──────────────────────────────────────────────────────────────── */
-let heroViewer=null;
-async function initHero(){
-  const p=DATA.featured.find(x=>x.g===HERO_GENE)||DATA.featured[0];
-  $('#heroGene').textContent=p.g;
-  $('#heroCount').textContent=`${p.m.reduce((a,m)=>a+m.i.length,0)} units · ${fmt(p.L)} aa`;
-  drawStrip($('#heroStrip'),p);
-  if(!window.$3Dmol){$('#heroStatus').textContent='3D viewer unavailable';return}
-  try{
-    const pdb=await getPDB(p.a);
-    heroViewer=$3Dmol.createViewer($('#heroV'),{backgroundAlpha:0,antialias:true});
-    heroViewer.addModel(pdb,'pdb');
-    styleModel(heroViewer,p,'repeats');
-    const all=[];p.m.forEach(m=>m.i.forEach(([s,e])=>all.push(...rng(s,e))));
-    heroViewer.zoomTo({resi:all});heroViewer.zoom(.92);heroViewer.render();
-    if(!matchMedia('(prefers-reduced-motion: reduce)').matches)heroViewer.spin('y',.35);
-    $('#heroStatus').style.display='none';
-  }catch(e){$('#heroStatus').textContent='AlphaFold model unavailable right now'}
-}
-function drawStrip(cv,p){
-  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;if(!W)return;
-  cv.width=W*dpr;cv.height=H*dpr;const c=cv.getContext('2d');c.scale(dpr,dpr);
-  c.fillStyle='rgba(255,255,255,.16)';c.fillRect(0,H/2-1,W,2);
-  p.m.forEach((m,i)=>m.i.forEach(([s,e])=>{c.fillStyle=FAM[i%FAM.length];const x=(s-1)/p.L*W,w=Math.max(2,(e-s+1)/p.L*W);c.beginPath();c.roundRect?c.roundRect(x,1,w,H-2,3):c.rect(x,1,w,H-2);c.fill()}));
-}
-
-/* ── Stats & charts ────────────────────────────────────────────────────── */
-function countUp(){
+/* ── Figure 1 ──────────────────────────────────────────────────────────── */
+function fillNumbers(){
   const S=DATA.stats,vals={screened:S.screened,with:S.with,families:S.families,dis:S.ctx.disordered_like||0};
   document.querySelectorAll('[data-stat]').forEach(el=>el.textContent=fmt(vals[el.dataset.stat]));
-  const els=document.querySelectorAll('[data-count]');
-  const run=el=>{const t=vals[el.dataset.count],t0=performance.now(),d=1300;
-    const f=now=>{const k=Math.min(1,(now-t0)/d),e=1-Math.pow(1-k,3);el.textContent=fmt(Math.round(t*e));if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
-  const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){run(en.target);io.unobserve(en.target)}}),{threshold:.4});
-  els.forEach(el=>io.observe(el));
   $('#asof').textContent=S.asof;
 }
 function barChart(el,labels,values,color,opts={}){
-  const W=360,H=opts.h||120,pb=22,pt=14,n=values.length,max=Math.max(...values),bw=W/n;
+  const W=360,H=110,pb=20,pt=6,n=values.length,max=Math.max(...values),bw=W/n;
   let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.aria||'')}">`;
-  s+=`<line x1="0" x2="${W}" y1="${H-pb}" y2="${H-pb}" stroke="#d6d1c4"/>`;
-  values.forEach((v,i)=>{const h=(H-pb-pt)*v/max,x=i*bw+bw*.14,w=bw*.72,y=H-pb-h;
-    s+=`<rect x="${x}" y="${y}" width="${w}" height="${Math.max(h,.5)}" rx="2.5" fill="${color}" data-tip="${esc(labels[i])}: ${fmt(v)}"></rect>`;
-    if(opts.every?i%opts.every===0||i===n-1:true)s+=`<text x="${x+w/2}" y="${H-6}" font-size="10" text-anchor="middle" fill="#6c707b">${esc(labels[i])}</text>`});
-  s+='</svg>';el.innerHTML=s;
+  values.forEach((v,i)=>{const h=(H-pb-pt)*v/max,x=i*bw+1,w=bw-2,y=H-pb-h;
+    s+=`<rect x="${x}" y="${y}" width="${w}" height="${Math.max(h,.5)}" fill="${color}" data-tip="${esc(labels[i])}: ${fmt(v)}"></rect>`;
+    if(i%(opts.every||1)===0||i===n-1)s+=`<text x="${x+w/2}" y="${H-5}" font-size="10" text-anchor="middle" fill="#7a8288">${esc(labels[i])}</text>`});
+  s+=`<line x1="0" x2="${W}" y1="${H-pb}" y2="${H-pb}" stroke="#bdc1c4"/></svg>`;el.innerHTML=s;
   el.querySelectorAll('rect').forEach(r=>{r.addEventListener('mousemove',e=>showTip(e,r.dataset.tip));r.addEventListener('mouseleave',hideTip)});
 }
 function drawCharts(){
-  const S=DATA.stats,ctx=S.ctx,tot=Object.values(ctx).reduce((a,b)=>a+b,0);
-  const order=['structured_like','disordered_like','mixed'];
+  const S=DATA.stats,ctx=S.ctx,tot=Object.values(ctx).reduce((a,b)=>a+b,0),order=['structured_like','disordered_like','mixed'];
   $('#ctxChart').innerHTML=`<div class="ctxbar">${order.map(k=>`<div style="width:${100*(ctx[k]||0)/tot}%;background:${CTX[k].c}"></div>`).join('')}</div>
     <div class="ctxrow">${order.map(k=>`<span><b style="color:${CTX[k].c}">${fmt(ctx[k]||0)}</b> ${CTX[k].l.toLowerCase()} (${Math.round(100*(ctx[k]||0)/tot)}%)</span>`).join('')}</div>`;
-  barChart($('#unitChart'),S.unit_labels,S.unit_bins,'#5562e0',{aria:'Repeat unit length histogram',every:2});
-  barChart($('#copyChart'),S.copy_labels,S.copies,'#e5603f',{aria:'Copies per family histogram',every:3});
+  barChart($('#unitChart'),S.unit_labels,S.unit_bins,'#4e79a7',{aria:'Repeat unit length histogram',every:2});
+  barChart($('#copyChart'),S.copy_labels,S.copies,'#e15759',{aria:'Copies per family histogram',every:3});
 }
-
-/* ── Overview canvas (every protein) ───────────────────────────────────── */
-const OV=DATA.overview; // [gene, L, [[s,e,ctx]...], idx-in-catalog]
-const XMAX=2500, CTXC=['#5562e0','#e5603f','#17a088'];
+const OV=DATA.overview, XMAX=2500, CTXC=['#4e79a7','#e15759','#59a14f'];
 let ovHover=-1;
 function drawOverview(){
   const cv=$('#ovCanvas'),dpr=devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;if(!W)return;
   cv.width=W*dpr;cv.height=H*dpr;const c=cv.getContext('2d');c.scale(dpr,dpr);
-  c.fillStyle='#faf8f3';c.fillRect(0,0,W,H);
-  const n=OV.length,rh=H/n,sx=W/XMAX;
-  c.fillStyle='rgba(60,64,80,.13)';
+  c.fillStyle='#fff';c.fillRect(0,0,W,H);
+  const n=OV.length,PH=H-16,rh=PH/n,sx=W/XMAX;
+  c.fillStyle='rgba(122,130,136,.22)';
   OV.forEach((r,i)=>c.fillRect(0,i*rh,Math.min(r[1],XMAX)*sx,Math.max(rh,.6)));
   OV.forEach((r,i)=>r[2].forEach(([s,e,k])=>{if(s>XMAX)return;c.fillStyle=CTXC[k];c.fillRect((s-1)*sx,i*rh,Math.max(1.2,(Math.min(e,XMAX)-s+1)*sx),Math.max(rh,.9))}));
-  c.fillStyle='#9a9ea8';c.font='10px Inter, sans-serif';c.textBaseline='bottom';
-  for(let t=500;t<XMAX;t+=500){c.fillRect(t*sx,H-4,1,4);c.fillText(fmt(t),t*sx+3,H-1)}
-  if(ovHover>=0){c.strokeStyle='#15171c';c.lineWidth=1;c.strokeRect(.5,ovHover*rh-1.5,W-1,rh+3)}
+  c.fillStyle='#7a8288';c.font='10px -apple-system, Segoe UI, Roboto, sans-serif';c.textBaseline='bottom';
+  c.fillRect(0,PH+1,W,1);for(let t=500;t<XMAX;t+=500){c.fillRect(t*sx,PH+1,1,4);c.fillText(fmt(t)+' aa',t*sx+3,H-1)}
+  if(ovHover>=0){c.strokeStyle='#313538';c.lineWidth=1;c.strokeRect(.5,ovHover*(PH/OV.length)-1.5,W-1,PH/OV.length+3)}
 }
-function ovRow(e){const cv=$('#ovCanvas'),r=cv.getBoundingClientRect();return Math.max(0,Math.min(OV.length-1,Math.floor((e.clientY-r.top)/r.height*OV.length)))}
+function ovRow(e){const r=$('#ovCanvas').getBoundingClientRect();return Math.max(0,Math.min(OV.length-1,Math.floor((e.clientY-r.top)/(r.height-16)*OV.length)))}
 function initOverview(){
   const cv=$('#ovCanvas');
-  $('#ovTitle').textContent=`${fmt(OV.length)} proteins with verified repeats`;
+  $('#ovCaption').textContent=`All ${fmt(OV.length)} proteins with at least one repeat family.`;
   cv.addEventListener('mousemove',e=>{const i=ovRow(e);if(i!==ovHover){ovHover=i;drawOverview()}const r=OV[i];
-    showTip(e,`<b>${esc(r[0]||'?')}</b> · ${fmt(r[1])} aa<br>${r[2].length} verified copies<br><span class="m">click to open</span>`)});
+    showTip(e,`<b>${esc(r[0]||'?')}</b> · ${fmt(r[1])} aa<br>${r[2].length} located copies`)});
   cv.addEventListener('mouseleave',()=>{ovHover=-1;drawOverview();hideTip()});
-  cv.addEventListener('click',async e=>{const r=OV[ovRow(e)];const cat=await getCatalog();const p=cat[r[3]];if(p)openProtein(p,null,true)});
+  cv.addEventListener('click',async e=>{const r=OV[ovRow(e)];const cat=await getCatalog();const p=cat[r[3]];if(p)openProtein(p,true)});
   drawOverview();
 }
 
 /* ── Explorer ──────────────────────────────────────────────────────────── */
-let curSec=6, curProt=null, exViewer=null, colorMode='repeats', spinning=false, focusSel=null, loadToken=0;
+let curSec=START.sec, curProt=null, exViewer=null, colorMode='repeats', spinning=false, focusSel=null, loadToken=0, lastUP=null;
 function renderTabs(){
-  $('#tabs').innerHTML=SECTIONS.map(s=>`<button class="tab ${s.n===curSec?'on':''}" data-sec="${s.n}"><span class="k">0${s.n}</span>${esc(s.short)}</button>`).join('')+
-    (curSec===0?`<button class="tab on"><span class="k">◆</span>From the catalog</button>`:'');
+  $('#tabs').innerHTML=SECTIONS.map(s=>`<button class="tab ${s.n===curSec?'on':''}" data-sec="${s.n}"><span class="k">${s.n}</span>${esc(s.short)}</button>`).join('')+
+    (curSec===0?`<button class="tab on">From the catalog</button>`:'');
   $('#tabs').querySelectorAll('[data-sec]').forEach(b=>b.onclick=()=>selectSection(+b.dataset.sec));
 }
 function selectSection(n,gene){
@@ -613,81 +473,77 @@ function selectSection(n,gene){
   $('#prots').querySelectorAll('.prot').forEach(b=>b.onclick=()=>openProtein(ps.find(p=>p.g===b.dataset.g)));
   openProtein(ps.find(p=>p.g===gene)||ps[0]);
 }
-function openProtein(p,_,fromCatalog){
+function openProtein(p,fromCatalog){
   if(!p)return;
   if(fromCatalog){
     const f=DATA.featured.find(x=>x.a===p.a);
-    if(f){selectSection(f.sec,f.g);document.getElementById('explore').scrollIntoView({behavior:'smooth'});return}
-    curSec=0;renderTabs();$('#secTitle').textContent=p.g||p.a;$('#secText').textContent='Opened from the full catalog.';$('#prots').innerHTML='';
-    document.getElementById('explore').scrollIntoView({behavior:'smooth'});
+    if(f)selectSection(f.sec,f.g);
+    else{curSec=0;renderTabs();$('#secTitle').textContent=p.g||p.a;$('#secText').textContent='Opened from the catalog.';$('#prots').innerHTML='';showProtein(p)}
+    document.getElementById('explore').scrollIntoView({behavior:'smooth'});return;
   }
+  showProtein(p);
+}
+function showProtein(p){
   curProt=p;focusSel=null;
   document.querySelectorAll('.prot').forEach(b=>b.classList.toggle('on',b.dataset.g===p.g));
   renderSide(p);load3D(p);
 }
 function renderSide(p){
-  const note=NOTES[p.g]||'';
-  const nCopies=p.m.reduce((a,m)=>a+m.i.length,0);
+  const note=NOTES[p.g]||'', nCopies=p.m.reduce((a,m)=>a+m.i.length,0);
   $('#side').innerHTML=`
-    <div class="ph"><div><div class="g">${esc(p.g||p.a)}</div><div class="d">${esc(p.d)}</div><div class="meta">${esc(p.a)} · ${fmt(p.L)} aa</div></div>
-      <div class="ext"><a href="https://www.uniprot.org/uniprotkb/${p.a}/entry" target="_blank" rel="noopener">UniProt ↗</a><a href="https://alphafold.ebi.ac.uk/entry/${p.a}" target="_blank" rel="noopener">AlphaFold ↗</a></div></div>
+    <div class="ph"><h3>${esc(p.g||p.a)}</h3><div class="d">${esc(p.d)}</div>
+      <div class="meta">${esc(p.a)} · ${fmt(p.L)} aa<a href="https://www.uniprot.org/uniprotkb/${p.a}/entry" target="_blank" rel="noopener">UniProt</a><a href="https://alphafold.ebi.ac.uk/entry/${p.a}" target="_blank" rel="noopener">AlphaFold DB</a></div></div>
     ${note?`<p class="note">${esc(note)}</p>`:''}
-    <div class="chips"><span class="chip">${p.m.length} ${p.m.length>1?'families':'family'}</span><span class="chip">${nCopies} verified copies</span>${p.src==='pilot'?'<span class="chip src">pilot screen</span>':''}</div>
+    <div class="facts">${p.m.length} repeat ${p.m.length>1?'families':'family'} · ${nCopies} located copies${p.src==='pilot'?' · from the pilot set':''}</div>
     <div class="tracks" id="tracks"></div>
     <div class="fams">${p.m.map((m,i)=>`
-      <div class="fam"><div class="fam-h"><span class="dot" style="background:${FAM[i%FAM.length]}"></span><span class="nm">${famName(i)}</span><span class="mt">${esc(famSummary(m))}</span></div>
+      <div class="fam"><div class="fam-h"><span class="sw" style="background:${FAM[i%FAM.length]}"></span><b>${famName(i)}</b><span>${esc(famSummary(m))}</span></div>
       <div class="cons">${consHTML(m.c)}</div>
       <div class="aln">${m.i.map(([s,e,q],j)=>`<div class="aln-row" data-f="${i}" data-j="${j}"><span class="pos">${s}–${e}</span><span class="sq">${seqHTML(q)}</span></div>`).join('')}</div>
-      ${m.why?`<div class="why"><b>What the model wrote, blind</b>${esc(m.why)}</div>`:''}</div>`).join('')}</div>
-    <div class="reslegend"><span><span class="r-h">AVILM</span>aliphatic</span><span><span class="r-a">FWY</span>aromatic</span><span><span class="r-p">KRH</span>basic</span><span><span class="r-n">DE</span>acidic</span><span><span class="r-o">STNQ</span>polar</span><span><span class="r-P">P</span><span class="r-G">G</span><span class="r-C">C</span></span></div>`;
+      ${m.why?`<p class="why"><em>Model's description (blinded):</em> ${esc(m.why)}</p>`:''}</div>`).join('')}</div>
+    <div class="reslegend"><span class="r-h">AVILM</span><span class="r-a">FWY</span><span class="r-p">KRH</span><span class="r-n">DE</span><span class="r-o">STNQ</span><span class="r-P">P</span><span class="r-G">G</span><span class="r-C">C</span></div>`;
   $('#side').querySelectorAll('.aln-row').forEach(r=>r.onclick=()=>focusInstance(+r.dataset.f,+r.dataset.j));
   drawTracks(p,'loading');
   getUniProt(p.a).then(f=>{if(curProt===p)drawTracks(p,f)}).catch(()=>{if(curProt===p)drawTracks(p,'error')});
   renderLegend(p);
 }
 const UP_LANES=[
-  {l:'UniProt repeats',types:['Repeat'],c:'#8a6d3b',always:true},
-  {l:'Domains & zinc fingers',types:['Domain','Zinc finger'],c:'#3a3d46',always:true},
-  {l:'Regions & motifs',types:['Region','Motif','Coiled coil','Compositional bias'],c:'#a9adb8'},
-  {l:'Membrane & signal',types:['Transmembrane','Intramembrane','Signal','Transit peptide'],c:'#6aa06a'},
+  {l:'UniProt: repeats',types:['Repeat'],c:'#313538',always:true},
+  {l:'UniProt: domains, ZF',types:['Domain','Zinc finger'],c:'#7a8288',always:true},
+  {l:'UniProt: regions',types:['Region','Motif','Coiled coil','Compositional bias'],c:'#bdc1c4'},
+  {l:'UniProt: membrane',types:['Transmembrane','Intramembrane','Signal','Transit peptide'],c:'#9aa5ab'},
 ];
-let lastUP=null;
 function drawTracks(p,up){
   lastUP=up;
-  const el=$('#tracks');if(!el)return;const W=el.clientWidth||600,LW=W<520?0:142,TW=W-LW-4,X=r=>LW+(r-1)/p.L*TW,Wd=(s,e)=>Math.max(2,(e-s+1)/p.L*TW);
-  let y=0,s='';const lane=(label,h)=>{if(LW)s+=`<text x="0" y="${y+h/2+4}" font-size="11.5" fill="#6c707b">${esc(label)}</text>`;else{s+=`<text x="0" y="${y+9}" font-size="10.5" fill="#6c707b">${esc(label)}</text>`;y+=13}};
-  // ruler
+  const el=$('#tracks');if(!el)return;const W=el.clientWidth||600,LW=W<520?0:140,TW=W-LW-4,X=r=>LW+(r-1)/p.L*TW,Wd=(s,e)=>Math.max(2,(e-s+1)/p.L*TW);
+  let y=0,s='';const lane=(label,h)=>{if(LW)s+=`<text x="0" y="${y+h/2+4}" font-size="11" fill="#7a8288">${esc(label)}</text>`;else{s+=`<text x="0" y="${y+9}" font-size="10" fill="#7a8288">${esc(label)}</text>`;y+=13}};
   const step=p.L>2000?500:p.L>800?200:p.L>300?100:50;
-  for(let t=0;t<=p.L;t+=step){const x=X(Math.max(t,1));s+=`<line x1="${x}" x2="${x}" y1="${y+12}" y2="${y+16}" stroke="#b9b4a6"/><text x="${x}" y="${y+9}" font-size="10" fill="#9a9ea8" text-anchor="${t===0?'start':'middle'}">${t}</text>`}
-  s+=`<line x1="${LW}" x2="${LW+TW}" y1="${y+16}" y2="${y+16}" stroke="#d6d1c4"/>`;y+=26;
-  // repeat families
-  p.m.forEach((m,i)=>{lane(famName(i),18);s+=`<rect x="${LW}" y="${y+8}" width="${TW}" height="2" fill="#e3dfd4"/>`;
-    m.i.forEach(([a,b,q],j)=>{s+=`<rect class="hit" data-f="${i}" data-j="${j}" x="${X(a)}" y="${y+1}" width="${Wd(a,b)}" height="16" rx="3" fill="${FAM[i%FAM.length]}" data-tip="<b>${famName(i)} · copy ${j+1}</b><br>${a}–${b}<br><span class='m'>${esc(q)}</span>"></rect>`});y+=24});
-  // disorder profile
-  if(p.s){lane('Disorder (TOP-IDP)',30);const prof=disorderProfile(p.s,41),H=26,lo=-0.3,hi=0.75,Y=v=>y+H-(Math.max(lo,Math.min(hi,v))-lo)/(hi-lo)*H;
+  for(let t=0;t<=p.L;t+=step){const x=X(Math.max(t,1));s+=`<line x1="${x}" x2="${x}" y1="${y+12}" y2="${y+15}" stroke="#bdc1c4"/><text x="${x}" y="${y+9}" font-size="10" fill="#7a8288" text-anchor="${t===0?'start':'middle'}">${t}</text>`}
+  s+=`<line x1="${LW}" x2="${LW+TW}" y1="${y+15}" y2="${y+15}" stroke="#bdc1c4"/>`;y+=24;
+  p.m.forEach((m,i)=>{lane(famName(i),16);s+=`<rect x="${LW}" y="${y+7}" width="${TW}" height="1" fill="#bdc1c4"/>`;
+    m.i.forEach(([a,b,q],j)=>{s+=`<rect class="hit" data-f="${i}" data-j="${j}" x="${X(a)}" y="${y+1}" width="${Wd(a,b)}" height="14" fill="${FAM[i%FAM.length]}" data-tip="<b>${famName(i)}, copy ${j+1}</b> · ${a}–${b}<br><span class='m'>${esc(q)}</span>"></rect>`});y+=21});
+  if(p.s){lane('Disorder (TOP-IDP)',26);const prof=disorderProfile(p.s),H=22,lo=-0.3,hi=0.75,Y=v=>y+H-(Math.max(lo,Math.min(hi,v))-lo)/(hi-lo)*H;
     let d=`M${X(1)},${y+H}`;const st=Math.max(1,Math.floor(p.L/TW));for(let k=0;k<p.L;k+=st)d+=`L${X(k+1)},${Y(prof[k])}`;d+=`L${X(p.L)},${y+H}Z`;
-    s+=`<path d="${d}" fill="#e5603f" fill-opacity=".18" stroke="#e5603f" stroke-opacity=".55" stroke-width="1"/><line x1="${LW}" x2="${LW+TW}" y1="${Y(0.22)}" y2="${Y(0.22)}" stroke="#e5603f" stroke-dasharray="2 3" stroke-opacity=".5"/>`;y+=H+8}
-  // uniprot
-  s+=`<line x1="0" x2="${W}" y1="${y+2}" y2="${y+2}" stroke="#e3dfd4"/>`;y+=10;
-  if(up==='loading'||up==='error'){s+=`<text x="${LW}" y="${y+12}" font-size="12" fill="#9a9ea8">${up==='loading'?'Fetching UniProt annotations…':'UniProt annotations unavailable right now'}</text>`;y+=22}
-  else UP_LANES.forEach(L=>{const fs=up.filter(f=>L.types.includes(f.type));if(!fs.length&&!L.always)return;lane(L.l,16);
-    s+=`<rect x="${LW}" y="${y+7}" width="${TW}" height="2" fill="#efece4"/>`;
-    if(!fs.length)s+=`<text x="${LW+TW}" y="${y+12}" font-size="10.5" fill="#b0b3bb" text-anchor="end">none annotated</text>`;
-    fs.forEach(f=>{const fill=f.type==='Region'&&/disorder/i.test(f.desc)?'#e9d6cf':L.c;s+=`<rect x="${X(f.s)}" y="${y+2}" width="${Wd(f.s,f.e)}" height="12" rx="2.5" fill="${fill}" data-tip="<b>${esc(f.type)}</b>${f.desc?' · '+esc(f.desc):''}<br>${f.s}–${f.e}"></rect>`});y+=21});
+    s+=`<path d="${d}" fill="#7a8288" fill-opacity=".18" stroke="#7a8288" stroke-width=".8"/><line x1="${LW}" x2="${LW+TW}" y1="${Y(0.22)}" y2="${Y(0.22)}" stroke="#7a8288" stroke-dasharray="2 3" stroke-width=".7"/>`;y+=H+10}
+  if(up==='loading'||up==='error'){s+=`<text x="${LW}" y="${y+12}" font-size="11" fill="#7a8288">${up==='loading'?'Loading UniProt annotations…':'UniProt annotations unavailable right now'}</text>`;y+=22}
+  else UP_LANES.forEach(L=>{const fs=up.filter(f=>L.types.includes(f.type));if(!fs.length&&!L.always)return;lane(L.l,14);
+    s+=`<rect x="${LW}" y="${y+6}" width="${TW}" height="1" fill="#e4e6e8"/>`;
+    if(!fs.length)s+=`<text x="${LW+TW}" y="${y+11}" font-size="10" fill="#bdc1c4" text-anchor="end">none annotated</text>`;
+    fs.forEach(f=>{const fill=f.type==='Region'&&/disorder/i.test(f.desc)?'#e4e6e8':L.c;s+=`<rect x="${X(f.s)}" y="${y+1}" width="${Wd(f.s,f.e)}" height="11" fill="${fill}" data-tip="<b>${esc(f.type)}</b>${f.desc?' · '+esc(f.desc):''}<br>${f.s}–${f.e}"></rect>`});y+=19});
   el.innerHTML=`<svg width="${W}" height="${y+4}" viewBox="0 0 ${W} ${y+4}">${s}</svg>`;
   el.querySelectorAll('[data-tip]').forEach(r=>{r.addEventListener('mousemove',e=>showTip(e,r.dataset.tip));r.addEventListener('mouseleave',hideTip)});
   el.querySelectorAll('.hit').forEach(r=>r.addEventListener('click',()=>focusInstance(+r.dataset.f,+r.dataset.j)));
 }
 function renderLegend(p){
   $('#exLegend').innerHTML=colorMode==='plddt'
-    ?`<span class="pl"><i style="background:#0053D6"></i>pLDDT &gt; 90</span><span class="pl"><i style="background:#65CBF3"></i>70–90</span><span class="pl"><i style="background:#FFDB13"></i>50–70</span><span class="pl"><i style="background:#FF7D45"></i>&lt; 50</span>`
-    :p.m.map((m,i)=>`<span><i style="background:${FAM[i%FAM.length]}"></i>${famName(i)} · ${m.i.length}×</span>`).join('')+`<span><i style="background:#4a5163"></i>rest of chain</span>`;
+    ?`<span><i style="background:#0053D6"></i>pLDDT &gt; 90</span><span><i style="background:#65CBF3"></i>70–90</span><span><i style="background:#FFDB13"></i>50–70</span><span><i style="background:#FF7D45"></i>&lt; 50</span>`
+    :p.m.map((m,i)=>`<span><i style="background:${FAM[i%FAM.length]}"></i>${famName(i)} (${m.i.length} copies)</span>`).join('')+`<span><i style="background:${BASE}"></i>rest of chain</span>`;
 }
 function exStatus(t){const s=$('#exStatus');s.textContent=t||'';s.style.display=t?'flex':'none'}
 async function load3D(p){
   const tok=++loadToken;
-  if(!window.$3Dmol){exStatus('3D viewer library unavailable');return}
-  if(!exViewer)exViewer=$3Dmol.createViewer($('#exV'),{backgroundAlpha:0,antialias:true});
+  if(!window.$3Dmol){exStatus('3D viewer could not be loaded');return}
+  if(!exViewer)exViewer=$3Dmol.createViewer($('#exV'),{backgroundColor:'white',antialias:true});
   exViewer.clear();exViewer.render();exStatus('Loading AlphaFold model…');
   try{
     const pdb=await getPDB(p.a);if(tok!==loadToken)return;
@@ -699,34 +555,34 @@ function focusInstance(f,j){
   const p=curProt,[s,e]=p.m[f].i[j];focusSel={fam:f,range:[s,e]};
   document.querySelectorAll('.aln-row').forEach(r=>r.classList.toggle('on',+r.dataset.f===f&&+r.dataset.j===j));
   if(!exViewer||!exViewer.getModel())return;
-  styleModel(exViewer,p,colorMode,focusSel);exViewer.render();exViewer.zoomTo({resi:rng(s,e)},700);setTimeout(()=>exViewer.render(),760);
-  if(innerWidth<980)$('#exViewer').scrollIntoView({behavior:'smooth',block:'center'});
+  styleModel(exViewer,p,colorMode,focusSel);exViewer.render();exViewer.zoomTo({resi:rng(s,e)},600);setTimeout(()=>exViewer.render(),660);
+  if(innerWidth<980)document.querySelector('.viewer').scrollIntoView({behavior:'smooth',block:'center'});
 }
 function initExplorerControls(){
   $('#colorSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{colorMode=b.dataset.mode;$('#colorSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
     if(curProt){renderLegend(curProt);if(exViewer&&exViewer.getModel()){styleModel(exViewer,curProt,colorMode,focusSel);exViewer.render()}}});
   $('#spinBtn').onclick=()=>{spinning=!spinning;$('#spinBtn').classList.toggle('on',spinning);if(exViewer)exViewer.spin(spinning?'y':false,.5)};
-  $('#resetBtn').onclick=()=>{focusSel=null;document.querySelectorAll('.aln-row.on').forEach(r=>r.classList.remove('on'));if(exViewer&&exViewer.getModel()){styleModel(exViewer,curProt,colorMode);exViewer.zoomTo({},500);exViewer.render()}};
+  $('#resetBtn').onclick=()=>{focusSel=null;document.querySelectorAll('.aln-row.on').forEach(r=>r.classList.remove('on'));if(exViewer&&exViewer.getModel()){styleModel(exViewer,curProt,colorMode);exViewer.zoomTo({},400);setTimeout(()=>exViewer.render(),450)}};
 }
 
 /* ── Catalog ───────────────────────────────────────────────────────────── */
 let catalogP=null;
 function getCatalog(){if(!catalogP)catalogP=fetch('catalog.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});return catalogP}
 let catRows=[],shown=0;
-function maxCopies(p){return Math.max(...p.m.map(m=>m.i.length))}
+const maxCopies=p=>Math.max(...p.m.map(m=>m.i.length));
 function filterCatalog(cat){
   const q=$('#q').value.trim().toLowerCase(),fx=$('#fCtx').value,fc=+$('#fCopies').value,so=$('#fSort').value;
-  let r=cat.filter(p=>{
+  const r=cat.filter(p=>{
     if(fx&&!p.m.some(m=>m.x===fx))return false;
     if(fc&&maxCopies(p)<fc)return false;
-    if(q){const hay=((p.g||'')+' '+(p.a||'')+' '+(p.d||'')+' '+p.m.map(m=>m.c).join(' ')).toLowerCase();return hay.includes(q)}
+    if(q)return ((p.g||'')+' '+(p.a||'')+' '+(p.d||'')+' '+p.m.map(m=>m.c).join(' ')).toLowerCase().includes(q);
     return true});
   const cmp={copies:(a,b)=>maxCopies(b)-maxCopies(a),fams:(a,b)=>b.m.length-a.m.length||maxCopies(b)-maxCopies(a),len:(a,b)=>b.L-a.L,gene:(a,b)=>(a.g||'~').localeCompare(b.g||'~')}[so];
   return r.sort(cmp);
 }
 function rowHTML(p,i){
   return `<tr class="row" data-i="${i}"><td><div class="gn">${esc(p.g||'—')}</div><div class="ac">${esc(p.a)}</div></td>
-  <td class="hide-sm"><div class="ds">${esc(p.d)}</div></td><td class="hide-sm">${fmt(p.L)}</td>
+  <td class="hide-sm">${esc(p.d)}</td><td class="hide-sm">${fmt(p.L)}</td>
   <td>${p.m.map(m=>`<span class="cc"><i style="background:${(CTX[m.x]||{c:'#999'}).c}"></i><span>${esc(m.c)}</span><em>×${m.i.length}</em></span>`).join('')}</td></tr>`;
 }
 function renderCatalog(reset){
@@ -734,40 +590,37 @@ function renderCatalog(reset){
     if(reset){catRows=filterCatalog(cat);shown=0;$('#catBody').innerHTML=''}
     const next=catRows.slice(shown,shown+40);
     $('#catBody').insertAdjacentHTML('beforeend',next.map((p,k)=>rowHTML(p,shown+k)).join(''));shown+=next.length;
-    if(!catRows.length)$('#catBody').innerHTML='<tr><td colspan="4" class="cat-empty">No proteins match.</td></tr>';
+    if(!catRows.length)$('#catBody').innerHTML='<tr><td colspan="4" class="empty">No proteins match.</td></tr>';
     $('#catCount').textContent=`${fmt(catRows.length)} of ${fmt(cat.length)} proteins`;
-    $('#moreWrap').style.display=shown<catRows.length?'flex':'none';
-  }).catch(()=>{$('#catBody').innerHTML='<tr><td colspan="4" class="cat-empty">Catalog could not be loaded.</td></tr>'});
+    $('#moreWrap').style.display=shown<catRows.length?'block':'none';
+  }).catch(()=>{$('#catBody').innerHTML='<tr><td colspan="4" class="empty">The catalog could not be loaded.</td></tr>'});
 }
 function initCatalog(){
   let t;$('#q').addEventListener('input',()=>{clearTimeout(t);t=setTimeout(()=>renderCatalog(true),160)});
   ['#fCtx','#fCopies','#fSort'].forEach(s=>$(s).addEventListener('change',()=>renderCatalog(true)));
   $('#moreBtn').onclick=()=>renderCatalog(false);
-  $('#catBody').addEventListener('click',e=>{const tr=e.target.closest('tr.row');if(tr)openProtein(catRows[+tr.dataset.i],null,true)});
+  $('#catBody').addEventListener('click',e=>{const tr=e.target.closest('tr.row');if(tr)openProtein(catRows[+tr.dataset.i],true)});
   const io=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting)){renderCatalog(true);io.disconnect()}},{rootMargin:'400px'});
   io.observe($('#catalog'));
 }
 
-/* ── Method illustrations ──────────────────────────────────────────────── */
+/* ── Method sketches ───────────────────────────────────────────────────── */
 function drawIlls(){
+  const g='#bdc1c4',S='#4e79a7',D='#e15759',M='font-family="Monaco,Consolas,monospace"';
   const I={
-    cohort:`<svg viewBox="0 0 120 50" width="120" height="50">${[0,1,2,3].map(r=>`<rect x="0" y="${4+r*11}" width="${70+((r*37)%45)}" height="4" rx="2" fill="#d6d1c4"/><rect x="${18+r*9}" y="${4+r*11}" width="${30+r*4}" height="4" rx="2" fill="#e5603f" opacity=".75"/>`).join('')}</svg>`,
-    blind:`<svg viewBox="0 0 120 50" width="120" height="50"><rect x="0" y="8" width="58" height="14" rx="4" fill="#efece4"/><text x="6" y="19" font-family="JetBrains Mono" font-size="9" fill="#6c707b">SEQ_00412</text><rect x="0" y="28" width="110" height="4" rx="2" fill="#d6d1c4"/><rect x="0" y="37" width="90" height="4" rx="2" fill="#d6d1c4"/><line x1="66" y1="10" x2="112" y2="22" stroke="#e5603f" stroke-width="1.5"/><text x="68" y="20" font-family="Inter" font-size="9" fill="#b0b3bb" text-decoration="line-through">gene</text></svg>`,
-    read:`<svg viewBox="0 0 120 50" width="120" height="50"><rect x="0" y="12" width="118" height="4" rx="2" fill="#d6d1c4"/>${[8,40,72].map(x=>`<rect x="${x}" y="8" width="24" height="12" rx="3" fill="#5562e0"/>`).join('')}<rect x="0" y="34" width="118" height="4" rx="2" fill="#d6d1c4"/>${[14,51,97].map(x=>`<rect x="${x}" y="31" width="9" height="10" rx="2" fill="#e5603f"/>`).join('')}</svg>`,
-    verify:`<svg viewBox="0 0 120 50" width="120" height="50"><text x="0" y="20" font-family="JetBrains Mono" font-size="10" fill="#15171c">PPPPGFAPL</text><path d="M86 12l5 5 9-10" stroke="#17a088" stroke-width="2.2" fill="none"/><text x="0" y="40" font-family="JetBrains Mono" font-size="10" fill="#b0b3bb">PPPPGWQPL</text><path d="M87 31l10 10M97 31l-10 10" stroke="#e5603f" stroke-width="2.2"/></svg>`,
-    unblind:`<svg viewBox="0 0 120 50" width="120" height="50"><rect x="0" y="8" width="58" height="14" rx="4" fill="#15171c"/><text x="7" y="19" font-family="JetBrains Mono" font-size="9" fill="#fff">ZFP36</text><rect x="0" y="30" width="110" height="4" rx="2" fill="#d6d1c4"/><rect x="40" y="28" width="22" height="8" rx="2" fill="#5562e0"/><rect x="40" y="40" width="22" height="5" rx="2" fill="#3a3d46"/></svg>`};
+    cohort:`<svg viewBox="0 0 120 44" width="120" height="44">${[0,1,2,3].map(r=>`<rect x="0" y="${3+r*10}" width="${70+((r*37)%45)}" height="3" fill="${g}"/><rect x="${18+r*9}" y="${3+r*10}" width="${30+r*4}" height="3" fill="${D}"/>`).join('')}</svg>`,
+    blind:`<svg viewBox="0 0 120 44" width="120" height="44"><text x="0" y="12" ${M} font-size="9" fill="#494e52">SEQ_00412</text><rect x="0" y="20" width="110" height="3" fill="${g}"/><rect x="0" y="29" width="96" height="3" fill="${g}"/><rect x="0" y="38" width="104" height="3" fill="${g}"/></svg>`,
+    read:`<svg viewBox="0 0 120 44" width="120" height="44"><rect x="0" y="10" width="118" height="3" fill="${g}"/>${[8,40,72].map(x=>`<rect x="${x}" y="6" width="24" height="11" fill="${S}"/>`).join('')}<rect x="0" y="32" width="118" height="3" fill="${g}"/>${[14,51,97].map(x=>`<rect x="${x}" y="28" width="8" height="11" fill="${D}"/>`).join('')}</svg>`,
+    locate:`<svg viewBox="0 0 120 44" width="120" height="44"><text x="0" y="11" ${M} font-size="8.5" fill="#494e52">"PPPPGFAPL"</text><rect x="0" y="22" width="118" height="3" fill="${g}"/><rect x="58" y="18" width="22" height="11" fill="${D}"/><text x="58" y="40" ${M} font-size="8" fill="#7a8288">71–79</text></svg>`,
+    unblind:`<svg viewBox="0 0 120 44" width="120" height="44"><text x="0" y="11" ${M} font-size="9" font-weight="bold" fill="#313538">ZFP36</text><rect x="0" y="20" width="110" height="3" fill="${g}"/><rect x="40" y="17" width="22" height="9" fill="${S}"/><rect x="40" y="32" width="22" height="5" fill="#313538"/></svg>`};
   document.querySelectorAll('[data-ill]').forEach(el=>el.innerHTML=I[el.dataset.ill]||'');
 }
 
 /* ── Boot ──────────────────────────────────────────────────────────────── */
 function boot(){
-  addEventListener('scroll',()=>$('#nav').classList.toggle('scrolled',scrollY>8),{passive:true});
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-  drawIlls();countUp();drawCharts();initOverview();initExplorerControls();initCatalog();
-  selectSection(6,HERO_GENE);initHero();
-  $('#copyBib').onclick=()=>{const t=$('#bib').innerText.replace(/^Copy\s*/,'');navigator.clipboard?.writeText(t).then(()=>{$('#copyBib').textContent='Copied';setTimeout(()=>$('#copyBib').textContent='Copy',1400)})};
-  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawOverview();if(curProt)drawTracks(curProt,lastUP);if(exViewer){exViewer.resize();exViewer.render()}if(heroViewer){heroViewer.resize();heroViewer.render()}const p=DATA.featured.find(x=>x.g===HERO_GENE);if(p)drawStrip($('#heroStrip'),p)},150)});
+  drawIlls();fillNumbers();drawCharts();initOverview();initExplorerControls();initCatalog();
+  selectSection(START.sec,START.gene);
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawOverview();if(curProt)drawTracks(curProt,lastUP);if(exViewer){exViewer.resize();exViewer.render()}},150)});
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot):boot();
 </script>
