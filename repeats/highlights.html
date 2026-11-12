@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM-Discovered Protein Repeat Motifs — McWhite Lab</title>
+<style>
+  :root {
+    --bg:#ffffff;--bg2:#f8f9fb;--bg3:#f0f2f6;--text:#0f172a;--text2:#475569;
+    --text3:#94a3b8;--accent:#2563eb;--border:#e2e8f0;
+    --card-shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+    --card-shadow-hover:0 8px 25px rgba(0,0,0,.12),0 3px 6px rgba(0,0,0,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+  header{background:var(--bg);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(8px);}
+  .lab-logo{font-weight:700;font-size:.9rem;color:var(--text);letter-spacing:-.01em;text-decoration:none;}
+  .lab-logo span{color:#2563eb;}
+  nav a{color:var(--text2);text-decoration:none;font-size:.85rem;margin-left:1.5rem;transition:color .15s;}
+  nav a:hover{color:#2563eb;}
+  .hero{padding:5rem 2rem 4rem;max-width:900px;margin:0 auto;}
+  .hero-label{display:inline-block;background:#eff6ff;color:#2563eb;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .75rem;border-radius:100px;border:1px solid #bfdbfe;margin-bottom:1.25rem;}
+  h1{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:1.25rem;}
+  .hero-desc{font-size:1.1rem;color:var(--text2);max-width:640px;margin-bottom:2.5rem;line-height:1.7;}
+  .stats-row{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:3rem;}
+  .stat{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;min-width:140px;}
+  .stat-number{font-size:2.2rem;font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:.3rem;}
+  .stat-label{font-size:.8rem;color:var(--text2);font-weight:500;}
+  .section{max-width:980px;margin:0 auto;padding:3rem 2rem;}
+  .section-title{font-size:1.5rem;font-weight:700;letter-spacing:-.025em;margin-bottom:.5rem;}
+  .section-subtitle{color:var(--text2);font-size:.95rem;margin-bottom:2.5rem;max-width:600px;}
+  .divider{border:none;border-top:1px solid var(--border);}
+  .protein-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;}
+  .protein-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:1.75rem;box-shadow:var(--card-shadow);transition:box-shadow .2s,transform .2s;}
+  .protein-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-1px);}
+  .protein-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+  .protein-name{font-size:1.3rem;font-weight:700;letter-spacing:-.02em;}
+  .protein-accession{font-size:.8rem;color:var(--text3);font-family:'SF Mono','Fira Code',monospace;margin-top:.1rem;}
+  .protein-desc{font-size:.85rem;color:var(--text2);margin-top:.25rem;}
+  .badge-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;}
+  .badge{font-size:.72rem;font-weight:600;padding:.2rem .6rem;border-radius:100px;white-space:nowrap;}
+  .badge-blue{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+  .badge-amber{background:#fffbeb;color:#b45309;border:1px solid #fde68a;}
+  .badge-green{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+  .badge-violet{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;}
+  .badge-gray{background:var(--bg2);color:var(--text2);border:1px solid var(--border);}
+  .seq-map-wrap{margin:1.25rem 0;}
+  .seq-map-label{font-size:.75rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;}
+  .seq-map-container{position:relative;height:56px;}
+  canvas.seq-canvas{width:100%;height:56px;border-radius:8px;display:block;cursor:crosshair;}
+  .seq-tooltip{position:fixed;background:#0f172a;color:#fff;font-size:.75rem;padding:.5rem .75rem;border-radius:8px;pointer-events:none;z-index:100;max-width:300px;line-height:1.5;white-space:pre-line;display:none;box-shadow:0 4px 12px rgba(0,0,0,.2);}
+  .seq-tooltip .tt-seq{font-family:'SF Mono','Fira Code',monospace;font-size:.72rem;color:#93c5fd;display:block;margin-top:.2rem;word-break:break-all;}
+  .motif-list{display:flex;flex-direction:column;gap:.75rem;margin-top:1.25rem;}
+  .motif-item{display:flex;align-items:flex-start;gap:.75rem;padding:.9rem 1rem;border-radius:10px;background:var(--bg2);border:1px solid var(--border);}
+  .motif-swatch{width:10px;min-width:10px;height:10px;border-radius:3px;margin-top:4px;}
+  .motif-consensus{font-family:'SF Mono','Fira Code',monospace;font-size:.78rem;font-weight:600;word-break:break-all;line-height:1.4;}
+  .motif-meta{font-size:.75rem;color:var(--text2);margin-top:.25rem;}
+  .method-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-top:3rem;}
+  .method-box h3{font-size:1rem;font-weight:700;margin-bottom:.75rem;}
+  .method-box p{font-size:.88rem;color:var(--text2);line-height:1.7;}
+  .method-box p+p{margin-top:.6rem;}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.8rem;color:var(--text3);margin-top:4rem;}
+  footer a{color:var(--text2);text-decoration:none;}
+  footer a:hover{color:#2563eb;}
+  @media(max-width:600px){.stats-row{gap:.75rem;}.stat{min-width:110px;padding:1rem 1.1rem;}.stat-number{font-size:1.8rem;}h1{font-size:1.7rem;}}
+</style>
+</head>
+<body>
+<header>
+  <a class="lab-logo" href="https://mcwhitelab.org">McWhite<span>Lab</span></a>
+  <nav>
+    <a href="https://clairemcwhite.github.io">Research</a>
+    <a href="https://clairemcwhite.github.io/repeats/">Curation Tool</a>
+  </nav>
+</header>
+<main>
+<div class="hero">
+  <div class="hero-label">Research Highlight · 2024</div>
+  <h1>LLM-Guided Discovery of Protein Repeat Motifs in Intrinsically Disordered Regions</h1>
+  <p class="hero-desc">A systematic screen applying large language model reasoning to discover short linear motifs (SLiMs) and IDR motifs in human proteins — finding structured repeat architectures that traditional bioinformatics tools miss.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-number">45</div><div class="stat-label">Proteins screened</div></div>
+    <div class="stat"><div class="stat-number">15</div><div class="stat-label">New repeat motifs found</div></div>
+    <div class="stat"><div class="stat-number">9–77</div><div class="stat-label">Amino acids per unit</div></div>
+    <div class="stat"><div class="stat-number">100%</div><div class="stat-label">Manually verified</div></div>
+  </div>
+</div>
+<hr class="divider">
+<section class="section">
+  <h2 class="section-title">Featured Discoveries</h2>
+  <p class="section-subtitle">Hover over sequence maps to explore individual repeat instances. Each colored block represents a verified repeat unit.</p>
+  <div class="protein-grid" id="protein-grid"></div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="method-box">
+    <h3>Approach</h3>
+    <p>Traditional bioinformatics tools for repeat detection rely on exact or near-exact sequence similarity, making them blind to motifs that vary considerably between instances — the hallmark of biologically functional short linear motifs in intrinsically disordered regions.</p>
+    <p>We prompted a large language model (LLM) with protein sequences and asked it to reason about recurring structural or functional patterns, then generate a consensus notation describing each discovered motif. The LLM approach naturally handles the ambiguity and variation characteristic of real SLiMs, finding motifs like zinc-finger C₂H₂ variants, proline-rich repeats, and large helical repeats that share function but diverge in sequence.</p>
+    <p>All candidate motifs were manually curated and verified against known protein literature and AlphaFold structures before inclusion in this dataset. Full sequences, instance coordinates, and curation notes are available in the <a href="index.html" style="color:#2563eb">interactive curation tool</a>.</p>
+  </div>
+</section>
+</main>
+<footer>
+  <p>McWhite Lab · University of Arizona · <a href="https://mcwhitelab.org">mcwhitelab.org</a></p>
+  <p style="margin-top:.3rem">Data and curation tool: <a href="https://clairemcwhite.github.io/repeats/">clairemcwhite.github.io/repeats/</a></p>
+</footer>
+<div class="seq-tooltip" id="tooltip"></div>
+<script>
+const PROTEINS=[{gene:'ZNF25',accession:'P17030',length:456,description:'Zinc finger protein 25',highlight:'Twelve tandem C₂H₂ zinc finger repeats spanning the entire binding domain — each unit 28 amino acids, perfectly spaced.',motifs:[{label:'C₂H₂ Zinc Finger',type:'tandem',consensus:'x[EDG]Kx[YFC]xCx[EKQ]Cx[KE]xFxx[KNL]xx[LF]xxH[QL][KRH]xH[TSA]',unit:28,colorIdx:0,instances:[{start:114,end:141,seq:'TEKACECKECGKFFCQKSALIVHQHTHS'},{start:142,end:169,seq:'KGKSYDCDKCGKSFSKNEDLIRHQKIHT'},{start:170,end:197,seq:'RDKTYECKECKKIFYHLSSLSRHLRTHA'},{start:198,end:225,seq:'GEKPYECNQCEKSFYQKPHLTEHQKTHT'},{start:226,end:253,seq:'GEKPFECTECGKFFYVKAYLMVHQKTHT'},{start:254,end:281,seq:'GEKPYECKECGKAFSQKSHLTVHQRMHT'},{start:282,end:309,seq:'GEKPYKCKECGKFFSRNSHLKTHQRSHT'},{start:310,end:337,seq:'GEKPYECKECRKCFYQKSALTVHQRTHT'},{start:338,end:365,seq:'GEKPFECNKCGKTFYYKSDLTKHQRKHT'},{start:366,end:393,seq:'GEKPYECTECGKSFAVNSVLRLHQRTHT'},{start:394,end:421,seq:'GEKPYACKECGKSFSQKSHFIIHQRKHT'},{start:422,end:449,seq:'GEKPYECQECGETFIQKSQLTAHQKTHT'}]}],badges:[{text:'12 repeats',cls:'badge-blue'},{text:'Tandem',cls:'badge-green'},{text:'28 aa unit',cls:'badge-gray'}]},{gene:'ZFP36',accession:'P26651',length:326,description:'mRNA decay activator protein ZFP36 (Tristetraprolin)',highlight:'Two distinct repeat motifs independently discovered in the same protein: tandem zinc finger coordination sites and proline-rich PPPPG spacers dispersed throughout the IDR.',motifs:[{label:'Zinc Finger (C₃H type)',type:'tandem',consensus:'+YKTELC[RH]xFxxoGRCxYG[AS]+CxFφH',unit:26,colorIdx:0,instances:[{start:103,end:128,seq:'RYKTELCRTFSESGRCRYGAKCQFAH'},{start:141,end:166,seq:'KYKTELCHKFYLQGRCPYGSRCHFIH'}]},{label:'Proline-rich PPPPG',type:'dispersed',consensus:'PPPPGxφ[PG][LP]',unit:9,colorIdx:1,instances:[{start:71,end:79,seq:'PPPPGFAPL'},{start:198,end:206,seq:'PPPPGLAGP'},{start:219,end:227,seq:'PPPPGDLPL'}]}],badges:[{text:'2 motif types',cls:'badge-amber'},{text:'Dispersed',cls:'badge-blue'},{text:'IDR',cls:'badge-violet'}]},{gene:'DNAAF1',accession:'Q8NEP3',length:725,description:'Dynein axonemal assembly factor 1',highlight:'Two architecturally distinct motifs in separate protein regions: N-terminal LH-box helical repeats and C-terminal tandem PEPEGTLPAE units linked by a conserved PVxK anchor.',motifs:[{label:'LH-box (helical)',type:'dispersed',consensus:'xLxψxx[NK]xφxxxE[NDI]ψ(x){5,8}L[RDN]',unit:22,colorIdx:2,instances:[{start:111,end:132,seq:'TLYLHFKGFDRIENLEEYTGLR'},{start:133,end:154,seq:'CLWLQSNGIQKIENLEAQTELR'},{start:155,end:176,seq:'CLFLQMNLLRKIENLEPLQKLD'},{start:177,end:198,seq:'ALNLSNNYIKTIENLSCLPVLN'},{start:199,end:222,seq:'CLNLQSNYIKRLENLEAQAALS'},{start:224,end:248,seq:'CLNLKTNYIKHIKNLDAQTKLR'}]},{label:'PEPEGTLPAE (tandem)',type:'tandem',consensus:'PV[EK][AV]K[RG]EDG[DG]xEPEGTLPAE[TA][LP][LP][LP][SP][SP]',unit:26,colorIdx:1,instances:[{start:400,end:425,seq:'PVEAKREDGGPEPEGTLPAETLLLSS'},{start:426,end:451,seq:'PVEVKGEDGDGEPEGTLPAEAPPPPP'},{start:452,end:477,seq:'PVEVKGEDGDQEPEGTLPAETLLLSP'},{start:478,end:503,seq:'PVKVKGEDGDREPEGTLPAEAPPPPP'}]}],badges:[{text:'2 motif types',cls:'badge-amber'},{text:'10 total instances',cls:'badge-green'},{text:'Axonemal dynein',cls:'badge-gray'}]},{gene:'GTF2I',accession:'P78347',length:998,description:'General transcription factor II-I (Williams syndrome TF)',highlight:'Six massive 77-amino-acid dispersed repeat domains spanning the full length of the protein — the largest repeat units in this screen. This Williams syndrome gene harbors a remarkable repeat architecture not previously characterized.',motifs:[{label:'TFII-I repeat domain',type:'dispersed',consensus:'L+xxVxxφFxx[KC]x[AG]xA[LI][GK]xx...φ[VY]V[EDQ]G[LS]',unit:77,colorIdx:3,instances:[{start:112,end:188,seq:'LRKTVEDYFCFCYGKALGKSTVVPVPYEKMLRDQS...'},{start:361,end:437,seq:'LRKQVEELFERKYAQAIKAKGPVTIPYPLFQSHVE...'},{start:466,end:542,seq:'LRKMVDQLFCKKFAEALGSTEAKAVPYQKFEAHPN...'},{start:571,end:647,seq:'LRKQVEEIFNLKFAQALGLTEAVKVPYPVFESNPE...'},{start:733,end:809,seq:'LRKLVDELF...'},{start:868,end:944,seq:'LRKMVEDVF...'}]}],badges:[{text:'77 aa unit',cls:'badge-violet'},{text:'6 repeats',cls:'badge-blue'},{text:'Williams syndrome',cls:'badge-amber'}]}];
+
+const COLORS=[{fill:'#3b82f6',light:'#dbeafe'},{fill:'#f59e0b',light:'#fef3c7'},{fill:'#10b981',light:'#d1fae5'},{fill:'#8b5cf6',light:'#ede9fe'},{fill:'#ef4444',light:'#fee2e2'},{fill:'#06b6d4',light:'#cffafe'}];
+
+const grid=document.getElementById('protein-grid');
+const tooltip=document.getElementById('tooltip');
+
+PROTEINS.forEach((prot,pi)=>{
+  const card=document.createElement('div');
+  card.className='protein-card';
+  const badgesHtml=prot.badges.map(b=>`<span class="badge ${b.cls}">${b.text}</span>`).join('');
+  const motifsHtml=prot.motifs.map(m=>{
+    const c=COLORS[m.colorIdx];
+    return`<div class="motif-item"><div class="motif-swatch" style="background:${c.fill}"></div><div><div class="motif-consensus">${m.label}: <span style="color:#64748b">${esc(m.consensus)}</span></div><div class="motif-meta">${m.type.charAt(0).toUpperCase()+m.type.slice(1)} · ${m.unit} aa unit · ${m.instances.length} verified instances</div></div></div>`;
+  }).join('');
+  card.innerHTML=`<div class="protein-header"><div><div class="protein-name">${prot.gene}</div><div class="protein-accession">${prot.accession} · ${prot.length} aa</div><div class="protein-desc">${prot.description}</div></div><div class="badge-row">${badgesHtml}</div></div><p style="font-size:.88rem;color:#475569;line-height:1.65;margin-bottom:1rem">${prot.highlight}</p><div class="seq-map-wrap"><div class="seq-map-label">Sequence map — hover to explore</div><div class="seq-map-container"><canvas class="seq-canvas" id="canvas-${pi}" data-pi="${pi}"></canvas></div></div><div class="motif-list">${motifsHtml}</div>`;
+  grid.appendChild(card);
+});
+
+function drawCanvas(pi){
+  const prot=PROTEINS[pi];
+  const canvas=document.getElementById(`canvas-${pi}`);
+  if(!canvas)return;
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.parentElement.offsetWidth;
+  const H=56;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.fillStyle='#e2e8f0';
+  rr(ctx,0,H/2-5,W,10,5);ctx.fill();
+  prot.motifs.forEach(m=>{
+    const c=COLORS[m.colorIdx];
+    m.instances.forEach((inst,ii)=>{
+      const x1=(inst.start/prot.length)*W;
+      const x2=(inst.end/prot.length)*W;
+      const bW=Math.max(x2-x1,4);
+      const bH=24;const bY=H/2-bH/2;
+      ctx.shadowColor=c.fill+'44';ctx.shadowBlur=4;
+      ctx.fillStyle=c.fill;
+      rr(ctx,x1,bY,bW,bH,4);ctx.fill();
+      ctx.shadowBlur=0;
+      if(bW>18){
+        ctx.fillStyle='#fff';ctx.font=`bold ${Math.min(10,bW-4)}px system-ui`;
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(ii+1,x1+bW/2,H/2);
+      }
+    });
+  });
+  ctx.fillStyle='#94a3b8';ctx.font='9px system-ui';ctx.textBaseline='bottom';
+  const tk=prot.length<=500?100:200;
+  for(let pos=0;pos<=prot.length;pos+=tk){
+    const x=(pos/prot.length)*W;
+    ctx.textAlign=pos===0?'left':pos===prot.length?'right':'center';
+    ctx.fillText(pos,x,H-2);
+  }
+}
+
+document.querySelectorAll('.seq-canvas').forEach(canvas=>{
+  canvas.addEventListener('mousemove',e=>{
+    const pi=parseInt(canvas.dataset.pi);
+    const prot=PROTEINS[pi];
+    const rect=canvas.getBoundingClientRect();
+    const pos=Math.round(((e.clientX-rect.left)/rect.width)*prot.length);
+    let hit=null;
+    for(const m of prot.motifs){for(const inst of m.instances){if(pos>=inst.start&&pos<=inst.end){hit={motif:m,inst};break;}}if(hit)break;}
+    if(hit){
+      const c=COLORS[hit.motif.colorIdx];
+      tooltip.style.display='block';
+      tooltip.style.left=(e.clientX+14)+'px';
+      tooltip.style.top=(e.clientY-10)+'px';
+      tooltip.style.borderLeft=`3px solid ${c.fill}`;
+      tooltip.innerHTML=`<strong>${hit.motif.label}</strong>\nPositions ${hit.inst.start}–${hit.inst.end} (${hit.inst.end-hit.inst.start} aa)<span class="tt-seq">${hit.inst.seq}</span>`;
+    }else{tooltip.style.display='none';}
+  });
+  canvas.addEventListener('mouseleave',()=>{tooltip.style.display='none';});
+});
+
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function drawAll(){PROTEINS.forEach((_,i)=>drawCanvas(i));}
+drawAll();
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(drawAll,100);});
+</script>
+</body>
+</html>
