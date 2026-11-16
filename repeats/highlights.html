@@ -172,7 +172,7 @@ figcaption b{color:var(--text)}
 .aln-row .sq{font-family:var(--mono);font-size:.8em;letter-spacing:.05em}
 .sq.fixed span,.sq.fixed i{display:inline-block;width:1.25ch;text-align:center;font-style:normal}
 .sq i.mk{color:var(--strong);font-weight:700}
-.sq .site{outline:1.5px solid #c0392b;outline-offset:-1px;border-radius:2px}
+.site{outline:1.5px solid #c0392b;outline-offset:-1px;border-radius:2px}
 .sq .motif{background:#fdf0dc}
 .r-h{color:#9a6b00}.r-a{color:#c2410c;font-weight:700}.r-p{color:#1d4ed8}.r-n{color:#b91c1c}.r-o{color:#15803d}.r-P{color:#7e22ce;font-weight:700}.r-G{color:#7a8288}.r-C{color:#a16207;font-weight:700}
 .why{margin:.6em 0 0;font-size:.85em;max-width:44em}
@@ -410,8 +410,24 @@ function consHTML(c){
   }
   return out;
 }
-function seqHTML(s,marks){
-  return [...s].map((c,k)=>{const cl=[resClass(c)];if(marks&&marks[k+1])cl.push(marks[k+1]);const cls=cl.filter(Boolean).join(' ');return marks||cls?`<span class="${cls}">${c}</span>`:c}).join('');
+function seqHTML(s,marks,start){
+  return [...s].map((c,k)=>{const cl=[resClass(c)];if(marks&&marks[k+1])cl.push(marks[k+1]);const cls=cl.filter(Boolean).join(' ');return `<span class="${cls}" data-r="${start+k}">${c}</span>`}).join('');
+}
+const PTM_TYPES=['Modified residue','Glycosylation','Cross-link','Lipidation','Disulfide bond'];
+function ptmMap(feats){
+  const m={};const add=(r,t)=>{(m[r]=m[r]||[]).push(t)};
+  feats.filter(f=>PTM_TYPES.includes(f.type)).forEach(f=>{
+    const t=f.type+(f.desc?': '+f.desc:'');
+    if(f.type==='Disulfide bond'){add(f.s,t);add(f.e,t)}else if(f.s===f.e)add(f.s,t)});
+  return m;
+}
+function markPTMs(v,feats){
+  const m=ptmMap(feats);
+  document.querySelectorAll('#side .aln-row[data-f] span[data-r]').forEach(el=>{const r=+el.dataset.r;
+    if(m[r]){el.classList.add('site');el.title=`${r}: ${m[r].join('; ')}`}});
+  v.ptmRes=v.hl?v.m[0].i.flatMap(([s,e])=>rng(s,e)).filter(r=>m[r]):[];
+  renderLegend(v);
+  if(exViewer&&exViewer.getModel()&&curView===v){styleModel(exViewer,v,colorMode,focusSel);exViewer.render()}
 }
 const TOPIDP={W:-0.884,F:-0.697,Y:-0.510,I:-0.486,M:-0.397,L:-0.326,V:-0.121,N:0.007,C:0.020,T:0.059,A:0.060,G:0.166,R:0.180,D:0.192,H:0.303,Q:0.318,K:0.586,S:0.341,E:0.736,P:0.987};
 function disorderProfile(seq,win=41){
@@ -457,7 +473,7 @@ function styleModel(v,view,mode,focus){
   v.setStyle({},{cartoon:{color:BASE}});
   if(mode==='plddt')v.setStyle({},{cartoon:{colorfunc:a=>PLDDT(a.b)}});
   else view.m.forEach((m,i)=>m.i.forEach(([s,e])=>v.setStyle({resi:rng(s,e)},{cartoon:{color:FAM[i%FAM.length]}})));
-  const sites=view.hl?siteResidues(view.m[0],view.hl):[];
+  const sites=view.ptmRes||[];
   if(sites.length)v.addStyle({resi:sites},{stick:{radius:.28,color:SITE}});
   if(focus){
     const [s,e]=focus.range;
@@ -571,7 +587,7 @@ function findingHTML(h){
   if(h.evidence)rows.push(['Evidence',esc(h.evidence)]);
   if(h.note)rows.push(['Note',esc(h.note)]);
   const pos=h.sites.length?h.sites.map(x=>`${x.p}`).join(', '):'';
-  if(pos)rows.push([h.sites[0].k==='motif'?'Motif starts at':'Unit position',pos+(h.sites[0].k==='motif'?' (ELM match start, shaded in each copy)':' (outlined in every copy; Support gives how many are modified)')]);
+  if(pos)rows.push([h.sites[0].k==='motif'?'Motif starts at':'Unit position',pos+(h.sites[0].k==='motif'?' (ELM match start, shaded in each copy)':' (numbered on the ruler; residues with a UniProt PTM annotation are boxed in red)')]);
   return `<div class="finding" style="border-left-color:${g.c}"><div class="lab" style="color:${g.c}">${esc(g.label)}</div>
     <div class="what">${esc(h.finding)}</div><dl>${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl></div>`;
 }
@@ -585,21 +601,22 @@ function renderSide(v){
     <div class="facts">${v.m.length} repeat ${v.m.length>1?'families':'family'} · ${nCopies} located copies${v.src==='pilot'?' · from the pilot set':''}</div>
     <div class="tracks" id="tracks"></div>
     <div class="fams">${v.m.map((m,i)=>famHTML(v,m,i,hl&&i===0?hl:null)).join('')}</div>
-    <div class="reslegend"><span class="r-h">AVILM</span><span class="r-a">FWY</span><span class="r-p">KRH</span><span class="r-n">DE</span><span class="r-o">STNQ</span><span class="r-P">P</span><span class="r-G">G</span><span class="r-C">C</span></div>`;
+    <div class="reslegend"><span class="site" style="padding:0 .2em">S</span> UniProt PTM annotation (hover for details) &nbsp; <span class="r-h">AVILM</span><span class="r-a">FWY</span><span class="r-p">KRH</span><span class="r-n">DE</span><span class="r-o">STNQ</span><span class="r-P">P</span><span class="r-G">G</span><span class="r-C">C</span></div>`;
   $('#side').querySelectorAll('.aln-row[data-f]').forEach(r=>r.onclick=()=>focusInstance(+r.dataset.f,+r.dataset.j));
   drawTracks(v,'loading');
-  getUniProt(v.a).then(u=>{if(curView===v)drawTracks(v,u)}).catch(()=>{if(curView===v)drawTracks(v,'error')});
+  getUniProt(v.a).then(u=>{if(curView===v){drawTracks(v,u);markPTMs(v,u.feats)}}).catch(()=>{if(curView===v)drawTracks(v,'error')});
   renderLegend(v);
 }
 function famHTML(v,m,i,hl){
   const tk=consTokens(m.c),L=tk.length,fixed=!tk.includes(null)&&m.i.every(([s,e,q])=>q.length===L);
   let marks=null,ruler='';
   if(hl&&!tk.includes(null)){
-    marks={};hl.sites.forEach(x=>{marks[x.p]=x.k==='site'?'site':'motif'});
-    if(fixed)ruler=`<div class="aln-row ruler"><span class="pos">unit</span><span class="sq fixed">${tk.map((_,k)=>marks[k+1]?`<i class="mk">${k+1}</i>`:`<i>${(k+1)%5===0?'·':''}</i>`).join('')}</span></div>`;
+    marks={};hl.sites.forEach(x=>{if(x.k==='motif')marks[x.p]='motif'});
+    const hp={};hl.sites.forEach(x=>hp[x.p]=1);
+    if(fixed)ruler=`<div class="aln-row ruler"><span class="pos">unit</span><span class="sq fixed">${tk.map((_,k)=>hp[k+1]?`<i class="mk">${k+1}</i>`:`<i>${(k+1)%5===0?'·':''}</i>`).join('')}</span></div>`;
   }
   const rows=m.i.map(([s,e,q],j)=>{const mk=marks&&q.length===L?marks:null;
-    return `<div class="aln-row" data-f="${i}" data-j="${j}"><span class="pos">${s}–${e}</span><span class="sq${fixed?' fixed':''}">${seqHTML(q,mk)}</span></div>`}).join('');
+    return `<div class="aln-row" data-f="${i}" data-j="${j}"><span class="pos">${s}–${e}</span><span class="sq${fixed?' fixed':''}">${seqHTML(q,mk,s)}</span></div>`}).join('');
   return `<div class="fam"><div class="fam-h"><span class="sw" style="background:${FAM[i%FAM.length]}"></span><b>${famId(v,m)}</b><span>${esc(famSummary(m))}</span>${hl?'<span class="star">highlighted family</span>':''}</div>
     <div class="cons">${consHTML(m.c)}</div>
     <div class="aln">${ruler}${rows}</div>
@@ -637,11 +654,11 @@ function drawTracks(v,up){
   el.querySelectorAll('.hit').forEach(r=>r.addEventListener('click',()=>focusInstance(+r.dataset.f,+r.dataset.j)));
 }
 function renderLegend(v){
-  const sites=v.hl?siteResidues(v.m[0],v.hl):[];
+  const sites=v.ptmRes||[];
   $('#exLegend').innerHTML=colorMode==='plddt'
     ?`<span><i style="background:#0053D6"></i>pLDDT &gt; 90</span><span><i style="background:#65CBF3"></i>70–90</span><span><i style="background:#FFDB13"></i>50–70</span><span><i style="background:#FF7D45"></i>&lt; 50</span>`
     :v.m.map((m,i)=>`<span><i style="background:${FAM[i%FAM.length]}"></i>F${m.f} (${m.i.length} copies)</span>`).join('')+`<span><i style="background:${BASE}"></i>rest of chain</span>`;
-  if(sites.length)$('#exLegend').innerHTML+=`<span><i style="background:${SITE}"></i>highlighted unit position (sticks)</span>`;
+  if(sites.length)$('#exLegend').innerHTML+=`<span><i style="background:${SITE}"></i>UniProt PTM in the highlighted family (sticks)</span>`;
 }
 function exStatus(t){const s=$('#exStatus');s.textContent=t||'';s.style.display=t?'flex':'none'}
 async function load3D(v){
