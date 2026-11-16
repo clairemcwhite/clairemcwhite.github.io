@@ -21,7 +21,8 @@ html{font-size:16px;-webkit-text-size-adjust:100%}
 body{margin:0;background:#fff;color:var(--text);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:var(--link);text-decoration:none}
 a:hover{color:var(--link-hover);text-decoration:underline}
-.container{max-width:1180px;margin:0 auto;padding:0 1.25em}
+.container{max-width:1040px;margin:0 auto;padding:0 3em}
+@media (max-width:900px){.container{padding:0 1.5em}}
 @media (max-width:640px){.container{padding:0 16px}}
 
 .masthead{border-bottom:1px solid var(--lighter);background:#fff}
@@ -37,7 +38,7 @@ a:hover{color:var(--link-hover);text-decoration:underline}
 h1{font-size:2em;line-height:1.2;color:var(--strong);margin:0 0 .5em;font-weight:700;max-width:30em}
 .byline{color:var(--gray);margin:0 0 1.2em;font-size:.95em}
 .abstract{max-width:46em;margin:0 0 1.3em}
-.links{font-size:.95em}
+.links{font-size:.95em;display:flex;flex-wrap:wrap;row-gap:.2em}
 .links a,.links span{white-space:nowrap}
 .links .sep{color:var(--light);margin:0 .55em}
 .links .off{color:var(--gray)}
@@ -613,7 +614,7 @@ const UP_LANES=[
 ];
 function drawTracks(v,up){
   lastUP=up;
-  const el=$('#tracks');if(!el)return;const W=el.clientWidth||600,LW=W<520?0:140,TW=W-LW-4,X=r=>LW+(r-1)/v.L*TW,Wd=(s,e)=>Math.max(2,(e-s+1)/v.L*TW);
+  const el=$('#tracks');if(!el)return;const W=el.clientWidth||600,LW=W<430?0:118,TW=W-LW-4,X=r=>LW+(r-1)/v.L*TW,Wd=(s,e)=>Math.max(2,(e-s+1)/v.L*TW);
   let y=0,s='';const lane=(label,h)=>{if(LW)s+=`<text x="0" y="${y+h/2+4}" font-size="11" fill="#7a8288">${esc(label)}</text>`;else{s+=`<text x="0" y="${y+9}" font-size="10" fill="#7a8288">${esc(label)}</text>`;y+=13}};
   const step=v.L>2000?500:v.L>800?200:v.L>300?100:50;
   for(let t=0;t<=v.L;t+=step){const x=X(Math.max(t,1));s+=`<line x1="${x}" x2="${x}" y1="${y+12}" y2="${y+15}" stroke="#bdc1c4"/><text x="${x}" y="${y+9}" font-size="10" fill="#7a8288" text-anchor="${t===0?'start':'middle'}">${t}</text>`}
