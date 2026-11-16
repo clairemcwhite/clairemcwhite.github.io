@@ -354,8 +354,8 @@ const HL_GROUPS = {
           text:'When a repeat array is a known kinase substrate, the screen puts the site at one unit position in nearly every copy.'},
   ann:   {c:'#4e79a7', label:'Validation · annotated repeat', short:'Annotated repeats', title:'Annotated repeats with a fixed modified position',
           text:'Annotated repeat families with a modification at the same unit position across copies.'},
-  undesc:{c:'#7a8288', label:'Known biology · missed by automated scoring', short:'Known, missed by scoring', title:'Known biology that our automated scoring missed',
-          text:'These arrays carry well-studied modifications: RS-domain phosphorylation in the splicing factors SRRM2, SRRM1 and BUD13, cleavage of the TRH prohormone into mature hormone, and phosphorylation of FAM83H (UniProt gene name SACK1H), a casein kinase 1–anchoring protein. Our automated scoring labelled them undescribed only because UniProt does not name the enzyme for these sites. They are known biology, so we do not count them as novel.'},
+  undesc:{c:'#7a8288', label:'Known biology · enzyme not named in UniProt', short:'Known, enzyme not in UniProt', title:'Known biology without an annotated enzyme',
+          text:'The screen finds each of these repeat arrays, with the modified residue at the same unit position in most copies. The biology is well known: RS-domain phosphorylation in the splicing factors SRRM2, SRRM1 and BUD13, cleavage of the TRH prohormone into mature hormone, and phosphorylation of FAM83H (UniProt gene name SACK1H), a casein kinase 1–anchoring protein. They are listed separately because UniProt does not name the modifying enzyme for these sites, so an annotation-based check would call them undescribed. They are not novel.'},
   elm:   {c:'#f28e2b', label:'Curation gap · ELM transfer', short:'ELM transfer gaps', title:'ELM transfer gaps',
           text:'An ELM class curated in named paralogues matches at a fixed offset in every copy of an uncurated array.'},
 };
