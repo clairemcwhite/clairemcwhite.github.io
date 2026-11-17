@@ -481,7 +481,8 @@ function getInterPro(acc){
           if(loc&&'representative' in loc)flag=true;
           const fr=(loc&&loc.fragments)||[];if(!fr.length)return;
           const d={acc:md.accession,name:name||md.accession,db:md.source_database,s:Math.min(...fr.map(f=>f.start)),e:Math.max(...fr.map(f=>f.end))};
-          if(loc.representative)rep.push(d);
+          // InterPro flags representative families and representative domains; keep only domains
+          if(loc.representative&&String(md.type).toLowerCase()==='domain')rep.push(d);
           if(md.source_database==='interpro'&&md.type==='domain')dom.push(d)}))});
       return flag?{kind:'rep',items:rep}:{kind:'dom',items:dom};
     })();
