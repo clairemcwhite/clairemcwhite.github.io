@@ -651,7 +651,7 @@ function renderSide(v){
   const nCopies=v.m.reduce((a,m)=>a+m.i.length,0),hl=v.hl;
   $('#side').innerHTML=`
     <div class="ph"><h3>${esc(v.g||v.a)}</h3><div class="d">${esc(v.d)}</div>
-      <div class="meta">${esc(v.a)} · ${fmt(v.L)} aa<a href="https://www.uniprot.org/uniprotkb/${v.a}/entry" target="_blank" rel="noopener">UniProt</a><a href="https://www.ebi.ac.uk/interpro/protein/UniProt/${v.a}/" target="_blank" rel="noopener">InterPro</a><a href="https://alphafold.ebi.ac.uk/entry/${v.a}" target="_blank" rel="noopener">AlphaFold DB</a><a href="http://elm.eu.org/start_search/${v.a}" target="_blank" rel="noopener">ELM</a></div></div>
+      <div class="meta">${esc(v.a)} · ${fmt(v.L)} aa<a href="https://www.uniprot.org/uniprotkb/${v.a}/entry" target="_blank" rel="noopener">UniProt</a><a href="https://www.ebi.ac.uk/interpro/protein/UniProt/${v.a}/" target="_blank" rel="noopener">InterPro</a><a href="https://alphafold.ebi.ac.uk/entry/${v.a}" target="_blank" rel="noopener">AlphaFold DB</a><a href="http://elm.eu.org/start_search/${v.a}" target="_blank" rel="noopener">ELM</a><a href="https://slimmine.pbrg.hu/searchprotein/results?query=${v.a}" target="_blank" rel="noopener">SLiMMine</a></div></div>
     ${hl?findingHTML(hl):''}
     ${v.note?`<p class="note">${esc(v.note)}</p>`:''}${!hl&&v.showElm?elmHTML(v.elm):''}
     <div class="facts">${v.m.length} repeat ${v.m.length>1?'families':'family'} · ${nCopies} located copies${v.src==='pilot'?' · from the pilot set':''}</div>
