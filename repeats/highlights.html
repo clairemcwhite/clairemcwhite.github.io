@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Repeat screen · McWhite Lab</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23313538'/%3E%3Ctext x='31' y='47' text-anchor='middle' font-family='Snell Roundhand,Apple Chancery,Brush Script MT,Segoe Script,cursive' font-style='italic' font-size='46' fill='%23ffffff'%3EM%3C/text%3E%3C/svg%3E">
 <meta name="description" content="A blinded language-model screen for repeats in human proteins with long disordered regions. Research preview.">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.2/3Dmol-min.js"></script>
 <style>
@@ -345,7 +346,7 @@ footer .container{display:flex;justify-content:space-between;gap:1em;flex-wrap:w
 <footer>
   <div class="container">
     <span>© McWhite Lab, University of Arizona</span>
-    <span>Structures: AlphaFold DB · Annotations: UniProt, ELM · Viewer: 3Dmol.js · Data as of <span id="asof"></span></span>
+    <span>Structures: AlphaFold DB · Annotations: UniProt, InterPro, ELM · Viewer: 3Dmol.js · Data as of <span id="asof"></span></span>
   </div>
 </footer>
 <div id="tip"></div>
@@ -430,7 +431,7 @@ function ptmMap(feats){
   return m;
 }
 function markPTMs(v,feats){
-  const m=ptmMap(feats);
+  const m=ptmMap(feats);v._ptm=m;
   document.querySelectorAll('#side .aln-row[data-f] span[data-r]').forEach(el=>{const r=+el.dataset.r;
     if(m[r]){el.classList.add('site');el.title=`${r}: ${m[r].join('; ')}`}});
   v.ptmRes=v.focusF?v.m[0].i.flatMap(([s,e])=>rng(s,e)).filter(r=>m[r]):[];
@@ -467,6 +468,26 @@ function getPDB(acc){
     pdbCache[acc].catch(()=>{delete pdbCache[acc]});
   }
   return pdbCache[acc];
+}
+const iprCache={};
+function getInterPro(acc){
+  if(!iprCache[acc]){
+    iprCache[acc]=(async()=>{
+      let url=`https://www.ebi.ac.uk/interpro/api/entry/all/protein/uniprot/${acc}/?page_size=200`;const rows=[];
+      while(url){const r=await fetch(url,{headers:{Accept:'application/json'}});if(r.status===204)break;if(!r.ok)throw new Error(r.status);const j=await r.json();rows.push(...(j.results||[]));url=j.next}
+      const rep=[],dom=[];let flag=false;
+      rows.forEach(e=>{const md=e.metadata||{};const name=typeof md.name==='object'&&md.name?md.name.name:md.name;
+        (e.proteins||[]).forEach(p=>(p.entry_protein_locations||[]).forEach(loc=>{
+          if(loc&&'representative' in loc)flag=true;
+          const fr=(loc&&loc.fragments)||[];if(!fr.length)return;
+          const d={acc:md.accession,name:name||md.accession,db:md.source_database,s:Math.min(...fr.map(f=>f.start)),e:Math.max(...fr.map(f=>f.end))};
+          if(loc.representative)rep.push(d);
+          if(md.source_database==='interpro'&&md.type==='domain')dom.push(d)}))});
+      return flag?{kind:'rep',items:rep}:{kind:'dom',items:dom};
+    })();
+    iprCache[acc].catch(()=>{delete iprCache[acc]});
+  }
+  return iprCache[acc];
 }
 function getUniProt(acc){
   if(!upCache[acc]){
@@ -614,7 +635,7 @@ function renderSide(v){
   const nCopies=v.m.reduce((a,m)=>a+m.i.length,0),hl=v.hl;
   $('#side').innerHTML=`
     <div class="ph"><h3>${esc(v.g||v.a)}</h3><div class="d">${esc(v.d)}</div>
-      <div class="meta">${esc(v.a)} · ${fmt(v.L)} aa<a href="https://www.uniprot.org/uniprotkb/${v.a}/entry" target="_blank" rel="noopener">UniProt</a><a href="https://alphafold.ebi.ac.uk/entry/${v.a}" target="_blank" rel="noopener">AlphaFold DB</a><a href="http://elm.eu.org/start_search/${v.a}" target="_blank" rel="noopener">ELM</a></div></div>
+      <div class="meta">${esc(v.a)} · ${fmt(v.L)} aa<a href="https://www.uniprot.org/uniprotkb/${v.a}/entry" target="_blank" rel="noopener">UniProt</a><a href="https://www.ebi.ac.uk/interpro/protein/UniProt/${v.a}/" target="_blank" rel="noopener">InterPro</a><a href="https://alphafold.ebi.ac.uk/entry/${v.a}" target="_blank" rel="noopener">AlphaFold DB</a><a href="http://elm.eu.org/start_search/${v.a}" target="_blank" rel="noopener">ELM</a></div></div>
     ${hl?findingHTML(hl):''}
     ${v.note?`<p class="note">${esc(v.note)}</p>`:''}${!hl&&v.showElm?elmHTML(v.elm):''}
     <div class="facts">${v.m.length} repeat ${v.m.length>1?'families':'family'} · ${nCopies} located copies${v.src==='pilot'?' · from the pilot set':''}</div>
@@ -623,6 +644,7 @@ function renderSide(v){
     <div class="reslegend"><span class="site" style="padding:0 .2em">S</span> UniProt PTM annotation (hover for details) &nbsp; <span class="r-h">AVILM</span><span class="r-a">FWY</span><span class="r-p">KRH</span><span class="r-n">DE</span><span class="r-o">STNQ</span><span class="r-P">P</span><span class="r-G">G</span><span class="r-C">C</span></div>`;
   $('#side').querySelectorAll('.aln-row[data-f]').forEach(r=>r.onclick=()=>focusInstance(+r.dataset.f,+r.dataset.j));
   drawTracks(v,'loading');
+  getInterPro(v.a).then(x=>{v._ipr=x;if(curView===v)drawTracks(v,lastUP)}).catch(()=>{v._ipr='error';if(curView===v)drawTracks(v,lastUP)});
   getUniProt(v.a).then(u=>{if(curView===v){drawTracks(v,u);markPTMs(v,u.feats)}}).catch(()=>{if(curView===v)drawTracks(v,'error')});
   renderLegend(v);
 }
@@ -662,6 +684,13 @@ function drawTracks(v,up){
   if(seq){lane('Disorder (TOP-IDP)',26);const prof=disorderProfile(seq),H=22,lo=-0.3,hi=0.75,Y=q=>y+H-(Math.max(lo,Math.min(hi,q))-lo)/(hi-lo)*H;
     let d=`M${X(1)},${y+H}`;const st=Math.max(1,Math.floor(v.L/TW));for(let k=0;k<Math.min(v.L,seq.length);k+=st)d+=`L${X(k+1)},${Y(prof[k])}`;d+=`L${X(Math.min(v.L,seq.length))},${y+H}Z`;
     s+=`<path d="${d}" fill="#7a8288" fill-opacity=".18" stroke="#7a8288" stroke-width=".8"/><line x1="${LW}" x2="${LW+TW}" y1="${Y(0.22)}" y2="${Y(0.22)}" stroke="#7a8288" stroke-dasharray="2 3" stroke-width=".7"/>`;y+=H+10}
+  {const ip=v._ipr;lane(ip&&ip.kind==='dom'?'InterPro entries':'InterPro domains',16);s+=`<rect x="${LW}" y="${y+7}" width="${TW}" height="1" fill="#e4e6e8"/>`;
+    if(!ip||ip==='error')s+=`<text x="${LW+TW}" y="${y+12}" font-size="10" fill="#bdc1c4" text-anchor="end">${ip?'InterPro unavailable right now':'loading…'}</text>`;
+    else if(!ip.items.length)s+=`<text x="${LW+TW}" y="${y+12}" font-size="10" fill="#bdc1c4" text-anchor="end">none</text>`;
+    else ip.items.forEach(d=>{const w=Wd(d.s,d.e),x=X(d.s);
+      s+=`<rect class="ipr" data-href="https://www.ebi.ac.uk/interpro/entry/${esc(d.db)}/${esc(d.acc)}/" x="${x}" y="${y+1}" width="${w}" height="14" rx="2" fill="#4e5357" style="cursor:pointer" data-tip="<b>${esc(d.name)}</b><br>${esc(d.acc)} (${esc(d.db)}) · ${d.s}–${d.e}${ip.kind==='rep'?' · representative domain':''}<br><span class='m'>click to open in InterPro</span>"></rect>`;
+      if(w>d.name.length*5.6+6)s+=`<text x="${x+4}" y="${y+11}" font-size="9.5" fill="#fff" pointer-events="none">${esc(d.name)}</text>`});
+    y+=22}
   if(up==='loading'||up==='error'){s+=`<text x="${LW}" y="${y+12}" font-size="11" fill="#7a8288">${up==='loading'?'Loading UniProt annotations…':'UniProt annotations unavailable right now'}</text>`;y+=22}
   else UP_LANES.forEach(L=>{const fs=up.feats.filter(f=>L.types.includes(f.type));if(!fs.length&&!L.always)return;lane(L.l,14);
     s+=`<rect x="${LW}" y="${y+6}" width="${TW}" height="1" fill="#e4e6e8"/>`;
@@ -672,6 +701,7 @@ function drawTracks(v,up){
   el.innerHTML=`<svg width="${W}" height="${y+4}" viewBox="0 0 ${W} ${y+4}">${s}</svg>`;
   el.querySelectorAll('[data-tip]').forEach(r=>{r.addEventListener('mousemove',e=>showTip(e,r.dataset.tip));r.addEventListener('mouseleave',hideTip)});
   el.querySelectorAll('.hit').forEach(r=>r.addEventListener('click',()=>focusInstance(+r.dataset.f,+r.dataset.j)));
+  el.querySelectorAll('.ipr').forEach(r=>r.addEventListener('click',()=>window.open(r.dataset.href,'_blank','noopener')));
 }
 function renderLegend(v){
   const sites=v.ptmRes||[];
@@ -679,6 +709,17 @@ function renderLegend(v){
     ?`<span><i style="background:#0053D6"></i>pLDDT &gt; 90</span><span><i style="background:#65CBF3"></i>70–90</span><span><i style="background:#FFDB13"></i>50–70</span><span><i style="background:#FF7D45"></i>&lt; 50</span>`
     :v.m.map((m,i)=>`<span><i style="width:1.6em;background:linear-gradient(90deg,${RAMPS[i%RAMPS.length][0]},${RAMPS[i%RAMPS.length][1]})"></i>F${m.f} (${m.i.length} copies${m.x==='disordered_like'?', side chains shown':''})</span>`).join('')+`<span><i style="background:${BASE}"></i>rest of chain</span>`;
   if(sites.length)$('#exLegend').innerHTML+=`<span><i style="background:${SITE}"></i>UniProt PTM in the highlighted family (red sticks)</span>`;
+}
+const AA3={ALA:'A',ARG:'R',ASN:'N',ASP:'D',CYS:'C',GLN:'Q',GLU:'E',GLY:'G',HIS:'H',ILE:'I',LEU:'L',LYS:'K',MET:'M',PHE:'F',PRO:'P',SER:'S',THR:'T',TRP:'W',TYR:'Y',VAL:'V'};
+let lastMouse={clientX:0,clientY:0};
+function enableHover(v){
+  exViewer.setHoverDuration(30);
+  exViewer.setHoverable({},true,atom=>{
+    if(!atom)return;const r=atom.resi,aa=AA3[atom.resn]||atom.resn;let extra='';
+    v.m.forEach((m,i)=>m.i.forEach(([s,e],j)=>{if(r>=s&&r<=e)extra+=`<br>${famId(v,m)} copy ${j+1}, unit position ${r-s+1}`}));
+    if(v._ptm&&v._ptm[r])extra+=`<br><span style="color:${SITE}">${esc(v._ptm[r].join('; '))}</span>`;
+    showTip(lastMouse,`<b>${aa}${r}</b> <span class='m'>${atom.resn} · pLDDT ${Math.round(atom.b)}</span>${extra}`);
+  },()=>hideTip());
 }
 function exStatus(t){const s=$('#exStatus');s.textContent=t||'';s.style.display=t?'flex':'none'}
 async function load3D(v){
@@ -688,7 +729,7 @@ async function load3D(v){
   exViewer.clear();exViewer.render();exStatus('Loading AlphaFold model…');
   try{
     const pdb=await getPDB(v.a);if(tok!==loadToken)return;
-    exViewer.addModel(pdb,'pdb');exViewer.addModel(pdb,'pdb');styleModel(exViewer,v,colorMode);
+    exViewer.addModel(pdb,'pdb');exViewer.addModel(pdb,'pdb');styleModel(exViewer,v,colorMode);enableHover(v);
     const hlRes=v.focusF?v.m[0].i.flatMap(([s,e])=>rng(s,e)):null;
     exViewer.zoomTo(hlRes?{resi:hlRes}:{});exViewer.render();exStatus('');
     if(spinning)exViewer.spin('y',.5);
@@ -702,6 +743,8 @@ function focusInstance(f,j){
   if(innerWidth<980)document.querySelector('.viewer').scrollIntoView({behavior:'smooth',block:'center'});
 }
 function initExplorerControls(){
+  $('#exV').addEventListener('mousemove',e=>{lastMouse={clientX:e.clientX,clientY:e.clientY};if(tip.style.opacity==='1')moveTip(e)});
+  $('#exV').addEventListener('mouseleave',hideTip);
   $('#colorSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{colorMode=b.dataset.mode;$('#colorSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
     if(curView){renderLegend(curView);if(exViewer&&exViewer.getModel()){styleModel(exViewer,curView,colorMode,focusSel);exViewer.render()}}});
   $('#spinBtn').onclick=()=>{spinning=!spinning;$('#spinBtn').classList.toggle('on',spinning);if(exViewer)exViewer.spin(spinning?'y':false,.5)};
