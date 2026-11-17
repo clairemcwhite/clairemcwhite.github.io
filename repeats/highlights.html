@@ -177,13 +177,15 @@ figcaption b{color:var(--text)}
 .aln-row.on{background:#eef7fa}
 .aln-row.ruler{cursor:default;color:var(--light)}
 .aln-row.ruler:hover{background:none}
+.aln-row .cw{width:.55em;height:.9em;flex-shrink:0;border-radius:1px}
+.aln-row.ruler .pos{margin-left:1.35em}
 .aln-row .pos{font-family:var(--mono);font-size:.72em;color:var(--gray);width:6.2em;text-align:right;flex-shrink:0}
 .aln-row .sq{font-family:var(--mono);font-size:.8em;letter-spacing:.05em}
 .sq.fixed span,.sq.fixed i{display:inline-block;width:1.25ch;text-align:center;font-style:normal}
 .sq i.mk{color:var(--strong);font-weight:700}
 .site{outline:1.5px solid #c0392b;outline-offset:-1px;border-radius:2px}
 .sq .motif{background:#fdf0dc}
-.r-h{color:#9a6b00}.r-a{color:#c2410c;font-weight:700}.r-p{color:#1d4ed8}.r-n{color:#b91c1c}.r-o{color:#15803d}.r-P{color:#7e22ce;font-weight:700}.r-G{color:#7a8288}.r-C{color:#a16207;font-weight:700}
+.r-h{color:#9a6b00}.r-a{color:#c2410c;font-weight:700}.r-p{color:#1d4ed8}.r-n{color:#b0177a}.r-o{color:#15803d}.r-P{color:#7e22ce;font-weight:700}.r-G{color:#7a8288}.r-C{color:#a16207;font-weight:700}
 .why{margin:.6em 0 0;font-size:.85em;max-width:44em}
 .why em{color:var(--gray);font-style:normal}
 .reslegend{font-size:.75em;color:var(--gray);margin-top:1.3em;font-family:var(--mono)}
@@ -382,7 +384,11 @@ const GROUPS = [
 ];
 
 /* ── Helpers ───────────────────────────────────────────────────────────── */
-const FAM = ['#08306b','#2171b5','#4292c6','#6baed6','#9ecae1']; // dark → light blue; red is reserved for PTMs
+// One hue per repeat family; copies within a family run dark → light along the sequence. Red is reserved for PTMs.
+const RAMPS = [['#08306b','#9ecae1'],['#00441b','#a1d99b'],['#3f007d','#bcbddc'],['#7f2704','#fdae6b'],['#004d4d','#8fd3d0'],['#4a3b1f','#d9c89e']];
+const FAM = ['#2171b5','#238b45','#6a51a3','#d94801','#018080','#8c7240'];
+function mixHex(a,b,t){const p=h=>[1,3,5].map(k=>parseInt(h.slice(k,k+2),16)),A=p(a),B=p(b);return '#'+A.map((x,k)=>Math.round(x+(B[k]-x)*t).toString(16).padStart(2,'0')).join('')}
+function copyColor(i,j,n){const r=RAMPS[i%RAMPS.length];return mixHex(r[0],r[1],n>1?j/(n-1):.35)}
 const BASE = '#d5d8db', SITE = '#c0392b';
 const CTX = {structured_like:{c:'#4e79a7',l:'Structured'},disordered_like:{c:'#e15759',l:'Disordered'},mixed:{c:'#59a14f',l:'Mixed'}};
 const $ = s=>document.querySelector(s);
@@ -472,17 +478,24 @@ function getUniProt(acc){
 }
 const PLDDT=b=>b>=90?'#0053D6':b>=70?'#65CBF3':b>=50?'#FFDB13':'#FF7D45';
 function styleModel(v,view,mode,focus){
-  v.setStyle({},{cartoon:{color:BASE}});
-  if(mode==='plddt')v.setStyle({},{cartoon:{colorfunc:a=>PLDDT(a.b)}});
-  else view.m.forEach((m,i)=>m.i.forEach(([s,e])=>v.setStyle({resi:rng(s,e)},{cartoon:{color:FAM[i%FAM.length]}})));
+  // Two copies of the model: model 0 draws the rest of the chain (translucent gray), model 1 the repeat copies (opaque).
+  const m0=v.getModel(0),m1=v.getModel(1);
+  const rep=[...new Set(view.m.flatMap(m=>m.i.flatMap(([s,e])=>rng(s,e))))];
+  m0.setStyle({},{});if(m1)m1.setStyle({},{});
+  if(mode==='plddt'){m0.setStyle({},{cartoon:{colorfunc:a=>PLDDT(a.b)}})}
+  else{
+    m0.setStyle(rep.length?{not:{resi:rep}}:{},{cartoon:{color:BASE,opacity:.5}});
+    view.m.forEach((m,i)=>m.i.forEach(([s,e],j)=>m1.setStyle({resi:rng(s,e)},{cartoon:{color:copyColor(i,j,m.i.length)}})));
+  }
+  const top=mode==='plddt'?m0:m1;
   // repeats in disordered sequence: show side chains
-  view.m.forEach((m,i)=>{if(m.x!=='disordered_like')return;const res=m.i.flatMap(([s,e])=>rng(s,e));
-    v.addStyle({resi:res,not:{atom:['N','C','O']}},{stick:{radius:.13,color:mode==='plddt'?'#7a8288':FAM[i%FAM.length]}})});
+  view.m.forEach((m,i)=>{if(m.x!=='disordered_like')return;m.i.forEach(([s,e],j)=>
+    top.setStyle({resi:rng(s,e),not:{atom:['N','C','O']}},{stick:{radius:.13,color:mode==='plddt'?'#7a8288':copyColor(i,j,m.i.length)}},true))});
   const sites=view.ptmRes||[];
-  if(sites.length)v.addStyle({resi:sites},{stick:{radius:.28,color:SITE}});
+  if(sites.length)top.setStyle({resi:sites},{stick:{radius:.28,color:SITE}},true);
   if(focus){
-    const [s,e]=focus.range;
-    v.addStyle({resi:rng(s,e),resn:['TRP','PHE','TYR','LEU','ILE','VAL','MET','PRO','CYS','HIS']},{stick:{radius:.16,colorscheme:mode==='plddt'?'default':{prop:'elem',map:{C:FAM[focus.fam%FAM.length],N:'#3b5bdb',O:'#d6336c',S:'#e8a400'}}}});
+    const [s,e]=focus.range,m=view.m[focus.fam],j=m.i.findIndex(x=>x[0]===s);
+    top.setStyle({resi:rng(s,e),resn:['TRP','PHE','TYR','LEU','ILE','VAL','MET','PRO','CYS','HIS']},{stick:{radius:.16,colorscheme:mode==='plddt'?'default':{prop:'elem',map:{C:copyColor(focus.fam,j,m.i.length),N:'#4a5a7a',O:'#8a9096',S:'#c9a227'}}}},true);
   }
 }
 
@@ -623,8 +636,8 @@ function famHTML(v,m,i,hl,focused){
   }
   const er=focused&&v.elm&&v.elm.ranges, inElm=(s,e)=>er==='all'||(Array.isArray(er)&&er.some(([a,b])=>s<=b&&e>=a));
   const rows=m.i.map(([s,e,q],j)=>{const mk=marks&&q.length===L?marks:null;
-    return `<div class="aln-row" data-f="${i}" data-j="${j}"><span class="pos">${s}–${e}</span><span class="sq${fixed?' fixed':''}">${seqHTML(q,mk,s)}</span>${er&&inElm(s,e)?'<span class="elmtag">ELM</span>':''}</div>`}).join('');
-  return `<div class="fam"><div class="fam-h"><span class="sw" style="background:${FAM[i%FAM.length]}"></span><b>${famId(v,m)}</b><span>${esc(famSummary(m))}</span>${focused?'<span class="star">highlighted family</span>':''}</div>
+    return `<div class="aln-row" data-f="${i}" data-j="${j}"><i class="cw" style="background:${copyColor(i,j,m.i.length)}"></i><span class="pos">${s}–${e}</span><span class="sq${fixed?' fixed':''}">${seqHTML(q,mk,s)}</span>${er&&inElm(s,e)?'<span class="elmtag">ELM</span>':''}</div>`}).join('');
+  return `<div class="fam"><div class="fam-h"><span class="sw" style="width:1.6em;background:linear-gradient(90deg,${RAMPS[i%RAMPS.length][0]},${RAMPS[i%RAMPS.length][1]})"></span><b>${famId(v,m)}</b><span>${esc(famSummary(m))}</span>${focused?'<span class="star">highlighted family</span>':''}</div>
     <div class="cons">${consHTML(m.c)}</div>
     <div class="aln">${ruler}${rows}</div>
     ${m.why?`<p class="why"><em>Model's description (blinded):</em> ${esc(m.why)}</p>`:''}</div>`;
@@ -644,7 +657,7 @@ function drawTracks(v,up){
   for(let t=0;t<=v.L;t+=step){const x=X(Math.max(t,1));s+=`<line x1="${x}" x2="${x}" y1="${y+12}" y2="${y+15}" stroke="#bdc1c4"/><text x="${x}" y="${y+9}" font-size="10" fill="#7a8288" text-anchor="${t===0?'start':'middle'}">${t}</text>`}
   s+=`<line x1="${LW}" x2="${LW+TW}" y1="${y+15}" y2="${y+15}" stroke="#bdc1c4"/>`;y+=24;
   v.m.forEach((m,i)=>{lane(`F${m.f}${v.focusF&&i===0?' (highlight)':''}`,16);s+=`<rect x="${LW}" y="${y+7}" width="${TW}" height="1" fill="#bdc1c4"/>`;
-    m.i.forEach(([a,b,q],j)=>{s+=`<rect class="hit" data-f="${i}" data-j="${j}" x="${X(a)}" y="${y+1}" width="${Wd(a,b)}" height="14" fill="${FAM[i%FAM.length]}" data-tip="<b>${famId(v,m)}, copy ${j+1}</b> · ${a}–${b}<br><span class='m'>${esc(q)}</span>"></rect>`});y+=21});
+    m.i.forEach(([a,b,q],j)=>{s+=`<rect class="hit" data-f="${i}" data-j="${j}" x="${X(a)}" y="${y+1}" width="${Wd(a,b)}" height="14" fill="${copyColor(i,j,m.i.length)}" data-tip="<b>${famId(v,m)}, copy ${j+1}</b> · ${a}–${b}<br><span class='m'>${esc(q)}</span>"></rect>`});y+=21});
   const seq=v.s||(up&&up.seq)||'';
   if(seq){lane('Disorder (TOP-IDP)',26);const prof=disorderProfile(seq),H=22,lo=-0.3,hi=0.75,Y=q=>y+H-(Math.max(lo,Math.min(hi,q))-lo)/(hi-lo)*H;
     let d=`M${X(1)},${y+H}`;const st=Math.max(1,Math.floor(v.L/TW));for(let k=0;k<Math.min(v.L,seq.length);k+=st)d+=`L${X(k+1)},${Y(prof[k])}`;d+=`L${X(Math.min(v.L,seq.length))},${y+H}Z`;
@@ -664,7 +677,7 @@ function renderLegend(v){
   const sites=v.ptmRes||[];
   $('#exLegend').innerHTML=colorMode==='plddt'
     ?`<span><i style="background:#0053D6"></i>pLDDT &gt; 90</span><span><i style="background:#65CBF3"></i>70–90</span><span><i style="background:#FFDB13"></i>50–70</span><span><i style="background:#FF7D45"></i>&lt; 50</span>`
-    :v.m.map((m,i)=>`<span><i style="background:${FAM[i%FAM.length]}"></i>F${m.f} (${m.i.length} copies${m.x==='disordered_like'?', side chains shown':''})</span>`).join('')+`<span><i style="background:${BASE}"></i>rest of chain</span>`;
+    :v.m.map((m,i)=>`<span><i style="width:1.6em;background:linear-gradient(90deg,${RAMPS[i%RAMPS.length][0]},${RAMPS[i%RAMPS.length][1]})"></i>F${m.f} (${m.i.length} copies${m.x==='disordered_like'?', side chains shown':''})</span>`).join('')+`<span><i style="background:${BASE}"></i>rest of chain</span>`;
   if(sites.length)$('#exLegend').innerHTML+=`<span><i style="background:${SITE}"></i>UniProt PTM in the highlighted family (red sticks)</span>`;
 }
 function exStatus(t){const s=$('#exStatus');s.textContent=t||'';s.style.display=t?'flex':'none'}
@@ -675,7 +688,7 @@ async function load3D(v){
   exViewer.clear();exViewer.render();exStatus('Loading AlphaFold model…');
   try{
     const pdb=await getPDB(v.a);if(tok!==loadToken)return;
-    exViewer.addModel(pdb,'pdb');styleModel(exViewer,v,colorMode);
+    exViewer.addModel(pdb,'pdb');exViewer.addModel(pdb,'pdb');styleModel(exViewer,v,colorMode);
     const hlRes=v.focusF?v.m[0].i.flatMap(([s,e])=>rng(s,e)):null;
     exViewer.zoomTo(hlRes?{resi:hlRes}:{});exViewer.render();exStatus('');
     if(spinning)exViewer.spin('y',.5);
