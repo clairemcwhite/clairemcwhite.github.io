@@ -505,8 +505,11 @@ function styleModel(v,view,mode,focus){
   m0.setStyle({},{});if(m1)m1.setStyle({},{});
   if(mode==='plddt'){m0.setStyle({},{cartoon:{colorfunc:a=>PLDDT(a.b)}})}
   else{
-    m0.setStyle(rep.length?{not:{resi:rep}}:{},{cartoon:{color:BASE,opacity:.5}});
-    view.m.forEach((m,i)=>m.i.forEach(([s,e],j)=>m1.setStyle({resi:rng(s,e)},{cartoon:{color:copyColor(i,j,m.i.length)}})));
+    // Overlap the two models by one residue at each copy boundary so the backbone stays continuous.
+    const repSet=new Set(rep),grey=[];
+    for(let r=1;r<=view.L;r++){if(!repSet.has(r)||!repSet.has(r-1)||!repSet.has(r+1))grey.push(r)}
+    m0.setStyle(rep.length?{resi:grey}:{},{cartoon:{color:BASE,opacity:.5}});
+    view.m.forEach((m,i)=>m.i.forEach(([s,e],j)=>m1.setStyle({resi:rng(Math.max(1,s-1),Math.min(view.L,e+1))},{cartoon:{color:copyColor(i,j,m.i.length)}})));
   }
   const top=mode==='plddt'?m0:m1;
   // repeats in disordered sequence: show side chains
