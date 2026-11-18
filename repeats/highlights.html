@@ -339,6 +339,10 @@ section,[id="top"]{scroll-margin-top:56px}
 .lpanel .lh .cn{font-family:var(--mono);color:var(--gray);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lpanel .lh .fd{color:var(--text);display:block}
 .lpanel svg{display:block;max-width:100%;height:auto}
+details.prompt{margin-top:1.4em}
+details.prompt summary{cursor:pointer;color:var(--strong);font-weight:600;font-size:.92em}
+details.prompt .pl{font-size:.78em;text-transform:uppercase;letter-spacing:.06em;color:var(--gray);margin:1em 0 .3em}
+details.prompt pre{background:var(--code);border:1px solid var(--lighter);padding:.9em 1em;font-family:var(--mono);font-size:.74em;line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:28em;overflow:auto;margin:0;color:var(--strong)}
 details.figs{margin-top:2em}
 details.figs>summary{cursor:pointer;color:var(--strong);font-weight:600;font-size:.95em}
 .novelset summary{font-size:1em}
@@ -360,7 +364,7 @@ details.figs>summary{cursor:pointer;color:var(--strong);font-weight:600;font-siz
     <p class="kicker">Research preview<span class="flag">Preliminary · work in progress</span></p>
     <h1>A blinded language-model screen for repeats in human disordered proteins</h1>
     <p class="byline">McWhite Lab, Department of Molecular and Cellular Biology, University of Arizona</p>
-    <p class="abstract">Repeated motifs in intrinsically disordered regions are hard to find by alignment: the copies are short, vary, and are spread along the sequence. We gave a language model anonymized human protein sequences and asked it to report recurring patterns as a consensus with the copies it was based on. Each reported copy was then located in the sequence, and copies that could not be found were discarded. Compared with UniProt, ELM and the literature, the results fall into three groups: known repeats, known motifs in new arrays, and novel repeats.</p>
+    <p class="abstract">Repeated motifs in intrinsically disordered regions are hard to find by alignment: the copies are short, vary, and are spread along the sequence. We asked a language model, Gemini Carbon, to find repeat structure in human protein sequences by reading them alone, with no code, no tools, no search and no protein names. Given anonymized sequences four at a time, it reported each recurring pattern as a consensus together with the copies it was based on. Each reported copy was then located in the sequence, and copies that could not be found were discarded. Compared with UniProt, ELM and the literature, the results fall into three groups: known repeats, known motifs in new arrays, and novel repeats.</p>
     <div class="links">
       <a href="#browse">Browse examples</a><span class="sep">·</span><a href="#catalog">Catalog</a><span class="sep">·</span><a href="./index.html">Curation tool</a><span class="sep">·</span><a href="catalog.json" download>Data (JSON)</a><span class="sep">·</span><span class="off">Preprint in preparation</span>
     </div>
@@ -466,14 +470,89 @@ details.figs>summary{cursor:pointer;color:var(--strong);font-weight:600;font-siz
 
   <section id="method">
     <h2>Method</h2>
-    <p class="lead">Scripts handle cohort selection, blinding and coordinate lookup and contain no motif-finding logic. The model sees only an anonymous sequence. A <b>repeat family</b> is one repeat array in one protein.</p>
+    <p class="lead">The model (Gemini Carbon) reads the sequences itself: it is told not to call any tools, write code or search, and to use no prior knowledge of named proteins or domain families. Scripts only select the cohort, blind the sequences and look up coordinates afterwards. A <b>repeat family</b> is one repeat array in one protein. Access to Gemini Carbon was provided through the Antigravity Research Access Program.</p>
     <div class="steps">
       <div class="step"><div class="n">1</div><div class="ill" data-ill="cohort"></div><h3>Cohort</h3><p>Human proteins with ≥100 aa of disorder, from UniProt / MobiDB-lite regions or a TOP-IDP propensity window.</p></div>
       <div class="step"><div class="n">2</div><div class="ill" data-ill="blind"></div><h3>Blinding</h3><p>Names and annotations are removed and sequences get shuffled anonymous IDs. The key is kept separately.</p></div>
-      <div class="step"><div class="n">3</div><div class="ill" data-ill="read"></div><h3>Two-pass reading</h3><p>One pass for long structural repeats, then an independent pass over disordered stretches for short anchored motifs (≥5 aa, usually ≥3 copies).</p></div>
-      <div class="step"><div class="n">4</div><div class="ill" data-ill="locate"></div><h3>Locating copies</h3><p>The model quotes each copy it reports. A script finds each quote in the sequence and records its coordinates; quotes that aren't in the sequence are dropped. Copies need not match each other.</p></div>
+      <div class="step"><div class="n">3</div><div class="ill" data-ill="read"></div><h3>Reading</h3><p>Four sequences per prompt. One pass for long structural repeats, then a separate pass over disordered stretches for short anchored motifs (units ≥5 aa, ≥3 copies; 2 copies only for long, conserved units). Collagen, coiled-coil and charged-rod tracts are flagged, not reported.</p></div>
+      <div class="step"><div class="n">4</div><div class="ill" data-ill="locate"></div><h3>Locating copies</h3><p>The model quotes each copy exactly as it appears. A script finds each quote in the sequence and records its coordinates; quotes that aren't found are dropped. Copies need not match each other.</p></div>
       <div class="step"><div class="n">5</div><div class="ill" data-ill="unblind"></div><h3>Unblinding</h3><p>Identities are attached only afterwards, then results are compared with UniProt features, ELM and AlphaFold models.</p></div>
     </div>
+    <details class="prompt">
+      <summary>The prompt</summary>
+      <p class="pl">System instructions</p>
+      <pre>You are a protein sequence motif and repeat analyst examining blinded amino acid sequence(s).
+STRICT ISOLATION RULE:
+- Do NOT call any tools (do not read files, search the codebase, or search the web). Analyze ONLY the raw amino acid sequence text provided directly in the prompt.
+
+Analysis guidelines:
+- Use ZERO prior knowledge of specific proteins or named domain families; judge strictly from the amino acid sequence provided.
+- Perform an explicit TWO-STAGE VISUAL SCAN on every sequence so strong structural repeats never shadow subtle disordered repeats:
+  1. Stage 1 (Long &amp; Structural Repeats): Scan the full sequence for longer repeats (15+ aa), tandem arrays, or high-conservation internal duplications.
+  2. Stage 2 (Independent Disordered-Region Scan): Independently isolate all disordered-like regions (N/C-terminal tails, long linkers, segments enriched in P,S,E,K,Q,G,D,N,R,T and depleted in bulky hydrophobics) and carefully scan them for short-to-medium repeats (5-15 aa) occurring &gt;=3 times, whether dispersed or tandem!
+- Copy number &amp; minimum length rule:
+  - Minimum repeat unit length is strictly &gt;=5 aa (never report &lt;=4 aa short repeats).
+  - Require &gt;=3 occurrences by default (especially important for 5-15 aa repeats in disordered regions).
+  - Report a 2-copy repeat ONLY if it is long (typically &gt;=15 aa) and strongly conserved across many positions so chance occurrence is implausible.
+- Spacing: Repeats do NOT need to be tandem or periodic -- dispersed repeats separated by variable linkers are equally important. Record whether spacing is &quot;tandem&quot; (head-to-tail or &lt;=2 aa gap), &quot;periodic&quot; (regular linker length), or &quot;dispersed&quot; (variable spacing).
+- Motif quality &amp; low-complexity boundary:
+  - Look for convincing multi-position architecture: fixed anchor residues (especially P, G, W, Y, F, C, H, D, E, K, R, L), constrained 2-3 residue choices, and physicochemically conserved positions.
+  - Disregard pure unanchored low-complexity / compositional-bias tracts (bare homopolymers like QQQQQQ, PPPPPP, EEEEE, or simple 2-3 letter repeats like GSGSGS, RGG, SRSR with no multi-position consensus).
+  - IMPORTANT EXCEPTION: Do NOT dismiss a motif merely because it contains a short proline or polar run (such as PPP or PPPP) IF it is anchored by conserved flanking or internal non-bias positions across &gt;=3 copies (for example, `PPPPGφx[PG]L` or `[ST]Px+xΩ` where specific flanking residues align cleanly by eye).
+- Window refinement &amp; non-overlap:
+  - Check whether shifting phase or expanding 1-4 residues left/right yields a longer, higher-information consensus across copies.
+  - If a protein contains multiple distinct, non-overlapping repeat families (e.g., a structured repeat domain AND a dispersed 6-10mer motif in flanking disorder, or two different IDR motifs), report ALL of them, ordered strongest first. Never report overlapping instances.
+- Proactive structural-bias `flags`:
+  - Conventional tools easily detect collagen, coiled-coils, and charged helical rods. Whenever a sequence contains a noticeable tract of:
+    * `&quot;collagen_gxy&quot;` (repetitive G-x-y triplets),
+    * `&quot;coiled_coil_heptad&quot;` (amphipathic alpha-helical heptads with hydrophobic `a,d` register and polar/charged `e,g`), or
+    * `&quot;charged_helical_rod&quot;` (extended E/K/R-rich single alpha-helical / charged alternating tracts like EEEKKRREEE...),
+    add the corresponding label(s) to `flags`. Do NOT list those generic tracts in `repeats`, and continue scanning the rest of the protein for genuine motif/domain repeats.
+
+Symbol key for `consensus` (1 token = 1 residue position, concatenated with NO separator):
+  A..Y  = fixed standard amino acid (note: P is NOT part of φ; treat P as its own fixed anchor or inside [...])
+  [XY]  = constrained choice of 2-3 specific amino acids (e.g., [ST], [GP], [KRH])
+  φ     = hydrophobic, excluding proline (A,V,I,L,M,F,W,Y)
+  ψ     = large aliphatic (V,I,L,M)
+  Ω     = aromatic (F,W,Y)
+  +     = basic / positively charged (K,R)
+  -     = acidic / negatively charged (D,E)
+  o     = polar uncharged (S,T,N,Q)
+  x     = unconstrained single residue
+  (For repeats &gt;=20 aa with minor internal length variation across copies, use `(x){n,m}` only where a variable loop occurs.)
+
+--- OUTPUT SCHEMA (per sequence) ---
+{
+  &quot;seq_id&quot;: &quot;&lt;string: blinded sequence ID provided&gt;&quot;,
+  &quot;has_repeat&quot;: &lt;boolean: true if `repeats` is non-empty, else false&gt;,
+  &quot;flags&quot;: [&quot;collagen_gxy&quot; | &quot;coiled_coil_heptad&quot; | &quot;charged_helical_rod&quot;],
+  &quot;repeats&quot;: [
+    {
+      &quot;consensus&quot;: &quot;&lt;string using symbol key above&gt;&quot;,
+      &quot;unit_length&quot;: &lt;integer or &quot;&lt;min&gt;-&lt;max&gt;&quot; if variable-length &gt;=20 aa repeat&gt;,
+      &quot;spacing&quot;: &quot;tandem&quot; | &quot;periodic&quot; | &quot;dispersed&quot;,
+      &quot;sequence_context&quot;: &quot;disordered_like&quot; | &quot;structured_like&quot; | &quot;mixed&quot;,
+      &quot;confidence&quot;: &quot;high&quot; | &quot;medium&quot;,
+      &quot;instances&quot;: [
+        &quot;&lt;exact verbatim uppercase amino acid substring from the input sequence, in N-to-C order&gt;&quot;
+      ],
+      &quot;rationale&quot;: &quot;&lt;concise 1-2 sentence explanation of conserved anchors, physicochemical positions, and spacing/context&gt;&quot;
+    }
+  ]
+}
+
+CRITICAL RULES:
+1. Every string in `instances` MUST be an exact, contiguous, un-gapped substring copied verbatim from the input sequence.
+2. Output ONLY valid JSON (a single object if 1 sequence is given, or a JSON array of objects if multiple sequences are given) -- no markdown fences, no prose.</pre>
+      <p class="pl">Each request (four sequences)</p>
+      <pre>Inspect these 4 anonymized human UniProt protein sequences strictly following your system instructions and output a JSON array of 4 objects (one per sequence, in order):
+
+&gt;SEQ_XXXXX length=342
+M... (60-aa wrapped uppercase sequence)
+
+&gt;SEQ_YYYYY length=418
+M...</pre>
+    </details>
     <div class="symbols">
       <p style="margin-bottom:.4em"><b>Consensus notation.</b> One symbol per residue position; unit positions in the highlights count these symbols from 1.</p>
       <div class="grid">
@@ -514,7 +593,7 @@ details.figs>summary{cursor:pointer;color:var(--strong);font-weight:600;font-siz
 
 <footer>
   <div class="container">
-    <span>© McWhite Lab, University of Arizona</span>
+    <span>Access to Gemini Carbon provided through the Antigravity Research Access Program.</span><span>© McWhite Lab, University of Arizona</span>
     <span>Structures: AlphaFold DB · Annotations: UniProt, InterPro, ELM · Viewer: 3Dmol.js · Data as of <span id="asof"></span></span>
   </div>
 </footer>
