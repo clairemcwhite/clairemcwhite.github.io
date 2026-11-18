@@ -243,6 +243,94 @@ footer .container{display:flex;justify-content:space-between;gap:1em;flex-wrap:w
 #tip{position:fixed;z-index:100;pointer-events:none;background:#fff;color:var(--text);border:1px solid var(--light);padding:.45em .65em;font-size:.8em;line-height:1.4;max-width:320px;box-shadow:0 2px 8px rgba(0,0,0,.08);opacity:0}
 #tip b{color:var(--strong)}
 #tip .m{font-family:var(--mono);font-size:.92em;color:var(--gray);word-break:break-all}
+/* ── restructure: sticky section nav, tier cards, family cards, browser ── */
+html{scroll-behavior:smooth}
+section,[id="top"]{scroll-margin-top:56px}
+.container.wide{max-width:1400px}
+.subnav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--lighter)}
+.subnav .container{display:flex;gap:1.5em;overflow-x:auto;scrollbar-width:none;font-size:.88em;padding-top:.65em;padding-bottom:.65em;white-space:nowrap}
+.subnav .container::-webkit-scrollbar{display:none}
+.subnav a{color:var(--gray)}
+.subnav a:hover{color:var(--strong);text-decoration:none}
+.subnav a i{display:inline-block;width:.6em;height:.6em;margin-right:.4em}
+
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2em;margin:1.6em 0 0}
+@media (max-width:820px){.tiers{grid-template-columns:1fr}}
+.tier{display:block;border:1px solid var(--lighter);border-top:3px solid var(--tc);padding:.8em 1em .9em;color:var(--text)}
+.tier:hover{text-decoration:none;color:var(--text);border-color:var(--light);border-top-color:var(--tc)}
+.tier .tl{font-size:.72em;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--tc)}
+.tier b{display:block;font-size:1.05em;color:var(--strong);margin:.15em 0 .3em;line-height:1.3}
+.tier p{font-size:.85em;margin:0;color:var(--text)}
+.tier .n{font-size:.82em;color:var(--gray);margin-top:.5em;display:block}
+.elmnote{font-size:.85em;color:var(--gray);max-width:52em;margin:1.2em 0 0}
+
+.sec-k{font-size:.72em;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin:0 0 .3em}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1em;margin:1.2em 0 .9em}
+@media (max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.cards{grid-template-columns:1fr}}
+.fcard{font:inherit;text-align:left;background:#fff;border:1px solid var(--lighter);border-left:3px solid var(--tc);padding:.75em .9em .7em;cursor:pointer;color:var(--text);display:flex;flex-direction:column;gap:.35em;min-width:0}
+.fcard:hover{border-color:var(--light);border-left-color:var(--tc);background:var(--code)}
+.fcard.on{border-color:var(--strong);border-left-color:var(--tc)}
+.fc-h{display:flex;gap:.6em;align-items:baseline;min-width:0}
+.fc-h b{font-family:var(--mono);color:var(--strong);font-size:.95em;flex-shrink:0}
+.fc-h span{font-size:.78em;color:var(--gray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fc-t{font-size:.88em;line-height:1.4;color:var(--strong)}
+.fc-logo{margin-top:auto;padding-top:.2em}
+.fc-logo svg{display:block;max-width:100%;height:auto}
+.fc-cons{font-family:var(--mono);font-size:.76em;color:var(--strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fc-track svg{display:block;width:100%;height:8px}
+.fc-chips{display:flex;flex-wrap:wrap;gap:.3em .9em;font-size:.72em;color:var(--gray)}
+.seeall{font:inherit;font-size:.88em;background:none;border:0;padding:0;color:var(--link);cursor:pointer}
+.seeall:hover{color:var(--link-hover);text-decoration:underline}
+
+.browser{display:grid;grid-template-columns:270px minmax(0,1fr);gap:2em;align-items:start}
+.browser .explorer{border-top:0;padding-top:0}
+.blist{position:sticky;top:52px;max-height:calc(100vh - 64px);display:flex;flex-direction:column;border:1px solid var(--lighter);min-width:0}
+.bl-ctl{padding:.6em .7em;border-bottom:1px solid var(--lighter);display:grid;gap:.45em}
+.bl-ctl input,.bl-ctl select{font:inherit;font-size:.82em;padding:.3em .5em;border:1px solid var(--light);border-radius:3px;background:#fff;color:var(--text);min-width:0;width:100%}
+.bl-ctl .two{display:grid;grid-template-columns:1fr 1fr;gap:.45em}
+.bl-seg{display:flex;flex-wrap:wrap;gap:.25em}
+.bl-seg button{font:inherit;font-size:.74em;background:#fff;border:1px solid var(--lighter);border-radius:3px;padding:.15em .5em;color:var(--gray);cursor:pointer}
+.bl-seg button.on{border-color:var(--strong);color:var(--strong);font-weight:600}
+.bl-seg button i{display:inline-block;width:.6em;height:.6em;margin-right:.35em}
+.bl-count{font-size:.74em;color:var(--gray)}
+.bl-body{overflow:auto;padding:.2em 0 .6em;min-height:0}
+.bl-tier h4{position:sticky;top:0;background:#fff;margin:0;padding:.55em .7em .3em;font-size:.72em;text-transform:uppercase;letter-spacing:.07em;color:var(--strong);z-index:1}
+.bl-tier h4 i{display:inline-block;width:.65em;height:.65em;margin-right:.45em}
+.bl-tier h4 span{color:var(--gray);font-weight:400;margin-left:.3em}
+.bl-fn{font-size:.7em;color:var(--gray);padding:.5em .7em .1em;text-transform:uppercase;letter-spacing:.04em}
+.bl-it{display:block;width:100%;text-align:left;font:inherit;background:none;border:0;border-left:3px solid transparent;padding:.22em .7em .22em .55em;cursor:pointer;color:var(--text);line-height:1.3}
+.bl-it b{font-family:var(--mono);font-weight:400;font-size:.82em;color:var(--link)}
+.bl-it span{display:block;font-size:.74em;color:var(--gray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bl-it:hover{background:var(--code)}
+.bl-it.on{border-left-color:var(--strong);background:var(--code)}
+.bl-it.on b{color:var(--strong);font-weight:700}
+.bl-empty{padding:1em .7em;font-size:.82em;color:var(--gray)}
+.browser .viewer{top:52px}
+@media (max-width:1180px){
+  .browser{grid-template-columns:1fr;gap:1.2em}
+  .blist{position:relative;top:0;max-height:440px}
+}
+.fnchip{font-size:.72em;padding:.1em .5em;border-radius:3px;border:1px solid var(--lighter);background:#fff;color:var(--text);white-space:nowrap}
+.finding .logo{margin:.5em 0 .3em}
+.finding .logo svg{display:block;max-width:100%;height:auto}
+.finding .logo small{display:block;font-size:.72em;color:var(--gray);margin-top:.15em}
+.subnote2{font-size:.85em;margin:.5em 0 0;color:var(--text)}
+.ptmkey{display:flex;flex-wrap:wrap;gap:.3em 1.1em;font-size:.8em;margin:.2em 0 .8em}
+.ptmkey i{display:inline-block;width:.8em;height:.8em;margin-right:.35em;vertical-align:-.05em}
+.lg-sec{margin:1.2em 0 .4em;font-size:.78em;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8em}
+.lpanel{border:1px solid var(--lighter);background:#fff;padding:.55em .65em .5em;text-align:left;font:inherit;cursor:pointer;min-width:0}
+.lpanel:hover{border-color:var(--light)}
+.lpanel .lh{font-size:.8em;line-height:1.35;margin-bottom:.35em}
+.lpanel .lh b{font-family:var(--mono);color:var(--strong)}
+.lpanel .lh .cn{font-family:var(--mono);color:var(--gray);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lpanel .lh .fd{color:var(--text);display:block}
+.lpanel svg{display:block;max-width:100%;height:auto}
+details.figs{margin-top:2em}
+details.figs>summary{cursor:pointer;color:var(--strong);font-weight:600;font-size:.95em}
+.novelset summary{font-size:1em}
+.novelset .wrap{max-height:440px}
 </style>
 </head>
 <body>
@@ -254,14 +342,15 @@ footer .container{display:flex;justify-content:space-between;gap:1em;flex-wrap:w
   </div>
 </header>
 
-<main class="container">
+<main id="top">
+<div class="container">
   <div class="page-head">
     <p class="kicker">Research preview<span class="flag">Preliminary · work in progress</span></p>
     <h1>A blinded language-model screen for repeats in human disordered proteins</h1>
     <p class="byline">McWhite Lab, Department of Molecular and Cellular Biology, University of Arizona</p>
-    <p class="abstract">Repeated motifs in intrinsically disordered regions are hard to find by alignment: the copies are short, differ from one another, and are spread out along the sequence. We gave a language model anonymized human protein sequences, with names and annotations removed, and asked it to describe any recurring pattern as a consensus together with the copies it was based on. A script then located each reported copy in the sequence and discarded any that could not be found. Set against UniProt modification sites and ELM motif annotations, the screen places known sites and motifs at a fixed position in the repeat unit, finds the same motifs in arrays that have not been curated, and turns up positional modification patterns with no description.</p>
+    <p class="abstract">Repeated motifs in intrinsically disordered regions are hard to find by alignment: the copies are short, differ from one another, and are spread out along the sequence. We gave a language model anonymized human protein sequences, with names and annotations removed, and asked it to describe any recurring pattern as a consensus together with the copies it was based on. A script then located each reported copy in the sequence and discarded any that could not be found. Read against UniProt, ELM and the literature, the results fall into three groups: established repeats the screen recovers without being told what they are, known motifs in arrays that no database records, and repeats we can find no description of.</p>
     <div class="links">
-      <a href="#explore">Highlights</a><span class="sep">·</span><a href="#catalog">Catalog</a><span class="sep">·</span><a href="./index.html">Curation tool</a><span class="sep">·</span><a href="catalog.json" download>Data (JSON)</a><span class="sep">·</span><span class="off">Preprint in preparation</span>
+      <a href="#browse">Browse examples</a><span class="sep">·</span><a href="#catalog">Catalog</a><span class="sep">·</span><a href="./index.html">Curation tool</a><span class="sep">·</span><a href="catalog.json" download>Data (JSON)</a><span class="sep">·</span><span class="off">Preprint in preparation</span>
     </div>
     <form class="find" id="findForm" autocomplete="off"><label for="findQ">Find a protein</label><input id="findQ" type="search" placeholder="Gene or UniProt accession, e.g. SRRM2 or P24928"><button type="submit">Go</button><span class="msg" id="findMsg"></span></form>
     <div class="numbers">
@@ -270,50 +359,79 @@ footer .container{display:flex;justify-content:space-between;gap:1em;flex-wrap:w
       <div><b data-stat="families"></b><span>repeat families, every copy located in the sequence</span></div>
       <div><b data-stat="copies_total"></b><span>located repeat copies</span></div>
     </div>
+    <div class="tiers" id="tierNav"></div>
+    <p class="elmnote" id="elmNote"></p>
   </div>
+</div>
 
-  <section id="explore">
-    <h2>Highlights</h2>
-    <p class="lead">Highlights are grouped by novelty: repeated patterns with no description, new occurrences of known motifs, and known repeats the screen recovers blind. Within each group, families with a UniProt modification at a fixed unit position lead, because a modification at the same position in most copies is independent support that the unit is real. Each family gets an evidence badge for the modification it is about, a literature badge from a PubMed abstract sweep, and one of three ELM calls: curated in the array, curated elsewhere in the protein, or a protein ELM has never curated (87% of families, where ELM's silence says nothing). Repeat architectures follow as a separate set of examples. Select any family to see its AlphaFold model, its copies against UniProt annotations, and the modified unit position marked in each copy.</p>
-    <div class="hl-groups" id="hlSummary"></div>
+<nav class="subnav" aria-label="Sections"><div class="container" id="subnav"></div></nav>
 
-    <div class="groupsel" id="groupsel"></div>
-    <div class="tabs" id="tabs"></div>
-    <div class="cat-intro"><h3 id="secTitle"></h3><p id="secText"></p></div>
-    <div class="prots" id="prots"></div>
-    <div class="explorer">
-      <div class="viewer">
-        <div class="vbox"><div class="v" id="exV"></div><div class="status" id="exStatus"></div></div>
-        <div class="vtools">
-          <div class="grp" id="colorSeg"><span>Color</span><button data-mode="repeats" class="on">Repeats</button><button data-mode="plddt">pLDDT</button></div>
-          <div class="grp"><button id="spinBtn">Spin</button><button id="resetBtn">Reset view</button></div>
-        </div>
-        <div class="vlegend" id="exLegend"></div>
-      </div>
-      <div class="side" id="side"></div>
-    </div>
-
-    <figure class="figwrap">
-      <a href="fig/top10_repeat_highlights.png" target="_blank" rel="noopener"><img class="figimg" src="fig/top10_repeat_highlights.png" alt="Sequence logos and per-position modification frequency for the ten headline repeat families" loading="lazy"></a>
-      <figcaption><b>Figure 2.</b> The ten headline families. Each panel shows a sequence logo of the located copies (bits) and, above it, the percentage of copies carrying a UniProt modification at each unit position (phosphorylation, O-glycosylation, methylation, sumoylation) or, for ELM cases, a class regex match and curated instances. Logos are computed without a pseudocount; information content is biased upwards when there are few copies, so n is given on each panel. Click to enlarge. Panel labels reflect the categories when the figure was made; ZNHIT6, for example, is now classed as a new occurrence of the SUMO consensus (MOD_SUMO_for_1).</figcaption>
-    </figure>
-    <figure class="figwrap">
-      <a href="fig/highlights_batch2.png" target="_blank" rel="noopener"><img class="figimg" src="fig/highlights_batch2.png" alt="Sequence logos for sixteen further highlighted repeat families" loading="lazy"></a>
-      <figcaption><b>Figure 3.</b> Sixteen further families: eight with a UniProt modification at a fixed unit position (phosphorylation, N-glycosylation, methylation, hydroxylation) and eight with no annotated modification anywhere in the array. Panels are drawn as in Figure 2. Click to enlarge.</figcaption>
-    </figure>
-    <figure class="figwrap">
-      <a href="fig/evidence_axes.png" target="_blank" rel="noopener"><img class="figimg" src="fig/evidence_axes.png" alt="Repeat families by recurrence across proteins and ELM curation status" loading="lazy"></a>
-      <figcaption><b>Figure 4.</b> How often the screen's repeats are already curated, from an analysis snapshot of 2,194 clustered families (numbers differ from the live counts above). <b>a</b>, Families recurring in two or more proteins (383) and families seen in one protein (1,811), split by whether ELM curates an instance inside the repeat (17 and 82; about 4.5% in both), curated the protein but not the repeat, or never curated the protein. <b>b</b>, The 383 recurring families grouped into 95 classes: 32 classes match a known motif, 60 have no annotation match and 3 are structured or low-complexity; colored segments are classes that cross gene families. <b>c</b>, The 9 unmatched classes that cross gene families, by the number of proteins carrying the repeat, colored by whether the carrier proteins share an interaction partner.</figcaption>
-    </figure>
+<div class="container">
+  <section id="known">
+    <p class="sec-k" data-tier="known">Known</p>
+    <h2>Recovered blind: established repeats</h2>
+    <p class="lead">These are the control. If the screen reads real repeats, the textbook ones should fall out of an anonymous sequence, and they do: the Pol II CTD heptads, the neurofilament KSP array, FG nucleoporin units, prohormone cleavage repeats and curated docking motifs. Six are shown here. Each card gives the unit as a sequence logo of the located copies and where the copies sit along the protein; select one to open its structure and alignment.</p>
+    <div class="cards" id="cards-known"></div>
+    <button class="seeall" data-seeall="known"></button>
   </section>
 
+  <section id="newocc">
+    <p class="sec-k" data-tier="newocc">Known motif, new place</p>
+    <h2>Known motifs in arrays no database records</h2>
+    <p class="lead">The unit matches a known motif class, but this array is not recorded as an instance of it: ELM has no curated instance in the array. Most are docking motifs, such as SH2-binding tyrosines, NPF and IQ motifs; others are modification sites that fall at the same unit position in most copies. Positions are counted from the start of each copy, so the distance between copies can vary.</p>
+    <div class="cards" id="cards-newocc"></div>
+    <button class="seeall" data-seeall="newocc"></button>
+  </section>
+
+  <section id="novel">
+    <p class="sec-k" data-tier="novel">Novel</p>
+    <h2>Repeats with no description we could find</h2>
+    <p class="lead">No UniProt repeat annotation, no curated ELM instance, no canonical motif class, no annotated modification pattern, and nothing retrieved in a PubMed abstract sweep. That is not the same as unknown: an abstract sweep cannot see a motif described in a figure panel, which is how BMP2K’s array was missed. Five hand-picked families come first, then the full set that clears every filter.</p>
+    <div class="cards" id="cards-novel"></div>
+    <div id="novelSetWrap"></div>
+  </section>
+</div>
+
+<div class="container wide">
+  <section id="browse">
+    <h2>Browse the worked examples</h2>
+    <p class="lead">Every hand-checked family in one list, grouped by what the repeat does. Filter by group, arrangement or sequence context. Each family shows its AlphaFold model, its copies against UniProt annotations, and what UniProt, ELM and a PubMed abstract sweep say about it. For 87% of families ELM has never curated the protein, so ELM’s silence there says nothing.</p>
+    <div class="browser">
+      <aside class="blist" aria-label="Families">
+        <div class="bl-ctl">
+          <div class="bl-seg" id="blTier"></div>
+          <input id="blQ" type="search" placeholder="Filter by gene, motif or function" autocomplete="off">
+          <div class="two">
+            <select id="blSp" aria-label="Arrangement"><option value="">Any arrangement</option><option value="tandem">Tandem</option><option value="dispersed">Dispersed</option><option value="periodic">Periodic</option></select>
+            <select id="blCtx" aria-label="Sequence context"><option value="">Any context</option><option value="disordered_like">Disordered</option><option value="structured_like">Structured</option><option value="mixed">Mixed</option></select>
+          </div>
+          <span class="bl-count" id="blCount"></span>
+        </div>
+        <div class="bl-body" id="blBody"></div>
+      </aside>
+      <div class="explorer">
+        <div class="viewer">
+          <div class="vbox"><div class="v" id="exV"></div><div class="status" id="exStatus"></div></div>
+          <div class="vtools">
+            <div class="grp" id="colorSeg"><span>Color</span><button data-mode="repeats" class="on">Repeats</button><button data-mode="plddt">pLDDT</button></div>
+            <div class="grp"><button id="spinBtn">Spin</button><button id="resetBtn">Reset view</button></div>
+          </div>
+          <div class="vlegend" id="exLegend"></div>
+        </div>
+        <div class="side" id="side"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
   <section id="screen">
     <h2>The screen at a glance</h2>
     <div class="fig1">
       <figure>
         <canvas id="ovCanvas" aria-label="Every protein with repeats, as a row"></canvas>
         <div class="key"><span><i style="background:var(--c-str)"></i>Structured context</span><span><i style="background:var(--c-dis)"></i>Disordered context</span><span><i style="background:var(--c-mix)"></i>Mixed</span></div>
-        <figcaption><b>Figure 1.</b> <span id="ovCaption"></span> Each row is one protein (gray), sorted by length; colored segments are located repeat copies, colored by the sequence context the model assigned. Proteins longer than 2,500 aa are truncated. Hover to identify a protein; click to open it in the explorer.</figcaption>
+        <figcaption><b>Figure 1.</b> <span id="ovCaption"></span> Each row is one protein (gray), sorted by length; colored segments are located repeat copies, colored by the sequence context the model assigned. Proteins longer than 2,500 aa are truncated. Hover to identify a protein; click to open it in the browser.</figcaption>
       </figure>
       <div class="panels">
         <div class="chart"><div class="panel-l">A. Sequence context <span>(per family)</span></div><div id="ctxChart"></div></div>
@@ -321,6 +439,15 @@ footer .container{display:flex;justify-content:space-between;gap:1em;flex-wrap:w
         <div class="chart"><div class="panel-l">C. Copies per family</div><div id="copyChart"></div></div>
       </div>
     </div>
+    <figure class="figwrap">
+      <a href="fig/evidence_axes.png" target="_blank" rel="noopener"><img class="figimg" src="fig/evidence_axes.png" alt="Repeat families by recurrence across proteins and ELM curation status" loading="lazy"></a>
+      <figcaption><b>Figure 2.</b> How often the screen's repeats are already curated, from an analysis snapshot of 2,194 clustered families (numbers differ from the live counts above). <b>a</b>, Families recurring in two or more proteins (383) and families seen in one protein (1,811), split by whether ELM curates an instance inside the repeat (17 and 82; about 4.5% in both), curated the protein but not the repeat, or never curated the protein. <b>b</b>, The 383 recurring families grouped into 95 classes: 32 classes match a known motif, 60 have no annotation match and 3 are structured or low-complexity; colored segments are classes that cross gene families. <b>c</b>, The 9 unmatched classes that cross gene families, by the number of proteins carrying the repeat, colored by whether the carrier proteins share an interaction partner.</figcaption>
+    </figure>
+    <figure class="figwrap" id="logoFig">
+      <div class="ptmkey" id="ptmKey"></div>
+      <div id="logoGrid"></div>
+      <figcaption><b>Figure 3.</b> Every highlighted family, drawn live from the data. Each panel shows, above, the percentage of copies carrying a UniProt modification at each unit position, stacked by modification type, and below, a sequence logo of the copies (bits). Both use the copies with the family's most common unit length (n on each panel). Logos are computed without a pseudocount, so information content is biased upwards when there are few copies. Families whose copies differ in length show the bars only; families with no annotated modification say so. Click a panel to open it in the browser above.</figcaption>
+    </figure>
   </section>
 
   <section id="method">
@@ -368,6 +495,7 @@ footer .container{display:flex;justify-content:space-between;gap:1em;flex-wrap:w
   url    = {https://clairemcwhite.github.io/repeats/highlights.html}
 }</pre>
   </section>
+</div>
 </main>
 
 <footer>
@@ -383,20 +511,98 @@ const DATA = {"stats":{"screened":12628,"with":4589,"catalog_proteins":4589,"fam
 const HIGHLIGHTS = [{"tier":"elm_class_regex_match_only","grp":"novel","gene":"CHAMP1","sid":"SEQ_03506","f":1,"cons":"[SF]Pxxx+xxx","finding":"Ser phospho at position 1 of the unit","support":"20/26","evidence":"SLiM-triage novel candidate; no writer named, no UniProt text, no curated instance; 7 PubMed on the sites","note":"","elm":{"st":"none","t":"No curated ELM instance."},"sites":[{"p":1,"k":"site"}],"L":9,"fixed":true,"sub":"mod","concord":"MOD_ProDKin_1","generic":true,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"None of the abstracts mention a repeated SPxxx motif array or its phosphorylation/binding site set in CHAMP1."},"caveat":"The motif is weakly compatible with a common kinase class (MOD_ProDKin_1, essentially [ST]P, in 62% of copies) rather than unmatched."},{"tier":"elm_class_regex_match_only","grp":"novel","gene":"LEO1","sid":"SEQ_05185","f":1,"cons":"[STD]D--[KRE]xxx","finding":"Ser/Thr phospho at position 1 of the unit","support":"9/12","evidence":"SLiM-triage novel candidate; pattern undescribed; 4 PubMed on the sites","note":"","elm":null,"sites":[{"p":1,"k":"site"}],"L":8,"fixed":true,"sub":"mod","concord":"MOD_CK2_1","generic":true,"lit":{"st":"mentioned_not_as_array","doi":"10.1126/sciadv.adf8698","pmid":"37205756","year":"2023","title":"CDK12 and Integrator-PP2A complex modulates LEO1 phosphorylation for processive transcription elongation","note":"Abstract 6 describes LEO1 phosphorylation sites identified by CDK12, but not as a repeated SD motif array."},"caveat":"The motif is weakly compatible with a common kinase class (MOD_CK2_1, in 83% of copies) rather than unmatched."},{"tier":"no_ptm_annotated","grp":"novel","gene":"PPP1R10","sid":"SEQ_03217","f":1,"cons":"GHRPHEGPGG[GS][MI][GS]","finding":"PNUTS GHRPHEGPGG unit, 6 periodic copies","support":"6 copies","evidence":"no UniProt modification site in any copy; ELM curates PPP1R10 elsewhere, not the repeat","note":"","elm":{"st":"none","t":"ELM curates this protein elsewhere but has no instance in the repeat."},"sites":[],"L":13,"fixed":true,"sub":"nomod","concord":"","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"The only abstract concerns PABPN1/Pab2 heterochromatin condensates in fission yeast, unrelated to PNUTS/PPP1R10 or its repeat motif."}},{"tier":"no_ptm_annotated","grp":"novel","gene":"LRRC37A","sid":"SEQ_12785","f":1,"cons":"[PL][LPA]D[LV][GEQ][LFV][TA]I[TAI]x[EK][PS]x[TNA]E[VT][EGK]xS","finding":"QQE[AT]P-type unit, 7 copies; the same consensus recurs in LRRC37A2 and LRRC37A3","support":"7 copies","evidence":"no modification site; ELM has never curated any LRRC37A paralogue","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[],"L":19,"fixed":true,"sub":"nomod","concord":"","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"The abstract discusses LRRC37A only as a transcriptionally regulated gene via YY1/TFAP2 promoter competition, not its repeat motif array."}},{"tier":"no_ptm_annotated","grp":"novel","gene":"TCHH","sid":"SEQ_19356","f":2,"cons":"[RHS][QH][EQD]xxRK[FI][RLM]x[EQD]E[QLP]x","finding":"trichohyalin RK[FI] unit, 24 dispersed copies","support":"24 copies","evidence":"no modification site; ELM has never curated TCHH","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[],"L":14,"fixed":true,"sub":"nomod","concord":"","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"The abstract concerns alopecia areata transcriptomics/proteomics and does not mention TCHH or any repeated motif array."}},{"tier":"known_motif_class_novel_array","grp":"newocc","gene":"ZNHIT6","sid":"SEQ_19214","f":1,"cons":"[VI]K[EQ]Ex","finding":"SUMO cross-link on the position-2 Lys","support":"9/9","evidence":"found only by this screen, never SLiM-triaged; pattern undescribed; 3 PubMed on the sites","note":"","elm":null,"sites":[{"p":2,"k":"site"}],"L":5,"fixed":true,"sub":"mod","concord":"MOD_SUMO_for_1","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"Abstracts discuss ZHD structure and an N-terminal Snu13/snoRNA interaction motif, not a repeated [VI]K[EQ]Ex SUMOylation motif array."}},{"tier":"known_motif_class_novel_array","grp":"newocc","gene":"PKP4","sid":"SEQ_02708","f":2,"cons":"R[AVP][AGQ]SP","finding":"RxxSP: phospho at position 4","support":"5/5","evidence":"ELM class regex match only (MOD_DYRK1A_RPxSP_1 100%); 10 PubMed; SLiM-triage novel candidate","note":"","elm":{"st":"none","t":"ELM curates this protein elsewhere but has no instance in the repeat."},"sites":[{"p":4,"k":"site"}],"L":5,"fixed":true,"sub":"mod","concord":"MOD_DYRK1A_RPxSP_1","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"None of the abstracts describe a repeated RxxSP/phospho motif array in PKP4; they cover unrelated domains or topics."}},{"tier":"elm_class_regex_match_only","grp":"newocc","gene":"IWS1","sid":"SEQ_09966","f":1,"cons":"xSDSEoE-xx+xx","finding":"acidic SDSE unit: phospho at position 2","support":"11/18","evidence":"ELM class regex match only (MOD_CK2_1 100%); 8 PubMed; ELM curates IWS1 elsewhere, not the repeat","note":"","elm":{"st":"none","t":"ELM curates this protein elsewhere but has no instance in the repeat."},"sites":[{"p":2,"k":"site"}],"L":13,"fixed":true,"sub":"mod","concord":"MOD_CK2_1","generic":true,"lit":{"st":"mentioned_not_as_array","doi":"10.1126/science.abe2913","pmid":"34822292","year":"2021","title":"A ubiquitous disordered protein interaction module orchestrates transcription elongation","note":"Describes a phosphorylation-regulated TIM motif in IWS1 but only a single TIM, not a repeated SDSE array."}},{"tier":"known_motif_class_novel_array","grp":"newocc","gene":"SCN4A","sid":"SEQ_14298","f":2,"cons":"N[DET][TSM]W[YN][GAS]","finding":"NxTW: N-glycosylation at position 1","support":"5/6","evidence":"ELM class regex match only (MOD_N-GLC_1 83%); UniProt-annotated repeat; no PubMed on the sites","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[{"p":1,"k":"site"}],"L":6,"fixed":true,"sub":"mod","concord":"MOD_N-GLC_1","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"No abstract discusses N-glycosylation sites or a repeated NxTW motif array in SCN4A/Nav1.4."}},{"tier":"known_motif_class_novel_array","grp":"newocc","gene":"NUCLEOLIN","sid":"SEQ_05306","f":2,"cons":"[ST]P[AGT]K[KA]x[AVT]","finding":"phosphorylation at unit position 1","support":"8/8 copies","evidence":"","note":"TPAKK","elm":null,"sites":[{"p":1,"k":"site"}],"L":7,"fixed":true,"sub":"mod","concord":"MOD_CDK_SPxK_1","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"No abstract describes the repeated [ST]PxKKxA phosphorylation motif array in nucleolin; all discuss unrelated functions or interactions."}},{"tier":"known_motif_class_novel_array","grp":"newocc","gene":"PRB4","sid":"SEQ_04367","f":1,"cons":"GKP[EQ][GRS][PR][PR][PQ](x){0,2}[QA][GE]G[NHR][QKP][SPQ][QHR](x){0,3}xxx[PS][PHT](x){0,1}","finding":"N-glycosylation at unit position 12","support":"8/11 copies","evidence":"","note":"salivary PRP","elm":null,"sites":[{"p":12,"k":"site"}],"L":23,"fixed":false,"sub":"mod","concord":"MOD_N-GLC_1","generic":false,"lit":{"st":"mentioned_not_as_array","doi":"10.1007/BF00364656","pmid":"8422499","year":"1993","title":"The structure and evolution of the human salivary proline-rich protein gene family","note":"Describes PRB4 exon 3 as tandem 63-bp repeats forming the proline-rich array, but not the specific glycosylation site per unit."},"cleave":{"off":"6","n":"1","N":"13","types":"Chain, Peptide","desc":"Glycosylated protein A; Peptide P-D; Protein N1"}},{"tier":"known_motif_class_novel_array","grp":"newocc","gene":"SRRM2","sid":"SEQ_17728","f":1,"cons":"[RWH]+RSRSR[TAS][PS][PLR]xx","finding":"phosphorylation at unit position 6","support":"13/16 copies","evidence":"","note":"RS domain","elm":null,"sites":[{"p":6,"k":"site"}],"L":12,"fixed":true,"sub":"mod","concord":"MOD_DYRK1A_RPxSP_1","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"None of the abstracts describe SRRM2's repeated RS/phospho motif array; they cover speckle biology, sequestration, or unrelated proteins."}},{"tier":"known_motif_class_novel_array","grp":"newocc","gene":"SRRM1","sid":"SEQ_17512","f":1,"cons":"RRx[STA][PSH][STP]P[PA]P","finding":"phosphorylation at unit position 4","support":"7/8 copies","evidence":"","note":"RS domain","elm":null,"sites":[{"p":4,"k":"site"}],"L":9,"fixed":true,"sub":"mod","concord":"MOD_CDK_SPxxK_3","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"None of the abstracts describe the repeated RRx[STA][PSH][STP]P[PA]P motif array or its phosphorylation site set in SRRM1."}},{"tier":"no_ptm_annotated","grp":"newocc","gene":"DLGAP2","sid":"SEQ_13485","f":1,"cons":"[PG][CK][RF]RxR[SN]xSYψ+Aψ","finding":"same GK-like motif at unit offset 6 as DLGAP1/DLGAP3","support":"3/3 match, 0 curated","evidence":"paralogue transfer: class curated in DLGAP1 and DLGAP3; ELM has no instance in DLGAP2","note":"","elm":{"st":"none","t":"No ELM instance anywhere in DLGAP2. The same class is curated in DLGAP1 and DLGAP3."},"sites":[{"p":6,"k":"motif"}],"L":14,"fixed":true,"sub":"elm","concord":"","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"None of the abstracts describe DLGAP2's repeated motif array or its binding/modification site set; they cover unrelated genetic or phosphoproteomic topics."}},{"tier":"chemistry_noted_for_protein_only","grp":"newocc","gene":"LAT","sid":"SEQ_02681","f":1,"cons":"-Y[VE]N[VL]","finding":"GRB2-type YxN at unit offset 2 (YVNV 200, YVNV 220, YENL 255)","support":"3/3 match, 0 curated","evidence":"LIG_SH2_GRB2like curated in CD6, ERBB2, ERBB3, ERBB4; ELM has no instance of any class in LAT","note":"","elm":{"st":"none","t":"ELM has no curated instance of any class in LAT. LIG_SH2_GRB2like is curated in CD6 and ERBB2/3/4."},"sites":[{"p":2,"k":"motif"}],"L":5,"fixed":true,"sub":"elm","concord":"","generic":false,"lit":{"st":"confirmed_in_literature","doi":"10.1074/jbc.M000404200","pmid":"10811803","year":"2000","title":"Association of Grb2, Gads, and Phospholipase C-γ1 with Phosphorylated LAT Tyrosine Residues","note":"Abstract maps three distal LAT tyrosines (171,191,226) as the Grb2-binding site set matching the repeated YxN motif array."}},{"tier":"sites_only_no_pattern_description","grp":"newocc","gene":"SCAMP3","sid":"SEQ_12165","f":1,"cons":"-xxNPFx[EDT][PR]","finding":"LIG_EH_1 at unit offset 3","support":"3/3 copies","evidence":"","note":"curated in AGFG1;AGFG2;EHBP1;EPN1;EPN2;PICALM;RBSN","elm":{"st":"none","t":"Not curated in this array. LIG_EH_1 is curated in AGFG1, AGFG2, EHBP1, EPN1, EPN2, PICALM, RBSN."},"sites":[{"p":3,"k":"motif"}],"L":9,"fixed":true,"sub":"elm","concord":"","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"Abstracts discuss other SCAMP3 motifs (PY/PSAP) or unrelated proteins, none describe an NPF repeat array."}},{"tier":"elm_curated_instance_at_site","grp":"newocc","gene":"LAT2","sid":"SEQ_13339","f":1,"cons":"PxE--xxx[SD]YxN","finding":"LIG_SH2_GRB2like at unit offset 10","support":"3/3 copies","evidence":"","note":"curated in CD6;ERBB2;ERBB3;ERBB4","elm":{"st":"none","t":"Not curated in this array. LIG_SH2_GRB2like is curated in CD6, ERBB2, ERBB3, ERBB4."},"sites":[{"p":10,"k":"motif"}],"L":12,"fixed":true,"sub":"elm","concord":"MOD_Plk_2-3","generic":false,"lit":{"st":"mentioned_not_as_array","doi":"10.1016/j.cellsig.2007.10.013","pmid":"17993265","year":"2008","title":"Kit- and FcɛRI-induced differential phosphorylation of the transmembrane adaptor molecule NTAL/LAB/LAT2 allows flexibility in its scaffolding function in mast cells","note":"Describes multiple Grb2-binding tyrosine sites in LAT2 but not as a defined repeated motif array."}},{"tier":"no_ptm_annotated","grp":"newocc","gene":"ERBB3","sid":"SEQ_18472","f":3,"cons":"-[ELQ][EDG]YE[YE]M","finding":"LIG_SH2_SFK_2 at unit offset 2","support":"4/4 copies","evidence":"","note":"curated in DAG1;PAG1;VAV1","elm":{"st":"none","t":"Not curated in this array. LIG_SH2_SFK_2 is curated in DAG1, PAG1, VAV1."},"sites":[{"p":2,"k":"motif"}],"L":7,"fixed":true,"sub":"elm","concord":"","generic":false,"lit":{"st":"confirmed_in_literature","doi":"10.1038/msb4100012","pmid":"16729043","year":"2005","title":"Phosphotyrosine interactome of the ErbB‐receptor kinase family","note":"Abstract describes ErbB3 having six PI3K-binding YxxM sites, matching the repeated motif array."}},{"tier":"enzyme_named_in_uniprot","grp":"newocc","gene":"NPHS1","sid":"SEQ_02869","f":2,"cons":"[PW][GR]x[LI]YD[EQ]V","finding":"LIG_SH2_NCK_1 at unit offset 3","support":"3/3 copies","evidence":"","note":"curated in CTTN;DOK1;LCP2","elm":{"st":"none","t":"Not curated in this array. LIG_SH2_NCK_1 is curated in CTTN, DOK1, LCP2."},"sites":[{"p":3,"k":"motif"}],"L":8,"fixed":true,"sub":"elm","concord":"","generic":false,"lit":{"st":"confirmed_in_literature","doi":"10.1038/nature04662","pmid":"16525419","year":"2006","title":"Nck adaptor proteins link nephrin to the actin cytoskeleton of kidney podocytes","note":"Abstract describes nephrin's cytoplasmic tail containing multiple YDxV motifs forming repeated phosphotyrosine-based Nck SH2-binding sites."}},{"tier":"chemistry_noted_for_protein_only","grp":"newocc","gene":"FYB1","sid":"SEQ_01318","f":2,"cons":"[DG][DGQ]-[VI]YD[DG][VI][ADE]","finding":"LIG_SH2_SFK_2 at unit offset 3","support":"4/4 copies","evidence":"","note":"curated in DAG1;PAG1;VAV1","elm":{"st":"none","t":"Not curated in this array. LIG_SH2_SFK_2 is curated in DAG1, PAG1, VAV1."},"sites":[{"p":3,"k":"motif"}],"L":9,"fixed":true,"sub":"elm","concord":"","generic":false,"lit":{"st":"mentioned_not_as_array","doi":"10.1242/jcs.215517","pmid":"30305305","year":"2018","title":"ADAP is an upstream regulator that precedes SLP-76 at sites of TCR engagement and stabilizes signaling microclusters","note":"Describes multiple SH2 binding sites and multivalent interactions, but emphasizes single Y595 site, not full repeat array."}},{"tier":"no_ptm_annotated","grp":"newocc","gene":"MYO9B","sid":"SEQ_16743","f":1,"cons":"x[AI]ψx[IL]Q[AS]x[FWC]RxxxxR+xφx[QRH]xx","finding":"LIG_CaM_IQ_9 at unit offset 2","support":"4/4 copies","evidence":"","note":"curated in IQGAP1;MYO10;MYO7A","elm":{"st":"none","t":"Not curated in this array. LIG_CaM_IQ_9 is curated in IQGAP1, MYO10, MYO7A."},"sites":[{"p":2,"k":"motif"}],"L":22,"fixed":true,"sub":"elm","concord":"","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"Abstracts discuss motor/RhoGAP domains and actin targeting generally, not the IQ-motif repeat array in the neck region."}},{"tier":"no_ptm_annotated","grp":"newocc","gene":"WIPF2","sid":"SEQ_04747","f":1,"cons":"[PAK]PPPP[PV]xR","finding":"polyproline PPPP(P)xR unit, 6 dispersed copies","support":"6 copies","evidence":"no modification site; LIG_SH3_2 matches but ELM has no instance in the repeat","note":"","elm":{"st":"none","t":"ELM curates this protein elsewhere but has no instance in the repeat."},"sites":[],"L":8,"fixed":true,"sub":"elm","concord":"","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"No abstracts were provided to review, so no evidence supports the repeated motif array."}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"CFTR","sid":"SEQ_07826","f":2,"cons":"R+xSψφ","finding":"phosphorylation at unit position 4; writer PKA","support":"6/6 copies","evidence":"","note":"R-domain","elm":null,"sites":[{"p":4,"k":"site"}],"L":6,"fixed":true,"sub":"writer","concord":"MOD_PK_1","generic":false,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"ELK1","sid":"SEQ_08771","f":1,"cons":"[ST]P[SV][LSV]L","finding":"phosphorylation at unit position 1; writer MAPK1","support":"5/5 copies","evidence":"","note":"","elm":null,"sites":[{"p":1,"k":"site"}],"L":5,"fixed":true,"sub":"writer","concord":"MOD_ProDKin_1","generic":true,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"SF3B1","sid":"SEQ_10131","f":2,"cons":"W[DA][EP]TP","finding":"phosphorylation at unit position 4; writer CDK11","support":"5/5 copies","evidence":"","note":"","elm":null,"sites":[{"p":4,"k":"site"}],"L":5,"fixed":true,"sub":"writer","concord":"MOD_ProDKin_1","generic":true,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"BLNK","sid":"SEQ_04497","f":1,"cons":"[DES]xxY[EVI]xPx[EV]","finding":"phosphorylation at unit position 4; writer SYK","support":"5/5 copies","evidence":"","note":"","elm":null,"sites":[{"p":4,"k":"site"}],"L":9,"fixed":true,"sub":"writer","concord":"","generic":false,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"SUPT5H","sid":"SEQ_06532","f":1,"cons":"[RQ]TPx[YQH][GDS][SG]","finding":"phosphorylation at unit position 2; writer CDK9","support":"6/7 copies","evidence":"","note":"CTR","elm":null,"sites":[{"p":2,"k":"site"}],"L":7,"fixed":true,"sub":"writer","concord":"MOD_ProDKin_1","generic":true,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"TSC2","sid":"SEQ_17450","f":1,"cons":"+[ACV]RSxS","finding":"phosphorylation at unit position 6; writer PKB/AKT1","support":"4/4 copies","evidence":"","note":"","elm":null,"sites":[{"p":6,"k":"site"}],"L":6,"fixed":true,"sub":"writer","concord":"MOD_PKB_1","generic":false,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"GLI3","sid":"SEQ_18966","f":2,"cons":"[SN]RR[SD]S[ESG][AI]S[QTP]","finding":"phosphorylation at unit position 5; writer PKA","support":"4/4 copies","evidence":"","note":"","elm":null,"sites":[{"p":5,"k":"site"}],"L":9,"fixed":true,"sub":"writer","concord":"MOD_PKA_1","generic":false,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"PIK3AP1","sid":"SEQ_15951","f":1,"cons":"-[AD][VL]Yx[SET][MV]","finding":"phosphorylation at unit position 4; writer ABL1;SYK","support":"4/4 copies","evidence":"","note":"","elm":null,"sites":[{"p":4,"k":"site"}],"L":7,"fixed":true,"sub":"writer","concord":"","generic":false,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"PAG1","sid":"SEQ_03181","f":1,"cons":"xxxYxx[VLI]","finding":"phosphorylation at unit position 4; writer FYN and LYN;LYN","support":"8/9 copies","evidence":"","note":"","elm":null,"sites":[{"p":4,"k":"site"}],"L":7,"fixed":true,"sub":"writer","concord":"","generic":false,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"SIRPA","sid":"SEQ_10933","f":2,"cons":"x[TE]YA[DS]ψ","finding":"phosphorylation at unit position 3; writer Tyr-kinases","support":"4/4 copies","evidence":"","note":"ITIM","elm":null,"sites":[{"p":3,"k":"site"}],"L":6,"fixed":true,"sub":"writer","concord":"MOD_Plk_1","generic":false,"lit":{"st":"not_checked"}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"ZCCHC8","sid":"SEQ_17871","f":1,"cons":"[QT]PP[LP][PTV]x","finding":"QT-PP unit: phospho at position 1","support":"4/5","evidence":"GSK3 named as writer in the UniProt site description; 4 PubMed","note":"","elm":{"st":"none","t":"ELM curates this protein elsewhere but has no instance in the repeat."},"sites":[{"p":1,"k":"site"}],"L":6,"fixed":true,"sub":"writer","concord":"MOD_ProDKin_1","generic":true,"lit":{"st":"mentioned_not_as_array","doi":"10.1038/ncomms13573","pmid":"27905398","year":"2016","title":"Structure of the RBM7–ZCCHC8 core of the NEXT complex reveals connections to splicing factors","note":"Abstract 3 identifies a proline-rich ZCCHC8 segment binding RBM7 but doesn't describe it as a repeated phospho-motif array."}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"KHDRBS1","sid":"SEQ_01241","f":1,"cons":"xx[PVT]RG","finding":"RG dipeptide: arginine methylation at position 4","support":"6/8","evidence":"PRMT1 named as writer; 3 PubMed; SLiM-triage novel candidate","note":"","elm":{"st":"none","t":"ELM curates this protein elsewhere but has no instance in the repeat."},"sites":[{"p":4,"k":"site"}],"L":5,"fixed":true,"sub":"writer","concord":"","generic":false,"lit":{"st":"mentioned_not_as_array","doi":"10.1073/pnas.2205255119","pmid":"36256816","year":"2022","title":"Global profiling of arginine dimethylation in regulating protein phase separation by a steric effect–based chemical-enrichment method","note":"Abstract reports KHDRBS1 arginine dimethylation at multiple RG/RGG sites, but not as a defined repeated array."}},{"tier":"enzyme_named_in_uniprot","grp":"known","gene":"POLR2A","sid":"SEQ_03707","f":1,"cons":"Y[STE][PL]x[ST]Px","finding":"CTD heptad: phospho at position 5; CARM1 arginine methylation at position 7","support":"12/52 phospho; 9/52 methyl","evidence":"UniProt text names Ser-1805/1808 and Arg-1810 inside the repeat; CARM1 named as writer; 5 PubMed","note":"","elm":null,"sites":[{"p":5,"k":"site"},{"p":7,"k":"site"}],"L":7,"fixed":true,"sub":"mod","concord":"","generic":false,"lit":{"st":"not_checked"}},{"tier":"uniprot_text_mentions_a_repeat","grp":"known","gene":"NEFH","sid":"SEQ_15534","f":1,"cons":"[EK][AV]+[ST]Px","finding":"KSP: Ser phospho at position 4","support":"34/40","evidence":"UniProt PTM text mentions the repeat; 1 PubMed","note":"","elm":null,"sites":[{"p":4,"k":"site"}],"L":6,"fixed":true,"sub":"mod","concord":"MOD_CDC14_SPxK_1","generic":false,"lit":{"st":"not_checked"}},{"tier":"elm_class_regex_match_only","grp":"known","gene":"PRG4","sid":"SEQ_06467","f":1,"cons":"[KED][EKG][PLT][ATS][PS]TT","finding":"mucin KEPAPTT: O-GalNAc on the invariant Thr pair (positions 6-7)","support":"36/54","evidence":"UniProt-annotated repeat; O-glycosylation annotated across the array","note":"","elm":null,"sites":[{"p":6,"k":"site"},{"p":7,"k":"site"}],"L":8,"fixed":true,"sub":"mod","concord":"","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"None of the abstracts describe the KEPAPTT repeat motif or its O-GalNAc site array in PRG4's mucin domain."}},{"tier":"sites_only_no_pattern_description","grp":"known","gene":"THBS2","sid":"SEQ_00470","f":1,"cons":"DNC[PQR][LYH]ψxNxQxDxDx[DN][GEL]xGDxC","finding":"disulfide at unit position 3","support":"7/7 copies","evidence":"","note":"TSP type-3 repeat","elm":null,"sites":[{"p":3,"k":"site"}],"L":22,"fixed":true,"sub":"mod","concord":"","generic":false,"lit":{"st":"confirmed_in_literature","doi":"10.1038/nsmb997","pmid":"16186819","year":"2005","title":"Structure of the calcium-rich signature domain of human thrombospondin-2","note":"Abstract 2 describes THBS2's signature domain with 13 aspartate-rich repeats stabilized by 18 disulfide bonds and bound calcium ions."}},{"tier":"sites_only_no_pattern_description","grp":"known","gene":"THBS4","sid":"SEQ_16408","f":1,"cons":"D[NS]CxxφxNxxQx[DN]x[DN]xDxxGDxC","finding":"disulfide at unit position 3","support":"7/7 copies","evidence":"","note":"TSP type-3 repeat","elm":null,"sites":[{"p":3,"k":"site"}],"L":23,"fixed":true,"sub":"mod","concord":"","generic":false,"lit":{"st":"confirmed_in_literature","doi":"10.1080/1042517021000019278","pmid":"12592708","year":"2002","title":"The Zebrafish Thrombospondin 3 and 4 Genes ( thbs3 and thbs4 ): cDNA and Protein Structure","note":"Describes seven Type III calcium-binding repeats with conserved disulfide-forming cysteines, directly matching the repeated motif array."}},{"tier":"uniprot_text_mentions_a_repeat","grp":"known","gene":"ZNF768","sid":"SEQ_03507","f":2,"cons":"xSP[GER]φ[EVA][PSA]","finding":"SP dipeptide: phospho at position 2","support":"12/12","evidence":"UniProt PTM text mentions a repeat; 6 PubMed; ELM has never curated ZNF768","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[{"p":2,"k":"site"}],"L":7,"fixed":true,"sub":"mod","concord":"MOD_ProDKin_1","generic":true,"lit":{"st":"mentioned_not_as_array","doi":"10.1093/nar/gky1148","pmid":"30476274","year":"2018","title":"MIR sequences recruit zinc finger protein ZNF768 to expressed genes","note":"Abstract describes an N-terminal CTD-like heptad repeat array but doesn't explicitly state the SP phospho-motif."}},{"tier":"uniprot_text_names_site_in_repeat","grp":"known","gene":"CDC5L","sid":"SEQ_05172","f":2,"cons":"[GLV]xTP[FLQ][KRH]","finding":"TP motif: phospho at position 3","support":"5/5","evidence":"UniProt text names a site inside the repeat; 8 PubMed; SLiM-triage novel candidate","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[{"p":3,"k":"site"}],"L":6,"fixed":true,"sub":"mod","concord":"MOD_CDK_SPxK_1","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"No abstract describes a repeated [GLV]xTP[FLQ][KRH] motif array or its phosphosite set in CDC5L."}},{"tier":"no_ptm_annotated","grp":"known","gene":"BMP2K","sid":"SEQ_15392","f":1,"cons":"DxF[GT]xxPF","finding":"DxF[GT]xxPF unit, 8 dispersed copies","support":"8 copies","evidence":"no modification site; no ELM class match; ELM has never curated BMP2K","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[],"L":8,"fixed":true,"sub":"lit","concord":"","generic":false,"lit":{"st":"confirmed_in_literature_not_in_databases","doi":"10.1111/tra.12814","year":"2021","title":"Traffic (2021): the DXFXXXPF array appears in a figure panel","note":"Found by reading the paper; invisible to the automated database and abstract checks."}},{"tier":"no_ptm_annotated","grp":"known","gene":"NUP98","sid":"SEQ_05958","f":1,"cons":"[GT]GLFGo","finding":"GLFG nucleoporin unit, 8 copies","support":"8 copies","evidence":"no modification site; ELM has never curated NUP98","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[],"L":6,"fixed":true,"sub":"lit","concord":"","generic":false,"lit":{"st":"confirmed_in_literature","doi":"10.1099/vir.0.022681-0","pmid":"20554795","year":"2010","title":"Human cellular protein nucleoporin hNup98 interacts with influenza A virus NS2/nuclear export protein and overexpression of its GLFG repeat domain can inhibit virus propagation","note":"Abstract describes hNup98's GLFG repeat domain (aa 1-511) as a defined repeated motif region mediating NS2 binding."}},{"tier":"elm_class_regex_match_only","grp":"known","gene":"TRH","sid":"SEQ_04474","f":1,"cons":"KRQHPG[KR]R","finding":"terminal-processing at unit position 5","support":"6/6 copies","evidence":"","note":"prohormone cleavage repeat","elm":null,"sites":[{"p":5,"k":"site"}],"L":8,"fixed":true,"sub":"cleave","concord":"","generic":false,"lit":{"st":"confirmed_in_literature","doi":"","pmid":"3141416","year":"1988","title":"Processing of thyrotropin-releasing hormone prohormone (pro-TRH) generates pro-TRH-connecting peptides. Identification and characterization of prepro-TRH-(160-169) and prepro-TRH-(178-199) in the rat nervous system.","note":"Abstract 6 describes pro-TRH's five repeated Gln-His-Pro-Gly copies flanked by paired basic residues, i.e. the repeat array and processing sites."},"cleave":{"off":"3","n":"6","N":"6","types":"Peptide","desc":"Thyrotropin-releasing hormone"}},{"tier":"no_ptm_annotated","grp":"known","gene":"PENK","sid":"SEQ_03219","f":1,"cons":"KRYGGF[ML]","finding":"KRYGGF[ML]: dibasic cleavage site followed by the enkephalin core, 7 copies","support":"7 copies","evidence":"no modification site and no curated ELM instance; proteolytic processing is not a MOD_RES feature","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[],"L":7,"fixed":true,"sub":"cleave","concord":"","generic":false,"lit":{"st":"confirmed_in_literature","doi":"10.1016/j.cbpb.2014.06.002","pmid":"24947211","year":"2014","title":"Bioactivity studies on atypical natural opioid hexapeptides processed from proenkephalin (PENK) precursor polypeptides","note":"Abstract describes PENK precursor's repeated enkephalin copies (four Met-, one Leu-, octa/heptapeptide units) matching the motif array."},"cleave":{"off":"3","n":"7","N":"7","types":"Peptide, Site","desc":"Cleavage; by CTSL; Leu-enkephalin; Met-enkephalin"}},{"tier":"no_ptm_annotated","grp":"known","gene":"HCFC1","sid":"SEQ_15831","f":1,"cons":"[VG]CSNPPCETHETGTT[NH]TATT","finding":"HCF-1 PRO-repeat unit, 6 copies","support":"6 copies","evidence":"no modification site and no curated ELM instance; the repeat's known role is proteolytic processing","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[],"L":20,"fixed":true,"sub":"cleave","concord":"","generic":false,"lit":{"st":"confirmed_in_literature","doi":"10.1371/journal.pone.0136636","pmid":"26305326","year":"2015","title":"Distinct OGT-Binding Sites Promote HCF-1 Cleavage","note":"Abstract 0 explicitly describes the six HCF-1PRO 26-aa repeats as OGT cleavage sites, directly matching the repeat array."},"cleave":{"off":"8","n":"6","N":"6","types":"Chain, Site","desc":"Cleavage; by autolysis; HCF C-terminal chain 1; HCF C-terminal chain 2"}},{"tier":"elm_class_regex_match_only","grp":"known","gene":"BUD13","sid":"SEQ_07228","f":1,"cons":"R[KRH]x[RQ]H[DGN][ST][PS][DG]x[SA]P","finding":"phosphorylation at unit position 7","support":"7/9 copies","evidence":"","note":"RS-like","elm":null,"sites":[{"p":7,"k":"site"}],"L":12,"fixed":true,"sub":"unverif","concord":"MOD_ProDKin_1","generic":true,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"Abstracts mention individual BUD13 phosphosites (e.g., R156/R230) but none describe a repeated multi-copy motif array."},"caveat":"Unverified: the literature sweep did not confirm that this array is described. Treat the \"known biology\" label as unconfirmed."},{"tier":"elm_class_regex_match_only","grp":"known","gene":"SACK1H","sid":"SEQ_18019","f":1,"cons":"[ET][RSQ]+[GS]S[PL][TV]xxφ[PSI]","finding":"phosphorylation at unit position 5","support":"7/7 copies","evidence":"","note":"FAM83H, CK1-anchoring scaffold","elm":null,"sites":[{"p":5,"k":"site"}],"L":11,"fixed":true,"sub":"unverif","concord":"MOD_ProDKin_1","generic":true,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"The abstract discusses thymic development and CK1/keratin interactions, not the repeated phosphomotif array."},"caveat":"Unverified: the literature sweep did not confirm that this array is described. Treat the \"known biology\" label as unconfirmed."},{"tier":"chemistry_noted_for_protein_only","grp":"known","gene":"ELN","sid":"SEQ_03651","f":6,"cons":"GVPGVG","finding":"GVPGVG elastin unit: proline hydroxylation at position 3","support":"5/6","evidence":"chemistry noted for the protein, not the repeat; 2 PubMed","note":"","elm":{"st":"none","t":"ELM has never curated this protein."},"sites":[{"p":3,"k":"site"}],"L":6,"fixed":true,"sub":"unverif","concord":"","generic":false,"lit":{"st":"not_found_in_abstract_sweep","doi":"","pmid":"","year":"","title":"","note":"None of the abstracts describe the GVPGVG repeat motif or hydroxyproline array in elastin; they address genetics, disease, or unrelated topics."},"caveat":"Unverified: the literature sweep did not confirm that this array is described. Treat the \"known biology\" label as unconfirmed."},{"tier":"no_ptm_annotated","grp":"known","gene":"EPN1","sid":"SEQ_07643","f":3,"cons":"[ST]NPF[LQ][PL]","finding":"NPF: curated LIG_EH_1 instance covering every copy","support":"3/3","evidence":"curated ELM instance in the array; class curated in 7 repeat arrays total","note":"","elm":{"st":"curated","t":"ELM curates LIG_EH_1 instances covering all 3 copies.","ranges":"all"},"sites":[],"L":6,"fixed":true,"sub":"elmcur","concord":"","generic":false,"lit":{"st":"not_checked"}},{"tier":"no_ptm_annotated","grp":"known","gene":"DLGAP1","sid":"SEQ_14927","f":1,"cons":"[PG][KC]xxxR[SRN][GEH]SYψ+A","finding":"GK-like: curated LIG_DLG_GKlike_1 at unit offset 6","support":"2/5 curated, 5/5 match","evidence":"curated instances 372-380 and 403-411; PubMed 29281827, 22117215","note":"","elm":{"st":"partial","t":"ELM curates LIG_DLG_GKlike_1 at 372–380 and 403–411, i.e. 2 of the 5 copies. The other 3 copies match the class pattern at the same unit offset but are not curated.","ranges":[[372,380],[403,411]]},"sites":[{"p":6,"k":"motif"}],"L":13,"fixed":true,"sub":"elmcur","concord":"","generic":false,"lit":{"st":"not_checked"}}];  // one entry per highlighted repeat family
 
 /* ── Editable text ─────────────────────────────────────────────────────── */
+// The three novelty groups. `subs` are the original evidence sub-groups; they are kept as a
+// secondary label on each family (and for the two sub-group notes), but no longer order the page.
 const HL_GROUPS = {
-  novel: {c:'#6a51a3', label:'Novel', short:'Novel', title:'Novel: clear of every database filter and the literature sweep',
-          text:'No UniProt repeat annotation, no curated ELM instance, no canonical motif class, no annotated modification pattern, and nothing retrieved in a PubMed abstract sweep. That is not the same as unknown: an abstract sweep cannot see a motif described in a figure panel, which is how BMP2K’s array was missed. Hand-picked families come first, then the full anchored set.',
-          subs:[{k:'mod',l:'With a modification at a fixed unit position'},{k:'nomod',l:'No annotated modification in the array'}]},
-  newocc:{c:'#d9822b', label:'New occurrence of a known motif', short:'New occurrence of a known motif', title:'New occurrences of known motifs',
-          text:'The unit is a known motif class, but this array is not recorded as an instance of it: ELM has no curated instance in the array. Families with a modification at the motif position come first. Positions are counted from the start of each copy, so the distance between copies can vary (in LAT the copies start at 199, 219 and 254).',
-          subs:[{k:'mod',l:'Canonical motif class with a modification at the motif position'},{k:'elm',l:'ELM class matches every copy; no ELM instance in this array'}]},
-  known: {c:'#2171b5', label:'Known', short:'Known', title:'Known: the screen recovers established repeats and motifs',
-          text:'Established repeat arrays and motifs, found blind. Modification sites at a fixed unit position come first, then arrays described in the literature but not in the databases, cleavage repeats, claims we could not confirm, and ELM-curated motif arrays.',
+  known: {c:'#2171b5', label:'Known', nav:'Recovered blind', head:'Established repeats, recovered blind',
+          blurb:'Textbook arrays the screen finds from an anonymous sequence: Pol II CTD heptads, neurofilament KSP, FG nucleoporin units, prohormone cleavage repeats.',
           subs:[{k:'writer',l:'Writer named in UniProt'},{k:'mod',l:'Modification at a fixed unit position'},
                 {k:'lit',l:'Described in the literature, not in the databases'},
-                {k:'cleave',l:'Cleavage repeats',t:'These arrays are cut at a fixed unit position. Their cards show no annotated modification only because UniProt records processing as Peptide, Chain or Site features, not as modified residues.'},
-                {k:'unverif',l:'Claimed known biology, not confirmed',t:'These were labelled as known biology, but the literature sweep did not find the array described. The claim is unverified, not refuted.'},
+                {k:'cleave',l:'Cleavage repeats',t:'This array is cut at a fixed unit position. It shows no annotated modification only because UniProt records processing as Peptide, Chain or Site features, not as modified residues.'},
+                {k:'unverif',l:'Claimed known biology, not confirmed',t:'This was labelled as known biology, but the literature sweep did not find the array described. The claim is unverified, not refuted.'},
                 {k:'elmcur',l:'Motif arrays curated in ELM'}]},
+  newocc:{c:'#d9822b', label:'Known motif, new place', nav:'Known motifs, new places', head:'Known motifs in arrays no database records',
+          blurb:'The unit matches a known motif class, such as an SH2-binding tyrosine, NPF, IQ or SUMO site, but this array is not recorded as an instance of it.',
+          subs:[{k:'mod',l:'Canonical motif class with a modification at the motif position'},{k:'elm',l:'ELM class matches every copy; no ELM instance in this array'}]},
+  novel: {c:'#6a51a3', label:'Novel', nav:'Novel', head:'Repeats with no description we could find',
+          blurb:'Clear of every database filter and of a PubMed abstract sweep.',
+          subs:[{k:'mod',l:'With a modification at a fixed unit position'},{k:'nomod',l:'No annotated modification in the array'}]},
+  arch:  {c:'#7a8288', label:'Architecture examples', nav:'Architectures', head:'Repeat architectures (not rated for novelty)', subs:[]},
+};
+const TIER_ORDER = ['known','newocc','novel','arch'];
+// What each repeat does. Draft assignments: edit freely. Order here is the order in the browser list.
+const FUNC = {
+  ptyr:'Phosphotyrosine docking motifs (SH2-binding)',
+  lig:'Peptide-binding motifs',
+  pdk:'Proline-directed phosphosites (SP/TP)',
+  baso:'Basophilic kinase sites',
+  acid:'Acidic phosphosite clusters',
+  rs:'RS-domain repeats',
+  glyc:'Glycosylation units',
+  mod:'SUMO and methylation sites',
+  cleave:'Proteolytic processing repeats',
+  struct:'Structural and extracellular units',
+  unk:'No function assigned',
+};
+// gene: [function group, one-line description that leads with the repeat itself]
+const ANNOT = {
+  CHAMP1:['pdk','26 [SF]Pxxx+ units across the central disordered region; Ser phosphorylated in 20 of 26'],
+  LEO1:['acid','12 tandem acidic [STD]D‑‑ units; Ser/Thr phosphorylated in 9 of 12'],
+  PPP1R10:['unk','6 periodic GHRPHEGPGG units in PNUTS; nothing annotated in the array'],
+  LRRC37A:['unk','7 dispersed 19-aa units; the same consensus recurs in LRRC37A2 and LRRC37A3'],
+  TCHH:['unk','24 dispersed RK[FI]-anchored 14-aa units in trichohyalin'],
+  ZNHIT6:['mod','9 [VI]K[EQ]E units matching the SUMO consensus; Lys cross-linked in 9 of 9'],
+  PKP4:['pdk','5 RxxSP units; Ser phosphorylated in 5 of 5'],
+  IWS1:['acid','18 tandem acidic SDSE units; phosphorylated in 11 of 18'],
+  SCN4A:['glyc','6 tandem NxTW units; Asn glycosylated in 5 of 6'],
+  NUCLEOLIN:['pdk','8 tandem TPAKK units; phosphorylated in 8 of 8'],
+  PRB4:['glyc','13 tandem salivary proline-rich units; N-glycosylated at a fixed position in 8 of 11 scored copies'],
+  SRRM2:['rs','16 tandem RSRSR units in the RS domain; phosphorylated in 13 of 16'],
+  SRRM1:['rs','8 tandem 9-aa units in the RS domain; phosphorylated in 7 of 8'],
+  DLGAP2:['lig','3 GK-binding-like motifs, as in DLGAP1 and DLGAP3; none curated'],
+  LAT:['ptyr','3 GRB2-type YxN motifs (YVNV 200, YVNV 220, YENL 255)'],
+  SCAMP3:['lig','3 NPF motifs matching the EH-domain ligand class (LIG_EH_1)'],
+  LAT2:['ptyr','3 GRB2-like YxN motifs (LIG_SH2_GRB2like)'],
+  ERBB3:['ptyr','4 YE[YE]M motifs matching the Src-family SH2 class (LIG_SH2_SFK_2)'],
+  NPHS1:['ptyr','3 YD[EQ]V motifs matching the NCK SH2 class (LIG_SH2_NCK_1)'],
+  FYB1:['ptyr','4 YD[DG][VI] motifs matching the Src-family SH2 class (LIG_SH2_SFK_2)'],
+  MYO9B:['lig','4 tandem IQ motifs matching the calmodulin-binding class (LIG_CaM_IQ_9)'],
+  WIPF2:['lig','6 dispersed polyproline PPPP(P)xR units'],
+  CFTR:['baso','6 R+xS sites in the R domain; all 6 phosphorylated, PKA named as writer'],
+  ELK1:['pdk','5 [ST]P units; all 5 phosphorylated, MAPK1 named as writer'],
+  SF3B1:['pdk','5 W[DA][EP]TP units; all 5 phosphorylated, CDK11 named as writer'],
+  BLNK:['ptyr','5 YxxP tyrosine motifs; all 5 phosphorylated, SYK named as writer'],
+  SUPT5H:['pdk','7 tandem CTR units; 6 of 7 phosphorylated, CDK9 named as writer'],
+  TSC2:['baso','4 +xRSxS sites; all 4 phosphorylated, AKT1 named as writer'],
+  GLI3:['baso','4 RR[SD]S sites; all 4 phosphorylated, PKA named as writer'],
+  PIK3AP1:['ptyr','4 tyrosine motifs; all 4 phosphorylated, ABL1 and SYK named as writers'],
+  PAG1:['ptyr','9 YxxV-type tyrosine motifs; 8 of 9 phosphorylated, FYN and LYN named as writers'],
+  SIRPA:['ptyr','4 ITIM-type tyrosine motifs; all 4 phosphorylated'],
+  ZCCHC8:['pdk','5 tandem [QT]PP units; 4 of 5 phosphorylated'],
+  KHDRBS1:['mod','8 RG units; arginine methylated in 6 of 8'],
+  POLR2A:['pdk','52 tandem CTD heptads; phosphorylation annotated in 12 and CARM1 methylation in 9'],
+  NEFH:['pdk','40 tandem KSP units in the neurofilament tail; Ser phosphorylated in 34 of 40'],
+  PRG4:['glyc','54 tandem mucin KEPAPTT units; the Thr pair O-glycosylated in 36 of 54'],
+  THBS2:['struct','7 thrombospondin type-3 repeats; the unit disulfide annotated in 7 of 7'],
+  THBS4:['struct','7 thrombospondin type-3 repeats; the unit disulfide annotated in 7 of 7'],
+  ZNF768:['pdk','12 dispersed SP units; phosphorylated in 12 of 12'],
+  CDC5L:['pdk','5 TP units; phosphorylated in 5 of 5'],
+  BMP2K:['lig','8 dispersed DxF[GT]xxPF units; described in the literature, absent from the databases'],
+  NUP98:['lig','8 GLFG nucleoporin units'],
+  TRH:['cleave','6 KRQHPG[KR]R prohormone units; processing annotated in 6 of 6'],
+  PENK:['cleave','7 KRYGGF[ML] units: a dibasic cleavage site followed by the enkephalin core'],
+  HCFC1:['cleave','6 HCF-1 PRO-repeat units'],
+  BUD13:['rs','9 tandem RS-like 12-aa units; phosphorylated in 7 of 9'],
+  SACK1H:['pdk','7 tandem 11-aa units in FAM83H; phosphorylated in 7 of 7'],
+  ELN:['struct','6 GVPGVG elastin units; proline hydroxylated in 5 of 6'],
+  EPN1:['lig','3 NPF motifs; a curated EH-domain ligand (LIG_EH_1) covers every copy'],
+  DLGAP1:['lig','5 GK-binding motifs; ELM curates 2 of the 5 (LIG_DLG_GKlike_1)'],
+};
+// Families shown as cards in each section, in order. Everything else is reachable from the browser.
+const FEATURED = {
+  known:['POLR2A','NEFH','NUP98','PENK','CFTR','EPN1'],
+  newocc:['LAT','NPHS1','SCAMP3','MYO9B','ZNHIT6','SCN4A'],
+  novel:['PPP1R10','LRRC37A','TCHH','LEO1','CHAMP1'],
 };
 const TIERS = {
   enzyme_named_in_uniprot:['Writer named in UniProt','t-strong'],
@@ -424,10 +630,6 @@ const ARCH_SECTIONS = [
   {n:5, short:'Candidate SLiMs', title:'Candidate SLiMs: dispersed repeats in disorder', text:'Short anchored motifs repeated across disordered regions without a curated ELM instance. The ELM status of each is stated; "not yet checked" means we have not compared it with ELM.'},
   {n:6, short:'A dozen in a row', title:'A dozen or more in a row', text:'Long, regular tandem arrays, usually annotated already.'},
   {n:7, short:'Tryptophan-rich units', title:'Tryptophan-centred units', text:'Tryptophan-rich units recurring through a folded region.'},
-];
-const GROUPS = [
-  {k:'hl', label:'Highlights', tabs:['novel','newocc','known']},
-  {k:'arch', label:'Repeat architectures', tabs:[1,2,3,4,5,6,7]},
 ];
 
 /* ── Helpers ───────────────────────────────────────────────────────────── */
@@ -617,15 +819,8 @@ function initOverview(){
   drawOverview();
 }
 
-/* ── Highlights summary lists ──────────────────────────────────────────── */
-function renderSummary(){
-  let n=0;
-  $('#hlSummary').innerHTML=GROUPS[0].tabs.map(k=>{const g=HL_GROUPS[k];
-    return `<div class="hl-g"><h3><i style="background:${g.c}"></i>${esc(g.short)}</h3>${g.subs.map(sb=>{const items=HIGHLIGHTS.filter(h=>h.grp===k&&h.sub===sb.k);if(!items.length)return '';const start=n+1;n+=items.length;
-      return `<p class="subh">${esc(sb.l)}</p><ol start="${start}">${items.map(h=>`<li><button data-hl="${HIGHLIGHTS.indexOf(h)}">${esc(h.gene)}</button> <span>${esc(shortFinding(h))}</span></li>`).join('')}</ol>`}).join('')}</div>`}).join('');
-  $('#hlSummary').querySelectorAll('[data-hl]').forEach(b=>b.onclick=()=>{const h=HIGHLIGHTS[+b.dataset.hl];selectTab('hl',h.grp,h);document.getElementById('groupsel').scrollIntoView({behavior:'smooth'})});
-}
-function shortFinding(h){return h.tier===2?h.finding.replace(/;\s*/g,', '):h.finding.split(';')[0].replace(/^[A-Z0-9]+[: ]+/,'')}
+/* ── Items: every worked example, one list ─────────────────────────────── */
+function shortFinding(h){return h.finding.split(';')[0].replace(/^[A-Z0-9]+[: ]+/,'')}
 const ELM3={2:['ELM curated','elm-curated'],1:['Not in ELM · protein curated elsewhere','elm-none'],0:['ELM never curated this protein','elm-unk']};
 function elmCall(fid){return DATA.elm?DATA.elm[fid]:undefined}
 function elmFamBadge(fid){const c=elmCall(fid);if(!c)return '<span class="famelm" style="background:#bdc1c4">ELM: not in snapshot</span>';
@@ -637,44 +832,150 @@ function elmLine(fid,hand,N){
   return `<p class="elmline"><b class="${ELM3[c[0]][1]}">${ELM3[c[0]][0]}</b>${esc(txt)}</p>`}
 const elmHTML=e=>{const st=e?e.st:'unk',lab={curated:'ELM curated',partial:'ELM partly curated',none:'Not in ELM',unk:'ELM not yet checked'}[st];return `<p class="elmline"><b class="elm-${st}">${lab}</b>${e?esc(e.t):'We have not yet compared this family with ELM instances.'}</p>`};
 
-/* ── Explorer ──────────────────────────────────────────────────────────── */
-let curGroup='hl', curTab='novel', curView=null, exViewer=null, colorMode='repeats', spinning=false, focusSel=null, loadToken=0, lastUP=null;
-function renderGroupSel(){
-  $('#groupsel').innerHTML=GROUPS.map(g=>`<button class="${g.k===curGroup?'on':''}" data-g="${g.k}">${esc(g.label)}</button>`).join('');
-  $('#groupsel').querySelectorAll('button').forEach(b=>b.onclick=()=>{const g=GROUPS.find(x=>x.k===b.dataset.g);selectTab(g.k,g.tabs[0])});
+const ITEMS=[];
+(function buildItems(){
+  HIGHLIGHTS.forEach(h=>{const p=DATA.hl[h.sid],m=p.m.find(x=>x.f===h.f)||p.m[0],a=ANNOT[h.gene]||['unk',shortFinding(h)];
+    ITEMS.push({key:`${h.sid}_F${h.f}`,tier:h.grp,fn:a[0],fnLabel:FUNC[a[0]]||a[0],gene:h.gene,title:a[1],p,m,hl:h,view:()=>makeView(p,h)})});
+  // architecture examples that are not already a highlight
+  const seen=new Set(HIGHLIGHTS.map(h=>h.sid));
+  DATA.arch.filter(p=>!seen.has(p.id)).forEach(p=>{const m=(p.focus&&p.m.find(x=>x.f===p.focus))||p.m[0],s=ARCH_SECTIONS.find(x=>x.n===p.sec);
+    ITEMS.push({key:`arch_${p.id}`,tier:'arch',fn:'a'+p.sec,fnLabel:s?s.title:'Other',gene:p.g||p.a,title:p.note||p.d,p,m,view:()=>makeView(p,null,p)})});
+})();
+const FN_ORDER=[...Object.keys(FUNC),...ARCH_SECTIONS.map(s=>'a'+s.n)];
+const itemOf=h=>ITEMS.find(x=>x.hl===h);
+
+const PROF = {"SEQ_06467_F1":{"L":8,"n":54,"c":["O-glycosylation"],"v":[[0],[0],[3.7],[3.7],[1.9],[66.7],[44.4],[0]]},"SEQ_15534_F1":{"L":6,"n":40,"c":["phosphorylation"],"v":[[0],[0],[0],[85.0],[0],[0]]},"SEQ_03506_F1":{"L":9,"n":26,"c":["phosphorylation","sumoylation"],"v":[[76.9,0],[0,0],[0,0],[3.8,0],[0,0],[0,3.8],[7.7,0],[15.4,0],[0,0]]},"SEQ_17728_F1":{"L":12,"n":16,"c":["phosphorylation"],"v":[[0],[0],[0],[50.0],[0],[81.2],[0],[50.0],[43.8],[0],[0],[37.5]]},"SEQ_03707_F1":{"L":7,"n":52,"c":["methylation","phosphorylation"],"v":[[0,15.4],[0,19.2],[0,0],[1.9,15.4],[0,23.1],[0,0],[17.3,7.7]]},"SEQ_03507_F2":{"L":7,"n":12,"c":["phosphorylation"],"v":[[0],[100.0],[0],[0],[25.0],[0],[8.3]]},"SEQ_09966_F1":{"L":13,"n":18,"c":["phosphorylation"],"v":[[0],[61.1],[0],[50.0],[0],[5.6],[0],[0],[0],[0],[0],[0],[0]]},"SEQ_05185_F1":{"L":8,"n":12,"c":["phosphorylation"],"v":[[75.0],[0],[0],[0],[0],[0],[0],[0]]},"SEQ_19214_F1":{"L":5,"n":9,"c":["sumoylation"],"v":[[0],[100.0],[0],[0],[0]]},"SEQ_04367_F1":{"L":21,"n":11,"c":["N-glycosylation"],"v":[[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[72.7],[0],[0],[0],[0],[0],[0],[0],[0],[0]]},"SEQ_03181_F1":{"L":7,"n":9,"c":["phosphorylation"],"v":[[0],[0],[0],[88.9],[0],[11.1],[0]]},"SEQ_05306_F2":{"L":7,"n":8,"c":["acetylation","phosphorylation"],"v":[[0,100.0],[0,0],[0,12.5],[50.0,0],[12.5,0],[0,0],[0,0]]},"SEQ_07228_F1":{"L":12,"n":9,"c":["phosphorylation"],"v":[[0],[0],[0],[0],[0],[0],[77.8],[0],[0],[0],[77.8],[0]]},"SEQ_17512_F1":{"L":9,"n":8,"c":["phosphorylation"],"v":[[0],[0],[12.5],[87.5],[12.5],[87.5],[0],[0],[0]]},"SEQ_00470_F1":{"L":23,"n":7,"c":["disulfide"],"v":[[0],[0],[100.0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[100.0]]},"SEQ_16408_F1":{"L":23,"n":7,"c":["N-glycosylation","disulfide"],"v":[[0,0],[0,0],[0,100.0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[14.3,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,100.0]]},"SEQ_18019_F1":{"L":11,"n":7,"c":["phosphorylation"],"v":[[0],[0],[0],[0],[100.0],[0],[28.6],[0],[0],[0],[0]]},"SEQ_01241_F1":{"L":5,"n":8,"c":["methylation"],"v":[[0],[0],[0],[75.0],[0]]},"SEQ_06532_F1":{"L":7,"n":7,"c":["phosphorylation"],"v":[[0],[85.7],[0],[0],[0],[0],[28.6]]},"SEQ_04474_F1":{"L":8,"n":6,"c":["terminal-processing"],"v":[[0],[0],[0],[0],[100.0],[0],[0],[0]]},"SEQ_07826_F2":{"L":6,"n":6,"c":["phosphorylation"],"v":[[0],[0],[0],[100.0],[0],[0]]},"SEQ_03651_F6":{"L":6,"n":6,"c":["hydroxylation"],"v":[[0],[0],[83.3],[0],[0],[0]]},"SEQ_14298_F2":{"L":6,"n":6,"c":["N-glycosylation"],"v":[[83.3],[0],[0],[0],[0],[0]]},"SEQ_02708_F2":{"L":5,"n":5,"c":["methylation","phosphorylation"],"v":[[20.0,0],[0,0],[0,0],[0,100.0],[0,0]]},"SEQ_04497_F1":{"L":9,"n":5,"c":["phosphorylation"],"v":[[0],[0],[0],[100.0],[0],[0],[0],[0],[0]]},"SEQ_05172_F2":{"L":6,"n":5,"c":["phosphorylation"],"v":[[0],[0],[100.0],[0],[0],[0]]},"SEQ_08771_F1":{"L":5,"n":5,"c":["phosphorylation"],"v":[[100.0],[0],[0],[0],[0]]},"SEQ_10131_F2":{"L":5,"n":5,"c":["phosphorylation"],"v":[[0],[0],[0],[100.0],[0]]},"SEQ_17871_F1":{"L":6,"n":5,"c":["phosphorylation"],"v":[[80.0],[0],[0],[0],[0],[0]]},"SEQ_10933_F2":{"L":6,"n":4,"c":["phosphorylation"],"v":[[0],[0],[100.0],[0],[0],[0]]},"SEQ_15951_F1":{"L":7,"n":4,"c":["phosphorylation"],"v":[[0],[0],[0],[100.0],[0],[0],[0]]},"SEQ_17450_F1":{"L":6,"n":4,"c":["phosphorylation"],"v":[[0],[0],[0],[50.0],[0],[100.0]]},"SEQ_18966_F2":{"L":9,"n":4,"c":["phosphorylation"],"v":[[75.0],[0],[0],[0],[100.0],[0],[0],[0],[0]]},"SEQ_02681_F1":{"L":5,"n":3,"c":["phosphorylation"],"v":[[0],[100.0],[0],[0],[0]]},"SEQ_13339_F1":{"L":12,"n":3,"c":["phosphorylation"],"v":[[0],[0],[0],[0],[0],[0],[0],[0],[0],[100.0],[0],[0]]},"SEQ_01318_F2":{"L":9,"n":4,"c":["phosphorylation"],"v":[[0],[0],[0],[0],[25.0],[0],[0],[0],[0]]},"SEQ_02869_F2":{"L":8,"n":3,"c":["phosphorylation"],"v":[[0],[0],[0],[0],[33.3],[0],[0],[0]]},"SEQ_12165_F1":{"L":9,"n":3,"c":["phosphorylation"],"v":[[0],[0],[33.3],[0],[0],[0],[0],[0],[0]]}};
+const PTM_COL={'phosphorylation':'#e08214','O-glycosylation':'#1b7837','N-glycosylation':'#2166ac','methylation':'#762a83','sumoylation':'#b2182b','hydroxylation':'#9970ab','acetylation':'#35978f','disulfide':'#8c510a','terminal-processing':'#7a8288','ubiquitination':'#d6604d','lipidation':'#bf812d','ADP-ribosylation':'#4393c3','other-crosslink':'#999','other-modified':'#bbb'};
+/* Live panel: modification-frequency bars over a sequence logo, one column per unit position. */
+function modalCopies(m){const c={};m.i.forEach(x=>{const l=x[2].length;c[l]=(c[l]||0)+1});const L=+Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0];return {L,seqs:m.i.map(x=>x[2]).filter(q=>q.length===L)}}
+function panelSVG(fid,m,opts={}){
+  const P=PROF[fid],mc=modalCopies(m),L=P?P.L:mc.L,seqs=mc.seqs.filter(q=>q.length===L);
+  const cw=Math.max(7,Math.min(opts.max||14,Math.floor((opts.w||300)/L))),W=L*cw,BH=opts.bh||34,LH=opts.lh||46,gap=6,top=2;
+  let s='',y0=top;
+  // bars
+  s+=`<line x1="0" x2="${W}" y1="${y0+BH}" y2="${y0+BH}" stroke="#bdc1c4"/><line x1="0" x2="${W}" y1="${y0+BH/2}" y2="${y0+BH/2}" stroke="#d5d8db" stroke-dasharray="2 2"/>`;
+  if(P&&P.c.length){P.v.forEach((row,k)=>{let acc=0;row.forEach((pct,ci)=>{if(!pct)return;const h=Math.min(100-acc,pct)/100*BH;if(h<=0)return;
+      s+=`<rect x="${k*cw+1}" y="${(y0+BH-acc/100*BH-h).toFixed(2)}" width="${cw-2}" height="${h.toFixed(2)}" fill="${PTM_COL[P.c[ci]]||'#999'}"><title>position ${k+1}: ${P.c[ci]} in ${pct}% of copies</title></rect>`;acc+=pct})})}
+  else s+=`<text x="${W/2}" y="${y0+BH/2+3}" text-anchor="middle" font-size="8.5" fill="#9aa0a6" font-family="-apple-system,Segoe UI,Roboto,sans-serif">no modification annotated</text>`;
+  y0+=BH+gap;
+  // logo
+  if(seqs.length>=3){const MAXB=Math.log2(20),cap=7.3;
+    for(let k=0;k<L;k++){const cnt={};seqs.forEach(q=>cnt[q[k]]=(cnt[q[k]]||0)+1);
+      const fr=Object.entries(cnt).map(([a,c])=>[a,c/seqs.length]),ent=-fr.reduce((t,[,f])=>t+f*Math.log2(f),0),R=Math.max(0,MAXB-ent);
+      let y=y0+LH;fr.sort((a,b)=>a[1]-b[1]).forEach(([a,f])=>{const h=f*R/MAXB*LH;if(h<1.2){y-=h;return}
+        s+=`<text transform="translate(${k*cw+cw/2},${y.toFixed(2)}) scale(${(cw/8.5).toFixed(3)},${(h/cap).toFixed(3)})" text-anchor="middle" fill="${LOGO_COL[resClass(a)]||'#494e52'}">${a}</text>`;y-=h})}
+    s+=`<line x1="0" x2="${W}" y1="${y0+LH+.5}" y2="${y0+LH+.5}" stroke="#e4e6e8"/>`;
+  }else s+=`<text x="${W/2}" y="${y0+LH/2}" text-anchor="middle" font-size="8.5" fill="#9aa0a6" font-family="-apple-system,Segoe UI,Roboto,sans-serif">too few equal-length copies for a logo</text>`;
+  // position numbers
+  const yN=y0+LH+10;for(let k=0;k<L;k++)if(L<=20||(k+1)%5===0||k===0)s+=`<text x="${k*cw+cw/2}" y="${yN}" text-anchor="middle" font-size="7.5" fill="#9aa0a6" font-family="-apple-system,Segoe UI,Roboto,sans-serif">${k+1}</text>`;
+  return {svg:`<svg viewBox="0 0 ${W} ${yN+2}" width="${W}" height="${yN+2}" role="img" aria-label="Modification frequency and sequence logo" font-family="Monaco,Consolas,monospace" font-size="10" font-weight="700">${s}</svg>`,n:seqs.length,L};
 }
-function tabInfo(t){return typeof t==='number'?ARCH_SECTIONS.find(s=>s.n===t):HL_GROUPS[t]}
-function renderTabs(){
-  const g=GROUPS.find(x=>x.k===curGroup);
-  $('#tabs').innerHTML=(curGroup==='cat'?`<button class="tab on">From the catalog</button>`:
-    g.tabs.map(t=>{const n=typeof t==='number'?DATA.arch.filter(p=>p.sec===t).length:HIGHLIGHTS.filter(h=>h.grp===t).length;
-      return `<button class="tab ${t===curTab?'on':''}" data-t="${t}">${esc(tabInfo(t).short)}<span class="k">${n} ${typeof t==='number'?(n===1?'protein':'proteins'):(n===1?'family':'families')}</span></button>`}).join(''));
-  $('#tabs').querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>selectTab(curGroup,isNaN(+b.dataset.t)?b.dataset.t:+b.dataset.t));
+function renderLogoFigure(){
+  const used=new Set(Object.values(PROF).flatMap(p=>p.c));
+  $('#ptmKey').innerHTML=Object.keys(PTM_COL).filter(c=>used.has(c)).map(c=>`<span><i style="background:${PTM_COL[c]}"></i>${esc(c)}</span>`).join('');
+  $('#logoGrid').innerHTML=['known','newocc','novel'].map(t=>{const its=ITEMS.filter(i=>i.tier===t&&i.hl);if(!its.length)return '';
+    return `<div class="lg-sec" style="color:${HL_GROUPS[t].c}">${esc(HL_GROUPS[t].label)} · ${its.length} families</div><div class="lgrid">${its.map(it=>{const p=panelSVG(it.key,it.m,{w:230,max:26,bh:40,lh:62});
+      return `<button class="lpanel" data-k="${esc(it.key)}"><div class="lh"><b>${esc(it.gene)}</b> · n = ${p.n}<span class="cn" title="${esc(it.m.c)}">${esc(it.m.c)}</span><span class="fd">${esc(it.hl.finding)}</span></div>${p.svg}</button>`}).join('')}</div>`}).join('');
+  $('#logoGrid').querySelectorAll('.lpanel').forEach(b=>b.onclick=()=>{selectItem(b.dataset.k);document.getElementById('browse').scrollIntoView({behavior:'smooth'})});
 }
-function selectTab(group,tab,item){
-  curGroup=group;curTab=tab;renderGroupSel();renderTabs();
-  const info=tabInfo(tab);$('#secTitle').textContent=info.title;$('#secText').textContent=info.text;
-  let items;
-  if(group==='arch'){
-    items=DATA.arch.filter(p=>p.sec===tab).map(p=>({key:p.g,label:p.g,sub:p.d,view:()=>makeView(p,null,p)}));
-  }else{
-    items=HIGHLIGHTS.filter(h=>h.grp===tab).map(h=>({key:h.sid+h.f,label:h.gene,sub:shortFinding(h),hl:h,view:()=>makeView(DATA.hl[h.sid],h)}));
+/* ── Sequence logo from the located copies (equal-length families only) ── */
+const LOGO_COL={'r-h':'#9a6b00','r-a':'#c2410c','r-p':'#1d4ed8','r-n':'#b0177a','r-o':'#15803d','r-P':'#7e22ce','r-G':'#7a8288','r-C':'#a16207','':'#494e52'};
+function logoSVG(m,H=44,maxW=30){
+  const seqs=m.i.map(x=>x[2]);if(seqs.length<3)return '';
+  const L=seqs[0].length;if(L>maxW||!seqs.every(q=>q.length===L))return '';
+  const cw=11,W=L*cw,MAXB=Math.log2(20),cap=7.3;let s='';
+  for(let k=0;k<L;k++){
+    const cnt={};seqs.forEach(q=>cnt[q[k]]=(cnt[q[k]]||0)+1);
+    const fr=Object.entries(cnt).map(([a,c])=>[a,c/seqs.length]);
+    const ent=-fr.reduce((t,[,f])=>t+f*Math.log2(f),0),R=Math.max(0,MAXB-ent);
+    let y=H;fr.sort((a,b)=>a[1]-b[1]).forEach(([a,f])=>{const h=f*R/MAXB*H;if(h<1.2){y-=h;return}
+      s+=`<text transform="translate(${k*cw+cw/2},${y.toFixed(2)}) scale(1,${(h/cap).toFixed(3)})" text-anchor="middle" fill="${LOGO_COL[resClass(a)]||'#494e52'}">${a}</text>`;y-=h});
   }
-  const btn=it=>`<button class="prot" data-k="${esc(it.key)}"><b>${esc(it.label)}</b><span>${esc(it.sub)}</span></button>`;
-  if(group==='hl'){
-    $('#prots').innerHTML=HL_GROUPS[tab].subs.map(sb=>{const its=items.filter(it=>it.hl.sub===sb.k);if(!its.length)return '';
-      return `<div class="subrow"><span class="subl">${esc(sb.l)} (${its.length} ${its.length===1?'family':'families'})</span>${sb.t?`<p class="subnote">${esc(sb.t)}</p>`:''}${its.map(btn).join('')}</div>`}).join('');
-    if(tab==='novel'&&DATA.novelset)$('#prots').insertAdjacentHTML('beforeend',novelSetHTML());
-  }else $('#prots').innerHTML=items.map(btn).join('');
-  if(group==='hl'&&tab==='novel')initNovelSet();
-  $('#prots').querySelectorAll('.prot').forEach(b=>b.onclick=()=>{const it=items.find(x=>x.key===b.dataset.k);showView(it.view(),it.key)});
-  const first=item?items.find(x=>x.hl===item):items[0];
-  if(first)showView(first.view(),first.key);
+  return `<svg viewBox="0 0 ${W} ${H+1}" width="${W}" height="${H+1}" role="img" aria-label="Sequence logo of ${seqs.length} copies" font-family="Monaco,Consolas,monospace" font-size="10" font-weight="700"><line x1="0" x2="${W}" y1="${H+.5}" y2="${H+.5}" stroke="#e4e6e8"/>${s}</svg>`;
+}
+function miniTrack(it){
+  const L=it.p.L,c=HL_GROUPS[it.tier].c;
+  return `<svg viewBox="0 0 300 8" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="3.5" width="300" height="1" fill="#bdc1c4"/>${it.m.i.map(([s,e])=>`<rect x="${((s-1)/L*300).toFixed(1)}" y="0" width="${Math.max(1.5,(e-s+1)/L*300).toFixed(1)}" height="8" fill="${c}"/>`).join('')}</svg>`;
+}
+
+/* ── Header: the three groups, section nav ─────────────────────────────── */
+const nIn=t=>ITEMS.filter(i=>i.tier===t).length;
+function renderTierNav(){
+  $('#tierNav').innerHTML=['known','newocc','novel'].map(t=>{const g=HL_GROUPS[t];
+    const extra=t==='novel'&&DATA.novelset?` · ${fmt(DATA.novelset.length)} families clear every filter`:'';
+    return `<a class="tier" href="#${t}" style="--tc:${g.c}"><span class="tl">${esc(g.label)}</span><b>${esc(g.head)}</b><p>${esc(g.blurb)}</p><span class="n">${nIn(t)} worked examples${extra}</span></a>`}).join('');
+  document.querySelectorAll('.sec-k[data-tier]').forEach(el=>el.style.color=HL_GROUPS[el.dataset.tier].c);
+  $('#subnav').innerHTML=['known','newocc','novel'].map(t=>`<a href="#${t}"><i style="background:${HL_GROUPS[t].c}"></i>${esc(HL_GROUPS[t].nav)}</a>`).join('')
+    +`<a href="#browse">Browse examples</a><a href="#screen">The screen</a><a href="#method">Method</a><a href="#catalog">Catalog</a><a href="#top">Top</a>`;
+  if(DATA.elm){const v=Object.values(DATA.elm),n=v.length,c=k=>v.filter(x=>x[0]===k).length,pc=k=>Math.round(100*c(k)/n);
+    $('#elmNote').textContent=`How much of this is already curated? Of ${fmt(n)} families compared with ELM, ${fmt(c(2))} (${(100*c(2)/n).toFixed(1)}%) have a curated ELM instance inside the repeat, ${fmt(c(1))} (${pc(1)}%) are in a protein ELM has curated elsewhere, and ${fmt(c(0))} (${pc(0)}%) are in proteins ELM has never curated.`}
+}
+
+/* ── Section cards ─────────────────────────────────────────────────────── */
+function cardHTML(it){
+  const g=HL_GROUPS[it.tier],logo=logoSVG(it.m);
+  return `<button class="fcard" data-k="${esc(it.key)}" style="--tc:${g.c}"><div class="fc-h"><b>${esc(it.gene)}</b><span>${esc(it.p.d||'')}</span></div>
+    <div class="fc-t">${esc(it.title)}</div>
+    <div class="fc-logo">${logo||`<div class="fc-cons" title="${esc(it.m.c)}">${esc(it.m.c)}</div>`}</div>
+    <div class="fc-track">${miniTrack(it)}</div>
+    <div class="fc-chips"><span>${esc(it.fnLabel)}</span><span>${it.m.i.length} copies · ${esc(it.m.sp||'')}</span></div></button>`;
+}
+function renderCards(){
+  ['known','newocc','novel'].forEach(t=>{
+    const its=(FEATURED[t]||[]).map(gn=>ITEMS.find(i=>i.tier===t&&i.gene===gn)).filter(Boolean);
+    $('#cards-'+t).innerHTML=its.map(cardHTML).join('');
+    const b=document.querySelector(`[data-seeall="${t}"]`);
+    if(b){b.textContent=`All ${nIn(t)} ${HL_GROUPS[t].label.toLowerCase()} examples in the browser →`;b.onclick=()=>{setTier(t);toBrowser()}}
+  });
+  document.querySelectorAll('.fcard').forEach(b=>b.onclick=()=>{selectItem(b.dataset.k);toBrowser()});
+  if(DATA.novelset){$('#novelSetWrap').innerHTML=novelSetHTML();initNovelSet()}
+}
+const toBrowser=()=>document.getElementById('browse').scrollIntoView({behavior:'smooth'});
+
+/* ── Browser: list + explorer ──────────────────────────────────────────── */
+let curKey=null, tempItem=null, curView=null, exViewer=null, colorMode='repeats', spinning=false, focusSel=null, loadToken=0, lastUP=null;
+const flt={tier:'all',q:'',sp:'',x:''};
+function visibleItems(){const q=flt.q.toLowerCase();
+  return ITEMS.filter(it=>(flt.tier==='all'||it.tier===flt.tier)&&(!flt.sp||it.m.sp===flt.sp)&&(!flt.x||it.m.x===flt.x)
+    &&(!q||[it.gene,it.title,it.m.c,it.fnLabel,it.p.d,it.p.a].join(' ').toLowerCase().includes(q)))}
+function renderTierSeg(){
+  $('#blTier').innerHTML=[['all','All'],...TIER_ORDER.map(t=>[t,HL_GROUPS[t].label])].map(([k,l])=>
+    `<button data-t="${k}" class="${flt.tier===k?'on':''}">${k==='all'?'':`<i style="background:${HL_GROUPS[k].c}"></i>`}${esc(l)}</button>`).join('');
+  $('#blTier').querySelectorAll('button').forEach(b=>b.onclick=()=>setTier(b.dataset.t));
+}
+function setTier(t){flt.tier=t;renderTierSeg();renderList();const v=visibleItems();if(v.length&&!v.some(i=>i.key===curKey))selectItem(v[0].key)}
+function renderList(){
+  const vis=visibleItems(),row=it=>`<button class="bl-it${it.key===curKey?' on':''}" data-k="${esc(it.key)}" title="${esc(it.title)}"><b>${esc(it.gene)}</b><span>${esc(it.title)}</span></button>`;
+  let h=tempItem?`<div class="bl-tier"><h4>From the catalog</h4>${row(tempItem)}</div>`:'';
+  TIER_ORDER.forEach(t=>{const its=vis.filter(i=>i.tier===t);if(!its.length)return;const g=HL_GROUPS[t];
+    h+=`<div class="bl-tier"><h4><i style="background:${g.c}"></i>${esc(g.label)}<span>${its.length}</span></h4>`+
+      FN_ORDER.map(f=>{const x=its.filter(i=>i.fn===f);return x.length?`<div class="bl-fn">${esc(x[0].fnLabel)}</div>${x.map(row).join('')}`:''}).join('')+`</div>`});
+  if(!vis.length)h+=`<div class="bl-empty">No worked example matches. The <a href="#catalog">catalog</a> holds every protein.</div>`;
+  $('#blBody').innerHTML=h;
+  $('#blCount').textContent=`${vis.length} of ${ITEMS.length} families`;
+  $('#blBody').querySelectorAll('.bl-it').forEach(b=>b.onclick=()=>selectItem(b.dataset.k));
+}
+function selectItem(key){
+  const it=ITEMS.find(x=>x.key===key)||(tempItem&&tempItem.key===key?tempItem:null);if(!it)return;
+  if(it!==tempItem&&flt.tier!=='all'&&it.tier!==flt.tier){flt.tier='all';renderTierSeg()}
+  if(it!==tempItem&&!visibleItems().includes(it)){flt.q='';flt.sp='';flt.x='';$('#blQ').value='';$('#blSp').value='';$('#blCtx').value=''}
+  curKey=key;renderList();
+  const on=$('#blBody .bl-it.on'),box=$('#blBody');
+  if(on){const t=on.offsetTop-box.offsetTop;if(t<box.scrollTop+30||t>box.scrollTop+box.clientHeight-40)box.scrollTop=Math.max(0,t-box.clientHeight/3)}
+  showView(it.view(),key);
+}
+function initBrowser(){
+  renderTierSeg();
+  let t;$('#blQ').addEventListener('input',()=>{clearTimeout(t);t=setTimeout(()=>{flt.q=$('#blQ').value.trim();renderList()},120)});
+  $('#blSp').addEventListener('change',()=>{flt.sp=$('#blSp').value;renderList()});
+  $('#blCtx').addEventListener('change',()=>{flt.x=$('#blCtx').value;renderList()});
+  const first=ITEMS.find(i=>i.tier==='known'&&i.gene===(FEATURED.known||[])[0])||ITEMS[0];
+  selectItem(first.key);
 }
 let nsSort={k:9,d:-1};
 function novelSetHTML(){
   return `<details class="novelset" open><summary>The full anchored novel set: ${DATA.novelset.length} families</summary>
-  <p class="subnote">Families that clear every database filter, sit outside any compositional-bias region, carry at least three invariant consensus positions, and returned nothing in the abstract sweep. Click a row to open it.</p>
+  <p class="subnote">Families that clear every database filter, sit outside any compositional-bias region, carry at least three invariant consensus positions, and returned nothing in the abstract sweep. Click a row to open it in the browser.</p>
   <div class="ctl"><input id="nsQ" type="search" placeholder="Filter by gene or consensus"><span id="nsN" style="color:var(--gray)"></span></div>
   <div class="wrap"><table><thead><tr><th data-k="2">Gene</th><th data-k="3">Consensus</th><th data-k="4">Copies</th><th data-k="5">Unit (aa)</th><th data-k="7">Context</th><th data-k="8">Spacing</th><th data-k="9">Invariant positions</th><th data-k="10">ELM</th></tr></thead><tbody id="nsBody"></tbody></table></div></details>`;
 }
@@ -687,9 +988,9 @@ function initNovelSet(){
   $('#nsQ').addEventListener('input',draw);
   document.querySelectorAll('.novelset th').forEach(th=>th.onclick=()=>{const k=+th.dataset.k;nsSort=nsSort.k===k?{k,d:-nsSort.d}:{k,d:k>=4&&k!==7&&k!==8?-1:1};draw()});
   $('#nsBody').addEventListener('click',async e=>{const tr=e.target.closest('tr.row');if(!tr)return;const fid=tr.dataset.fid,sid=fid.replace(/_F\d+$/,''),f=+fid.split('_F').pop();
+    if(ITEMS.some(x=>x.key===fid)){selectItem(fid);toBrowser();return}
     const cat=await getCatalog();const p=cat.find(x=>x.id===sid);if(!p)return;
-    curGroup='cat';renderGroupSel();renderTabs();$('#secTitle').textContent=p.g||p.a;$('#secText').textContent='Opened from the anchored novel set.';$('#prots').innerHTML='';
-    showView(makeView(p,null,{focus:f,note:''}),null);document.getElementById('groupsel').scrollIntoView({behavior:'smooth'})});
+    openTemp(p,f,'In the anchored novel set.')});
   draw();
 }
 function makeView(p,hl,arch){
@@ -697,21 +998,26 @@ function makeView(p,hl,arch){
   if(f){const k=m.findIndex(x=>x.f===f);if(k>0)m=[m[k],...m.slice(0,k),...m.slice(k+1)]}
   return {...p,m,hl,focusF:f||null,note:arch?arch.note:'',elm:hl?hl.elm:(arch?arch.elm:undefined),showElm:true};
 }
+function openTemp(p,f,note){
+  const m=(f&&p.m.find(x=>x.f===f))||p.m[0];
+  tempItem={key:'cat_'+p.id,tier:'cat',gene:p.g||p.a,title:p.d||'',p,m,view:()=>makeView(p,null,{focus:f||null,note:note||''})};
+  selectItem(tempItem.key);toBrowser();
+}
 function openFromCatalog(p){
-  const h=HIGHLIGHTS.find(x=>x.sid===p.id);
-  if(h){selectTab('hl',h.grp,h)}
-  else{curGroup='cat';renderGroupSel();renderTabs();$('#secTitle').textContent=p.g||p.a;$('#secText').textContent='Opened from the catalog.';$('#prots').innerHTML='';showView(makeView(p,null),null)}
-  document.getElementById('explore').querySelector('.groupsel').scrollIntoView({behavior:'smooth'});
+  const it=ITEMS.find(x=>x.p.id===p.id);
+  if(it){selectItem(it.key);toBrowser()}else openTemp(p,null,'');
 }
 function showView(v,key){
   curView=v;focusSel=null;
-  document.querySelectorAll('.prot').forEach(b=>b.classList.toggle('on',b.dataset.k===key));
+  document.querySelectorAll('.fcard').forEach(b=>b.classList.toggle('on',b.dataset.k===key));
   renderSide(v);load3D(v);
 }
 function findingHTML(h,v){
-  const g=HL_GROUPS[h.grp],sb=g.subs.find(x=>x.k===h.sub);
+  const it=itemOf(h),g=HL_GROUPS[h.grp],sb=g.subs.find(x=>x.k===h.sub);
   const T=TIERS[h.tier]||[h.tier,'t-none'],Lt=LIT[h.lit&&h.lit.st]||LIT.not_checked;
-  const rows=[['Consensus',`<code style="font-family:var(--mono)">${esc(h.cons)}</code>`],['Support',esc(h.support)]];
+  const rows=[['Consensus',`<code style="font-family:var(--mono)">${esc(h.cons)}</code>`]];
+  if(h.sites.length&&h.sites[0].k!=='motif')rows.push(['Fixed position',`${esc(h.finding)} (${esc(h.support)})`]);
+  else rows.push(['Support',esc(h.support)]);
   if(h.evidence)rows.push(['Evidence',esc(h.evidence)]);
   if(h.concord)rows.push(['Motif class',`${esc(h.concord)}${h.generic?' (generic class; weak support on its own)':''}`]);
   if(h.cleave)rows.push(['Cleavage',`cut at unit offset ${h.cleave.off} in ${h.cleave.n} of ${h.cleave.N} copies; UniProt records it as ${esc(h.cleave.types)} features (${esc(h.cleave.desc)})`]);
@@ -720,11 +1026,13 @@ function findingHTML(h,v){
   if(pos)rows.push([h.sites[0].k==='motif'?'Motif starts at':'Unit position',pos+(h.sites[0].k==='motif'?' (ELM match start, shaded in each copy)':' (numbered on the ruler; residues with a UniProt PTM annotation are boxed in red)')]);
   if(h.lit&&(h.lit.doi||h.lit.pmid)){const url=h.lit.doi?`https://doi.org/${h.lit.doi}`:`https://pubmed.ncbi.nlm.nih.gov/${h.lit.pmid}/`;
     rows.push(['Literature',`<a href="${url}" target="_blank" rel="noopener">${esc(h.lit.title||h.lit.doi)}${h.lit.year?' ('+esc(h.lit.year)+')':''}</a>${h.lit.note?'<br><span style="color:var(--gray)">'+esc(h.lit.note)+'</span>':''}`])}
-  const N=(v&&v.m[0]&&v.m[0].i.length)||'';
-  return `<div class="finding" style="border-left-color:${g.c}"><div class="lab" style="color:${g.c}">${esc(g.label)}${sb?' · '+esc(sb.l):''}</div>
-    <div class="what">${esc(h.finding)}</div>
-    <div class="badges"><span class="bdg ${T[1]}" title="Evidence tier for the modification this card is about"><small>Evidence</small>${esc(T[0])}</span><span class="bdg ${Lt[1]}" title="PubMed abstract sweep (titles and abstracts, ten per gene)"><small>Literature</small>${esc(Lt[0])}</span></div>
-    <dl>${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>${h.caveat?`<p class="caveat">${esc(h.caveat)}</p>`:''}${elmLine(`${h.sid}_F${h.f}`,h.elm,N)}</div>`;
+  const N=(v&&v.m[0]&&v.m[0].i.length)||'',pnl=v&&v.m[0]?panelSVG(`${h.sid}_F${h.f}`,v.m[0],{w:420,max:22,bh:34,lh:56}):null,logo=pnl?pnl.svg:'';
+  const annot=h.tier==='no_ptm_annotated'?'':`<span class="bdg ${T[1]}" title="Strongest database annotation that bears on this array"><small>Annotation</small>${esc(T[0])}</span>`;
+  return `<div class="finding" style="border-left-color:${g.c}"><div class="lab" style="color:${g.c}">${esc(g.label)}${it?' · '+esc(it.fnLabel):''}</div>
+    <div class="what">${esc(it?it.title:h.finding)}</div>
+    ${logo?`<div class="logo">${logo}<small>Above: % of copies with a UniProt modification at each unit position. Below: logo of the ${pnl.n} copies of length ${pnl.L} (bits, no small-sample correction).</small></div>`:''}
+    <div class="badges">${annot}<span class="bdg ${Lt[1]}" title="PubMed abstract sweep (titles and abstracts, ten per gene)"><small>Literature</small>${esc(Lt[0])}</span>${sb?`<span class="fnchip" title="Evidence sub-group">${esc(sb.l)}</span>`:''}</div>
+    <dl>${rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>${sb&&sb.t?`<p class="subnote2">${esc(sb.t)}</p>`:''}${h.caveat?`<p class="caveat">${esc(h.caveat)}</p>`:''}${elmLine(`${h.sid}_F${h.f}`,h.elm,N)}</div>`;
 }
 function renderSide(v){
   const nCopies=v.m.reduce((a,m)=>a+m.i.length,0),hl=v.hl;
@@ -899,8 +1207,8 @@ function drawIlls(){
 
 /* ── Boot ──────────────────────────────────────────────────────────────── */
 function boot(){
-  drawIlls();fillNumbers();drawCharts();initOverview();initExplorerControls();initCatalog();renderSummary();
-  selectTab('hl','novel');
+  drawIlls();fillNumbers();drawCharts();initOverview();initExplorerControls();initCatalog();
+  renderTierNav();renderCards();initBrowser();renderLogoFigure();
   $('#findForm').addEventListener('submit',async e=>{e.preventDefault();const q=$('#findQ').value.trim();if(!q)return;$('#findMsg').textContent='Searching…';
     const cat=await getCatalog().catch(()=>null);if(!cat){$('#findMsg').textContent='Catalog unavailable';return}
     const Q=q.toUpperCase(),hit=cat.find(p=>(p.g||'').toUpperCase()===Q||(p.a||'').toUpperCase()===Q);
