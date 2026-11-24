@@ -1424,8 +1424,8 @@ kbd, code { font-family: var(--font-outlier); }
         </div>
 
         <div class="filter-pills-row">
-          <button class="filter-pill active" data-filter="repeat" data-val="all">All</button>
-          <button class="filter-pill" data-filter="repeat" data-val="yes">With repeats</button>
+          <button class="filter-pill" data-filter="repeat" data-val="all">All</button>
+          <button class="filter-pill active" data-filter="repeat" data-val="yes">With repeats</button>
           <button class="filter-pill" data-filter="repeat" data-val="no">No repeats</button>
           <button class="filter-pill" data-filter="context" data-val="disordered_like">Disordered</button>
           <button class="filter-pill" data-filter="context" data-val="structured_like">Structured</button>
@@ -1460,7 +1460,7 @@ kbd, code { font-family: var(--font-outlier); }
             <label>Sort: </label>
             <select id="sortSelect">
               <option value="default">Default</option>
-              <option value="gene">Gene (A-Z)</option>
+              <option value="gene" selected>Gene (A-Z)</option>
               <option value="repeats_desc">Repeats (High-Low)</option>
               <option value="length_desc">Length (Long-Short)</option>
             </select>
@@ -1647,14 +1647,14 @@ kbd, code { font-family: var(--font-outlier); }
       activeSeqId: null,
       searchQuery: '',
       filters: {
-        repeat: 'all',
+        repeat: 'yes',
         context: 'all',
         curation: 'all',
         spacing: 'all',
         hideKnown: false,
         noFlags: false
       },
-      sort: 'default',
+      sort: 'gene',
       seqWrapWidth: 60,
       seqColorMode: 'conserved_same', // 'conserved_same' | 'conserved_split' | 'full_span' | 'chemistry'
       seqExpanded: false
