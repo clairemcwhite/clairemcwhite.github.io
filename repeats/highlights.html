@@ -9,74 +9,81 @@
 <meta name="description" content="A blinded language-model screen for repeats across the human proteome. Research preview.">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.2/3Dmol-min.js"></script>
 <style>
+/* Hallmark · checked: 2026-11-23 · genre: editorial (inferred)
+ * floor: 1 FAIL left (56: table and list heads pin at top 0 inside their own scroll boxes, not under the page nav) · fixed: 11 (7, 19, 20, 26, 34, 38, 40, 48, 54, 63, 67) · structural: 2 printed (58, F15)
+ * built: the project · redesign: polish · v2.0.0 */
+/* Hallmark · answered F21 · the catalog list heads are h4 because the browser panel's script styles and pins that level */
+/* Hallmark · answered F7 · find, filter and segment controls share one recipe so the page's controls read as one family */
 :root{
-  --text:#494e52; --strong:#313538; --gray:#7a8288; --light:#bdc1c4; --lighter:#f2f3f3; --code:#fafafa;
+  --text:#494e52; --strong:#313538; --gray:#676e74; --light:#bdc1c4; --lighter:#f2f3f3; --code:#fafafa;
   --link:#52adc8; --link-hover:#3d8296;
   --c-str:#4e79a7; --c-dis:#e15759; --c-mix:#59a14f;
   --sans:-apple-system,".SFNSText-Regular","San Francisco","Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
   --mono:Monaco,Consolas,"Lucida Console",Menlo,monospace;
+  --paper:#fcfdfd; --paper-veil:rgb(252 253 253 / .96); --shade-1:rgb(0 0 0 / 0.08); --shade-2:rgb(0 0 0 / 0.14); --blue-1:#f2f6fb; --blue-2:#e7f0fa; --blue-3:#8fb3d9; --blue-4:#2171b5; --blue-5:#1d4ed8; --blue-6:#0053d6; --blue-7:#2c5a85; --blue-8:#174f80; --green-1:#f5f9ee; --green-2:#eaf5ec; --green-3:#8bb36a; --green-4:#6a9f3a; --green-5:#2c7a3f; --green-6:#4a6b2f; --green-7:#15803d; --green-8:#1f5c2e; --grey-1:#e4e6e8; --grey-2:#bdc1c4; --grey-3:#6b7278; --grey-4:#999999; --grey-5:#7a8288; --grey-6:#5f666b; --grey-7:#4e5357; --grey-8:#494e52; --magenta-1:#b0177a; --orange-1:#fff8e6; --orange-2:#fdf0dc; --orange-3:#e0a020; --orange-4:#a16207; --orange-5:#9a6b00; --purple-1:#7e22ce; --red-1:#ff7d45; --red-2:#b8433f; --red-3:#c0392b; --red-4:#c2410c; --teal-1:#eef7fa; --teal-2:#65cbf3; --teal-3:#018080; --yellow-1:#ffdb13;
 }
+
 *{box-sizing:border-box}
 html{font-size:16px;-webkit-text-size-adjust:100%}
 @media (min-width:1024px){html{font-size:17px}}
-body{margin:0;background:#fff;color:var(--text);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:var(--link);text-decoration:none}
 a:hover{color:var(--link-hover);text-decoration:underline}
 .container{max-width:1040px;margin:0 auto;padding:0 3em}
 @media (max-width:900px){.container{padding:0 1.5em}}
 @media (max-width:640px){.container{padding:0 16px}}
 
-.masthead{border-bottom:1px solid var(--lighter);background:#fff}
+.masthead{border-bottom:1px solid var(--lighter);background:var(--paper)}
 .masthead .container{display:flex;align-items:center;gap:2em;padding-top:1em;padding-bottom:1em;flex-wrap:wrap}
 .masthead a{color:var(--gray);text-decoration:none}
-.masthead a:hover{color:#4e5357}
+.masthead a:hover{color:var(--grey-7)}
 .masthead .site{font-weight:700;color:var(--strong)}
 .masthead nav{display:flex;gap:1.5em;font-size:.95em}
 
 .page-head{padding:2.4em 0 1.6em;border-bottom:1px solid var(--lighter)}
-.kicker{font-size:.75em;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin:0 0 .6em}
-.kicker .flag{color:#b8433f;margin-left:.6em}
+.kicker{font-size:.75em;color:var(--gray);margin:0 0 .6em}
+.kicker .flag{margin-left:0;color:var(--red-2);margin-left:.6em}
 h1{font-size:2em;line-height:1.2;color:var(--strong);margin:0 0 .5em;font-weight:700;max-width:30em}
 .byline{color:var(--gray);margin:0 0 1.2em;font-size:.95em}
 .abstract{max-width:46em;margin:0 0 1.3em}
-.links{font-size:.95em;display:flex;flex-wrap:wrap;row-gap:.2em}
+.links{font-size:.95em;display:flex;flex-wrap:wrap;row-gap:.2em;column-gap:1.3em}
 .links a,.links span{white-space:nowrap}
-.links .sep{color:var(--light);margin:0 .55em}
+
 .links .off{color:var(--gray)}
 .find{display:flex;gap:.5em;align-items:center;margin:1em 0 0;font-size:.92em;flex-wrap:wrap}
 .find label{color:var(--strong);font-weight:600}
 .find input{font:inherit;padding:.35em .6em;border:1px solid var(--light);border-radius:3px;min-width:0;flex:0 1 22em}
-.find button{font:inherit;font-size:.92em;background:#fff;border:1px solid var(--light);border-radius:3px;padding:.3em .8em;cursor:pointer}
+.find button{font:inherit;font-size:.92em;background:var(--paper);border:1px solid var(--light);border-radius:3px;padding:.3em .8em;cursor:pointer}
 .find .msg{color:var(--gray);font-size:.88em}
-.elmtag{font-family:var(--sans);font-size:.68em;font-weight:700;letter-spacing:.04em;color:#fff;background:#2c7a3f;border-radius:2px;padding:0 .35em;margin-left:.5em}
+.elmtag{font-family:var(--sans);font-size:.68em;font-weight:700;color:var(--paper);background:var(--green-5);border-radius:2px;padding:0 .35em;margin-left:.5em}
 .elmline{margin:.6em 0 0;font-size:.85em}
-.elmline b{font-size:.78em;letter-spacing:.06em;text-transform:uppercase;padding:.05em .4em;border-radius:2px;margin-right:.4em;color:#fff}
+.elmline b{font-size:.78em;padding:.05em .4em;border-radius:2px;margin-right:.4em;color:var(--paper)}
 .badges{display:flex;flex-wrap:wrap;gap:.35em;margin:.45em 0 .5em}
 .bdg{font-size:.72em;padding:.1em .5em;border-radius:3px;border:1px solid;white-space:nowrap}
-.bdg small{opacity:.75;margin-right:.35em;text-transform:uppercase;letter-spacing:.05em;font-size:.9em}
-.t-strong{background:#e7f0fa;border-color:#2171b5;color:#174f80}.t-mid{background:#f2f6fb;border-color:#8fb3d9;color:#2c5a85}
-.t-weak{background:#fff;border-color:#bdc1c4;border-style:dashed;color:#5f666b}.t-none{background:#fff;border-color:#e4e6e8;color:#9aa0a6}
-.l-yes{background:#eaf5ec;border-color:#2c7a3f;color:#1f5c2e}.l-part{background:#f5f9ee;border-color:#8bb36a;color:#4a6b2f}.l-no{background:#fff;border-color:#bdc1c4;color:#5f666b}.l-na{background:#fff;border-color:#e4e6e8;color:#9aa0a6}
-.caveat{font-size:.85em;margin:.5em 0 0;padding:.35em .6em;background:#fff8e6;border-left:3px solid #e0a020}
-.fam-h .famelm{color:#fff}.fam-h .famelm.elm-unk{color:#494e52}
-.famelm{font-size:.72em;padding:0 .45em;border-radius:2px;color:#fff;white-space:nowrap}
+.bdg small{opacity:.75;margin-right:.35em;font-size:.9em}
+.t-strong{background:var(--blue-2);border-color:var(--blue-4);color:var(--blue-8)}.t-mid{background:var(--blue-1);border-color:var(--blue-3);color:var(--blue-7)}
+.t-weak{background:var(--paper);border-color:var(--grey-2);border-style:dashed;color:var(--grey-6)}.t-none{background:var(--paper);border-color:var(--grey-1);color:var(--grey-3)}
+.l-yes{background:var(--green-2);border-color:var(--green-5);color:var(--green-8)}.l-part{background:var(--green-1);border-color:var(--green-3);color:var(--green-6)}.l-no{background:var(--paper);border-color:var(--grey-2);color:var(--grey-6)}.l-na{background:var(--paper);border-color:var(--grey-1);color:var(--grey-3)}
+.caveat{font-size:.85em;margin:.5em 0 0;padding:.35em .6em;background:var(--orange-1);border:1px solid var(--orange-3)}
+.fam-h .famelm{color:var(--paper)}.fam-h .famelm.elm-unk{color:var(--grey-8)}
+.famelm{font-size:.72em;padding:0 .45em;border-radius:2px;color:var(--paper);white-space:nowrap}
 .novelset{margin:.6em 0 1.2em;width:100%;min-width:0;flex:1 1 100%}
 .novelset .wrap{max-width:100%}
 .novelset summary{cursor:pointer;color:var(--strong);font-weight:600;font-size:.92em}
 .novelset .ctl{display:flex;gap:.6em;align-items:center;margin:.6em 0;flex-wrap:wrap;font-size:.88em}
 .novelset input{font:inherit;padding:.3em .55em;border:1px solid var(--light);border-radius:3px;flex:0 1 18em}
 .novelset .wrap{max-height:360px;overflow:auto;border:1px solid var(--lighter)}
-.novelset table{width:100%;border-collapse:collapse;font-size:.82em}
-.novelset th{position:sticky;top:0;background:#fff;text-align:left;padding:.4em .6em;border-bottom:1px solid var(--light);cursor:pointer;white-space:nowrap}
+.novelset table{font-variant-numeric:tabular-nums;width:100%;border-collapse:collapse;font-size:.82em}
+.novelset th{position:sticky;top:0;background:var(--paper);text-align:left;padding:.4em .6em;border-bottom:1px solid var(--light);cursor:pointer;white-space:nowrap}
 .novelset td{padding:.35em .6em;border-bottom:1px solid var(--lighter);vertical-align:top}
 .novelset tr.row{cursor:pointer}.novelset tr.row:hover td{background:var(--code)}
 .novelset td.c{font-family:var(--mono);max-width:26em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.elm-curated{background:#2c7a3f}.elm-partial{background:#6a9f3a}.elm-none{background:#7a8288}.elm-unk{background:#e4e6e8;color:#494e52!important}
+.elm-curated{background:var(--green-5)}.elm-partial{background:var(--green-4)}.elm-none{background:var(--grey-5)}.elm-unk{background:var(--grey-1);color:var(--grey-8)!important}
 .numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:1.8em 0 0;border-top:1px solid var(--lighter)}
 @media (max-width:720px){.numbers{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .numbers div{padding:.9em 1em .2em 0}
 .numbers b{display:block;font-size:1.6em;color:var(--strong);font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
-.numbers span{font-size:.82em;color:var(--gray);line-height:1.35;display:block;max-width:15em}
+.numbers span{font-variant-numeric:tabular-nums;font-size:.82em;color:var(--gray);line-height:1.35;display:block;max-width:15em}
 
 section{padding:2.6em 0 .4em}
 h2{font-size:1.25em;color:var(--strong);margin:0 0 .9em;padding-bottom:.45em;border-bottom:1px solid var(--lighter);font-weight:700}
@@ -89,9 +96,9 @@ figcaption b{color:var(--text)}
 .figimg{display:block;width:100%;height:auto;border:1px solid var(--lighter)}
 .figwrap{margin-top:2.2em}
 .q{position:relative;display:inline-block;margin-left:.3em;font-weight:400;font-style:normal;text-transform:none;letter-spacing:0}
-.q>i{display:inline-flex;align-items:center;justify-content:center;width:1.35em;height:1.35em;border-radius:50%;border:1px solid var(--light);background:#fff;color:var(--gray);font-style:normal;font-size:.7rem;font-weight:700;cursor:help;vertical-align:.1em}
+.q>i{display:inline-flex;align-items:center;justify-content:center;width:1.35em;height:1.35em;border-radius:50%;border:1px solid var(--light);background:var(--paper);color:var(--gray);font-style:normal;font-size:.7rem;font-weight:700;cursor:help;vertical-align:.1em}
 .q:hover>i,.q:focus>i{border-color:var(--gray);color:var(--strong)}
-.q>span{display:none;position:absolute;z-index:40;top:1.7em;left:0;width:min(25em,82vw);background:#fff;border:1px solid var(--light);box-shadow:0 4px 14px rgba(0,0,0,.14);padding:.6em .8em;font-size:.8rem;line-height:1.45;color:var(--text);text-align:left;white-space:normal;font-family:var(--sans)}
+.q>span{display:none;position:absolute;z-index:40;top:1.7em;left:0;width:min(25em,82vw);background:var(--paper);border:1px solid var(--light);box-shadow:0 4px 14px var(--shade-2);padding:.6em .8em;font-size:.8rem;line-height:1.45;color:var(--text);text-align:left;white-space:normal;font-family:var(--sans)}
 .q:hover>span,.q:focus>span,.q:focus-within>span{display:block}
 
 #ptmFixWrap{scroll-margin-top:56px}
@@ -99,7 +106,7 @@ figcaption b{color:var(--text)}
 #ptmFixWrap td.c{max-width:9em}
 .xtab .mbtn{background:none;border:1px solid var(--light);border-radius:3px;padding:.1em .5em;font:inherit;font-size:.92em;color:var(--link);cursor:pointer;white-space:nowrap}
 .xtab .mbtn:hover{border-color:var(--link)}
-.xtab tr.motif td{background:#fafbfb;padding:.7em .8em 1em}
+.xtab tr.motif td{background:var(--paper);padding:.7em .8em 1em}
 .xtab tr.motif .mx{overflow-x:auto}
 .xtab tr.motif .mk{display:flex;gap:1em;flex-wrap:wrap;font-size:.92em;color:var(--gray);margin:0 0 .5em}
 .xtab tr.motif .mk i{display:inline-block;width:.75em;height:.75em;margin-right:.35em;vertical-align:-.05em}
@@ -108,8 +115,8 @@ figcaption b{color:var(--text)}
 .xtab .ctl{display:flex;gap:.6em;align-items:center;margin:.6em 0;flex-wrap:wrap;font-size:.88em}
 .xtab input[type=search],.xtab select{font:inherit;padding:.3em .55em;border:1px solid var(--light);border-radius:3px}
 .xtab .wrap{max-height:380px;overflow:auto;border:1px solid var(--lighter)}
-.xtab table{width:100%;border-collapse:collapse;font-size:.82em}
-.xtab th{position:sticky;top:0;background:#fff;text-align:left;padding:.4em .6em;border-bottom:1px solid var(--light);white-space:nowrap}
+.xtab table{font-variant-numeric:tabular-nums;width:100%;border-collapse:collapse;font-size:.82em}
+.xtab th{position:sticky;top:0;background:var(--paper);text-align:left;padding:.4em .6em;border-bottom:1px solid var(--light);white-space:nowrap}
 .xtab td{padding:.35em .6em;border-bottom:1px solid var(--lighter);vertical-align:top}
 .xtab td.c{font-family:var(--mono);white-space:nowrap;max-width:20em;overflow:hidden;text-overflow:ellipsis}
 .xtab td.mem{min-width:24em}
@@ -119,7 +126,7 @@ figcaption b{color:var(--text)}
 .arch8{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1em;margin:1.2em 0}
 @media (max-width:1000px){.arch8{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.arch8{grid-template-columns:1fr}}
-.a8{aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:space-between;text-align:left;background:#fff;border:1px solid var(--lighter);border-top:3px solid var(--c-str);padding:.9em 1em;font:inherit;font-size:.88em;color:var(--text);cursor:pointer}
+.a8{aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:space-between;text-align:left;background:var(--paper);border:1px solid var(--lighter);border-top:3px solid var(--c-str);padding:.9em 1em;font:inherit;font-size:.88em;color:var(--text);cursor:pointer}
 .a8:hover{border-color:var(--light);border-top-color:var(--c-str)}
 .a8 h3{margin:0;font-size:1.05em;color:var(--strong)}
 .a8 svg{display:block;width:100%;height:16px}
@@ -157,9 +164,9 @@ figcaption b{color:var(--text)}
 .hl-g h3{font-size:.95em;margin:0 0 .15em;display:flex;gap:.5em;align-items:center}
 .hl-g h3 i{width:.7em;height:.7em;display:inline-block}
 .hl-g p{font-size:.85em;color:var(--gray);margin:0 0 .5em}
-.hl-g .subh{margin:.7em 0 .2em;font-size:.78em;text-transform:uppercase;letter-spacing:.05em}
+.hl-g .subh{margin:.7em 0 .2em;font-size:.78em;}
 .subrow{display:flex;flex-wrap:wrap;gap:.3em 1.3em;align-items:baseline;width:100%}
-.subrow .subl{width:100%;font-size:.72em;text-transform:uppercase;letter-spacing:.05em;color:var(--gray);margin-top:.5em}
+.subrow .subl{width:100%;font-size:.72em;color:var(--gray);margin-top:.5em}
 .subnote{width:100%;font-size:.82em;color:var(--gray);margin:.1em 0 .2em;max-width:52em}
 .hl-g ol{margin:0;padding-left:1.4em;font-size:.88em}
 .hl-g li{margin:.15em 0}
@@ -168,7 +175,7 @@ figcaption b{color:var(--text)}
 .hl-g li span{color:var(--text)}
 
 /* explorer */
-.groupsel{display:flex;gap:1.4em;font-size:.82em;margin:0 0 .3em;text-transform:uppercase;letter-spacing:.06em}
+.groupsel{display:flex;gap:1.4em;font-size:.82em;margin:0 0 .3em;}
 .groupsel button{background:none;border:0;padding:0;font:inherit;color:var(--gray);cursor:pointer;letter-spacing:inherit;text-transform:inherit}
 .groupsel button.on{color:var(--strong);font-weight:700}
 .tabs{display:flex;border-bottom:1px solid var(--lighter);overflow-x:auto;scrollbar-width:none;margin-bottom:1.1em}
@@ -190,12 +197,12 @@ figcaption b{color:var(--text)}
 
 .explorer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:2em;align-items:start;border-top:1px solid var(--lighter);padding-top:1.4em}
 @media (max-width:980px){.explorer{grid-template-columns:1fr;gap:1.2em}}
-.viewer{position:sticky;top:12px;border:1px solid var(--lighter);background:#fff}
+.viewer{position:sticky;top:12px;border:1px solid var(--lighter);background:var(--paper)}
 @media (max-width:980px){.viewer{position:relative;top:0}}
 .vbox{position:relative;height:min(600px,calc(100vh - 110px));min-height:380px}
 @media (max-width:980px){.vbox{height:400px}}
 .vbox .v{position:absolute;inset:0}
-.vbox .status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:.85em;text-align:center;padding:1.5em;z-index:3;pointer-events:none}
+.vbox .status{font-variant-numeric:tabular-nums;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:.85em;text-align:center;padding:1.5em;z-index:3;pointer-events:none}
 .vtools{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5em;padding:.5em .7em;border-top:1px solid var(--lighter);font-size:.8em;align-items:center}
 .vtools .grp{display:flex;gap:.2em;align-items:center}
 .vtools .grp span{color:var(--gray);margin-right:.4em}
@@ -220,8 +227,8 @@ figcaption b{color:var(--text)}
 .ph .d{margin:.1em 0}
 .ph .meta{font-family:var(--mono);font-size:.78em;color:var(--gray)}
 .ph .meta a{margin-left:.9em}
-.finding{margin:1em 0 0;padding:.7em .9em;border-left:3px solid var(--gray);background:var(--code)}
-.finding .lab{font-size:.72em;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+.finding{margin:1em 0 0;padding:.7em .9em;border:1px solid var(--gray);background:var(--code)}
+.finding .lab{font-size:.72em;font-weight:700}
 .finding .what{color:var(--strong);margin:.2em 0 .35em}
 .finding dl{display:grid;grid-template-columns:auto 1fr;gap:.15em .9em;margin:0;font-size:.85em}
 .finding dt{color:var(--gray)}
@@ -239,36 +246,36 @@ figcaption b{color:var(--text)}
 .fam-h .sw{width:.8em;height:.8em;display:inline-block;align-self:center}
 .fam-h b{color:var(--strong);font-family:var(--mono);font-weight:600;font-size:.95em}
 .fam-h span{color:var(--gray)}
-.fam-h .star{color:var(--strong);font-size:.8em;text-transform:uppercase;letter-spacing:.06em}
+.fam-h .star{color:var(--strong);font-size:.8em;}
 .cons{font-family:var(--mono);font-size:.85em;margin:.35em 0 .5em;word-break:break-all;color:var(--strong)}
 .cons .x{color:var(--light)}
-.cons .cls{color:#b8433f}
+.cons .cls{color:var(--red-2)}
 .cons .br{color:var(--c-str)}
 .aln{overflow-x:auto;border-left:2px solid var(--lighter);padding-left:.6em}
 .aln-row{display:flex;gap:.8em;white-space:nowrap;cursor:pointer;padding:.05em 0;align-items:center}
 .aln-row:hover{background:var(--code)}
-.aln-row.on{background:#eef7fa}
+.aln-row.on{background:var(--teal-1)}
 .aln-row.ruler{cursor:default;color:var(--light)}
 .aln-row.ruler:hover{background:none}
 .aln-row .cw{width:.55em;height:.9em;flex-shrink:0;border-radius:1px}
 .aln-row.ruler .pos{margin-left:1.35em}
 .aln-row .pos{font-family:var(--mono);font-size:.72em;color:var(--gray);width:6.2em;text-align:right;flex-shrink:0}
-.aln-row .sq{font-family:var(--mono);font-size:.8em;letter-spacing:.05em}
+.aln-row .sq{font-family:var(--mono);font-size:.8em;}
 .sq.fixed span,.sq.fixed i{display:inline-block;width:1.25ch;text-align:center;font-style:normal}
 .sq i.mk{color:var(--strong);font-weight:700}
-.site{outline:1.5px solid #c0392b;outline-offset:-1px;border-radius:2px}
-.sq .motif{background:#fdf0dc}
-.r-h{color:#9a6b00}.r-a{color:#c2410c;font-weight:700}.r-p{color:#1d4ed8}.r-n{color:#b0177a}.r-o{color:#15803d}.r-P{color:#7e22ce;font-weight:700}.r-G{color:#7a8288}.r-C{color:#a16207;font-weight:700}
+.site{outline:1.5px solid var(--red-3);outline-offset:-1px;border-radius:2px}
+.sq .motif{background:var(--orange-2)}
+.r-h{color:var(--orange-5)}.r-a{color:var(--red-4);font-weight:700}.r-p{color:var(--blue-5)}.r-n{color:var(--magenta-1)}.r-o{color:var(--green-7)}.r-P{color:var(--purple-1);font-weight:700}.r-G{color:var(--grey-5)}.r-C{color:var(--orange-4);font-weight:700}
 .why{margin:.6em 0 0;font-size:.85em;max-width:44em}
 .why em{color:var(--gray);font-style:normal}
 .reslegend{font-size:.75em;color:var(--gray);margin-top:1.3em;font-family:var(--mono)}
 .reslegend span{margin-right:1em}
 
 .controls{display:flex;flex-wrap:wrap;gap:.6em;margin-bottom:.9em;align-items:center}
-.controls input,.controls select{font:inherit;font-size:.9em;padding:.4em .6em;border:1px solid var(--light);border-radius:3px;background:#fff;color:var(--text)}
+.controls input,.controls select{font:inherit;font-size:.9em;padding:.4em .6em;border:1px solid var(--light);border-radius:3px;background:var(--paper);color:var(--text)}
 .controls input{flex:1 1 18em;min-width:0}
-.count{font-size:.82em;color:var(--gray);margin-left:auto}
-table.cat{width:100%;border-collapse:collapse;font-size:.88em}
+.count{font-variant-numeric:tabular-nums;font-size:.82em;color:var(--gray);margin-left:auto}
+table.cat{font-variant-numeric:tabular-nums;width:100%;border-collapse:collapse;font-size:.88em}
 .cat th{text-align:left;font-weight:600;color:var(--strong);padding:.5em .8em .5em 0;border-bottom:1px solid var(--light);font-size:.92em}
 .cat td{padding:.55em .8em .55em 0;border-bottom:1px solid var(--lighter);vertical-align:top}
 .cat tr.row{cursor:pointer}
@@ -281,7 +288,7 @@ table.cat{width:100%;border-collapse:collapse;font-size:.88em}
 .cc em{font-style:normal;color:var(--gray)}
 @media (max-width:760px){.hide-sm{display:none}}
 .more{padding:1em 0}
-.btn{font:inherit;font-size:.88em;background:#fff;border:1px solid var(--light);border-radius:3px;padding:.35em .9em;color:var(--text);cursor:pointer}
+.btn{font:inherit;font-size:.88em;background:var(--paper);border:1px solid var(--light);border-radius:3px;padding:.35em .9em;color:var(--text);cursor:pointer}
 .btn:hover{border-color:var(--gray)}
 .empty{padding:2em 0;color:var(--gray)}
 
@@ -289,14 +296,14 @@ pre.bib{background:var(--code);border:1px solid var(--lighter);padding:1em;font-
 footer{margin-top:3.5em;border-top:1px solid var(--lighter);padding:1.5em 0 2.5em;font-size:.8em;color:var(--gray)}
 footer .container{display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap}
 
-#tip{position:fixed;z-index:100;pointer-events:none;background:#fff;color:var(--text);border:1px solid var(--light);padding:.45em .65em;font-size:.8em;line-height:1.4;max-width:320px;box-shadow:0 2px 8px rgba(0,0,0,.08);opacity:0}
+#tip{position:fixed;z-index:100;pointer-events:none;background:var(--paper);color:var(--text);border:1px solid var(--light);padding:.45em .65em;font-size:.8em;line-height:1.4;max-width:320px;box-shadow:0 2px 8px var(--shade-1);opacity:0}
 #tip b{color:var(--strong)}
 #tip .m{font-family:var(--mono);font-size:.92em;color:var(--gray);word-break:break-all}
 /* ── restructure: sticky section nav, tier cards, family cards, browser ── */
 html{scroll-behavior:smooth}
 section,[id="top"]{scroll-margin-top:56px}
 .container.wide{max-width:1400px}
-.subnav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--lighter)}
+.subnav{position:sticky;top:0;z-index:20;background:var(--paper-veil);border-bottom:1px solid var(--lighter)}
 .subnav .container{display:flex;gap:1.5em;overflow-x:auto;scrollbar-width:none;font-size:.88em;padding-top:.65em;padding-bottom:.65em;white-space:nowrap}
 .subnav .container::-webkit-scrollbar{display:none}
 .subnav a{color:var(--gray)}
@@ -309,7 +316,7 @@ section,[id="top"]{scroll-margin-top:56px}
 .tier{display:block;border:1px solid var(--lighter);border-top:3px solid var(--tc);padding:.8em 1em .9em;color:var(--text)}
 .tier .tl{font-size:.95em}
 .tier:hover{text-decoration:none;color:var(--text);border-color:var(--light);border-top-color:var(--tc)}
-.tier .tl{font-size:.72em;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--tc)}
+.tier .tl{font-size:.72em;font-weight:700;color:var(--tc)}
 .tier b{display:block;font-size:1.05em;color:var(--strong);margin:.15em 0 .3em;line-height:1.3}
 .tier p{font-size:.85em;margin:0;color:var(--text)}
 .tier .n{font-size:.82em;color:var(--gray);margin-top:.5em;display:block}
@@ -319,11 +326,11 @@ section,[id="top"]{scroll-margin-top:56px}
 .tier .n .big{font-size:1.5em;color:var(--tc);margin-right:.15em}
 .elmnote{font-size:.85em;color:var(--gray);max-width:52em;margin:1.2em 0 0}
 
-.sec-k{font-size:.72em;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin:0 0 .3em}
+.sec-k{font-size:.72em;font-weight:700;margin:0 0 .3em}
 .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1em;margin:1.2em 0 .9em}
 @media (max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.cards{grid-template-columns:1fr}}
-.fcard{font:inherit;text-align:left;background:#fff;border:1px solid var(--lighter);border-left:3px solid var(--tc);padding:.75em .9em .7em;cursor:pointer;color:var(--text);display:flex;flex-direction:column;gap:.35em;min-width:0}
+.fcard{font:inherit;text-align:left;background:var(--paper);border:1px solid var(--tc);padding:.75em .9em .7em;cursor:pointer;color:var(--text);display:flex;flex-direction:column;gap:.35em;min-width:0}
 .fcard:hover{border-color:var(--light);border-left-color:var(--tc);background:var(--code)}
 .fcard.on{border-color:var(--strong);border-left-color:var(--tc)}
 .fc-h{display:flex;gap:.6em;align-items:baseline;min-width:0}
@@ -342,18 +349,18 @@ section,[id="top"]{scroll-margin-top:56px}
 .browser .explorer{border-top:0;padding-top:0}
 .blist{position:sticky;top:52px;max-height:calc(100vh - 64px);display:flex;flex-direction:column;border:1px solid var(--lighter);min-width:0}
 .bl-ctl{padding:.6em .7em;border-bottom:1px solid var(--lighter);display:grid;gap:.45em}
-.bl-ctl input,.bl-ctl select{font:inherit;font-size:.82em;padding:.3em .5em;border:1px solid var(--light);border-radius:3px;background:#fff;color:var(--text);min-width:0;width:100%}
+.bl-ctl input,.bl-ctl select{font:inherit;font-size:.82em;padding:.3em .5em;border:1px solid var(--light);border-radius:3px;background:var(--paper);color:var(--text);min-width:0;width:100%}
 .bl-ctl .two{display:grid;grid-template-columns:1fr 1fr;gap:.45em}
 .bl-seg{display:flex;flex-wrap:wrap;gap:.25em}
-.bl-seg button{font:inherit;font-size:.74em;background:#fff;border:1px solid var(--lighter);border-radius:3px;padding:.15em .5em;color:var(--gray);cursor:pointer}
+.bl-seg button{font:inherit;font-size:.74em;background:var(--paper);border:1px solid var(--lighter);border-radius:3px;padding:.15em .5em;color:var(--gray);cursor:pointer}
 .bl-seg button.on{border-color:var(--strong);color:var(--strong);font-weight:600}
 .bl-seg button i{display:inline-block;width:.6em;height:.6em;margin-right:.35em}
-.bl-count{font-size:.74em;color:var(--gray)}
+.bl-count{font-variant-numeric:tabular-nums;font-size:.74em;color:var(--gray)}
 .bl-body{overflow:auto;padding:.2em 0 .6em;min-height:0}
-.bl-tier h4{position:sticky;top:0;background:#fff;margin:0;padding:.55em .7em .3em;font-size:.72em;text-transform:uppercase;letter-spacing:.07em;color:var(--strong);z-index:1}
-.bl-tier h4 i{display:inline-block;width:.65em;height:.65em;margin-right:.45em}
+.bl-tier h4{position:sticky;top:0;background:var(--paper);margin:0;padding:.55em .7em .3em;font-size:.72em;color:var(--strong);z-index:1}
+.bl-tier h4 .sw{display:inline-block;width:.65em;height:.65em;margin-right:.45em}
 .bl-tier h4 span{color:var(--gray);font-weight:400;margin-left:.3em}
-.bl-fn{font-size:.7em;color:var(--gray);padding:.5em .7em .1em;text-transform:uppercase;letter-spacing:.04em}
+.bl-fn{font-size:.7em;color:var(--gray);padding:.5em .7em .1em;}
 .bl-it{display:block;width:100%;text-align:left;font:inherit;background:none;border:0;border-left:3px solid transparent;padding:.22em .7em .22em .55em;cursor:pointer;color:var(--text);line-height:1.3}
 .bl-it b{font-family:var(--mono);font-weight:400;font-size:.82em;color:var(--link)}
 .bl-it span{display:block;font-size:.74em;color:var(--gray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -366,16 +373,16 @@ section,[id="top"]{scroll-margin-top:56px}
   .browser{grid-template-columns:1fr;gap:1.2em}
   .blist{position:relative;top:0;max-height:440px}
 }
-.fnchip{font-size:.72em;padding:.1em .5em;border-radius:3px;border:1px solid var(--lighter);background:#fff;color:var(--text);white-space:nowrap}
+.fnchip{font-size:.72em;padding:.1em .5em;border-radius:3px;border:1px solid var(--lighter);background:var(--paper);color:var(--text);white-space:nowrap}
 .finding .logo{margin:.5em 0 .3em}
 .finding .logo svg{display:block;max-width:100%;height:auto}
 .finding .logo small{display:block;font-size:.72em;color:var(--gray);margin-top:.15em}
 .subnote2{font-size:.85em;margin:.5em 0 0;color:var(--text)}
 .ptmkey{display:flex;flex-wrap:wrap;gap:.3em 1.1em;font-size:.8em;margin:.2em 0 .8em}
 .ptmkey i{display:inline-block;width:.8em;height:.8em;margin-right:.35em;vertical-align:-.05em}
-.lg-sec{margin:1.2em 0 .4em;font-size:.78em;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.lg-sec{margin:1.2em 0 .4em;font-size:.78em;font-weight:700}
 .lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8em}
-.lpanel{border:1px solid var(--lighter);background:#fff;padding:.55em .65em .5em;text-align:left;font:inherit;cursor:pointer;min-width:0}
+.lpanel{border:1px solid var(--lighter);background:var(--paper);padding:.55em .65em .5em;text-align:left;font:inherit;cursor:pointer;min-width:0}
 .lpanel:hover{border-color:var(--light)}
 .lpanel .lh{font-size:.8em;line-height:1.35;margin-bottom:.35em}
 .lpanel .lh b{font-family:var(--mono);color:var(--strong)}
@@ -384,12 +391,21 @@ section,[id="top"]{scroll-margin-top:56px}
 .lpanel svg{display:block;max-width:100%;height:auto}
 details.prompt{margin-top:1.4em}
 details.prompt summary{cursor:pointer;color:var(--strong);font-weight:600;font-size:.92em}
-details.prompt .pl{font-size:.78em;text-transform:uppercase;letter-spacing:.06em;color:var(--gray);margin:1em 0 .3em}
+details.prompt .pl{font-size:.78em;color:var(--gray);margin:1em 0 .3em}
 details.prompt pre{background:var(--code);border:1px solid var(--lighter);padding:.9em 1em;font-family:var(--mono);font-size:.74em;line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:28em;overflow:auto;margin:0;color:var(--strong)}
 details.figs{margin-top:2em}
 details.figs>summary{cursor:pointer;color:var(--strong);font-weight:600;font-size:.95em}
 .novelset summary{font-size:1em}
 .novelset .wrap{max-height:440px}
+
+/* Hallmark polish: floor and finish fixes */
+html,body{overflow-x:clip}
+.byline{margin-bottom:.3em}
+.kicker{margin:0 0 1.2em}
+h1,h2{text-wrap:balance}
+:focus-visible{outline:2px solid var(--link-hover);outline-offset:2px}
+button:active{transform:translateY(1px)}
+button:disabled,input:disabled{opacity:.5;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -404,12 +420,12 @@ details.figs>summary{cursor:pointer;color:var(--strong);font-weight:600;font-siz
 <main id="top">
 <div class="container">
   <div class="page-head">
-    <p class="kicker">Research preview<span class="flag">Work in progress</span></p>
     <h1>A blinded language-model screen for repeats in human proteins</h1>
     <p class="byline">McWhite Lab, Department of Molecular and Cellular Biology, University of Arizona</p>
+    <p class="kicker">Research preview. <span class="flag">Work in progress.</span></p>
     <p class="abstract">We asked a language model, Gemini Carbon, to find repeats in human proteins by reading the sequences alone: no code, no tools, no search and no protein names. Every reported copy was then located in the sequence. Checked against UniProt, ELM and the literature, the results fall into four groups: known repeats, known motifs in new arrays, repeats inside functional regions, and novel repeats.<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>The model read anonymized sequences four at a time and reported each recurring pattern as a consensus, with the copies it was based on. Copies that could not be found in the sequence were discarded. The screen began with proteins that have long disordered regions and now covers the full human proteome.</span></span></p>
     <div class="links">
-      <a href="#browse">Browse examples</a><span class="sep">·</span><a href="#ptmFixWrap">Repeat PTMs</a><span class="sep">·</span><a href="#catalog">Catalog</a><span class="sep">·</span><a href="./index.html">Curation tool</a><span class="sep">·</span><a href="catalog.json" download>Data (JSON)</a><span class="sep">·</span><span class="off">Preprint in preparation</span>
+      <a href="#browse">Browse examples</a><a href="#ptmFixWrap">Repeat PTMs</a><a href="#catalog">Catalog</a><a href="./human.html">Human viewer</a><a href="./yeast.html">Yeast viewer</a><a href="./arabidopsis.html">Arabidopsis viewer</a><a href="catalog.json" download>Data (JSON)</a><span class="off">Preprint in preparation</span>
     </div>
     <form class="find" id="findForm" autocomplete="off"><label for="findQ">Find a protein</label><input id="findQ" type="search" placeholder="Gene or UniProt accession, e.g. SRRM2 or P24928"><button type="submit">Go</button><span class="msg" id="findMsg"></span></form>
     <div class="numbers">
@@ -506,7 +522,7 @@ details.figs>summary{cursor:pointer;color:var(--strong);font-weight:600;font-siz
     </div>
     <figure class="figwrap">
       <a href="fig/slim_class_recurrence.png" target="_blank" rel="noopener"><img class="figimg" src="fig/slim_class_recurrence.png" alt="Repeat classes by number of proteins and by number of gene families" loading="lazy"></a>
-      <figcaption><b>Figure 2.</b> Repeat classes shared between proteins. <b>a</b>, The 118 classes found in two or more proteins, by number of proteins. <b>b</b>, By number of gene families spanned: 45 span two or more.<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>Computed on the short-motif side of the screen: 2,438 repeat families in 1,971 proteins with a disordered or mixed context and a 4–40 aa unit. Repeat family profiles were compared position by position; two repeat families are joined when their profiles correlate at ≥0.90 and at least 0.10 above the same pair with columns permuted. The 118 classes hold 540 repeat families; the other 1,898 were seen in one protein only. 73 classes stay within one gene family (paralogues).</span></span></figcaption>
+      <figcaption><b>Figure 2.</b> Repeat classes shared between proteins. <b>a</b>, The 118 classes found in two or more proteins, by number of proteins. <b>b</b>, By number of gene families spanned: 45 span two or more.<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>Computed on the short-motif side of the screen: 2,438 repeat families in 1,971 proteins with a disordered or mixed context and a 4 to 40 aa unit. Repeat family profiles were compared position by position; two repeat families are joined when their profiles correlate at ≥0.90 and at least 0.10 above the same pair with columns permuted. The 118 classes hold 540 repeat families; the other 1,898 were seen in one protein only. 73 classes stay within one gene family (paralogues).</span></span></figcaption>
     </figure>
     <div id="classWrap"></div>
 
@@ -622,7 +638,7 @@ M...</pre>
       <select id="fGrp"><option value="">Any group</option><option value="0">Known</option><option value="1">Known motif, new place</option><option value="fr">In a functional region</option><option value="2">Novel</option><option value="3">Other</option></select>
       <select id="fCtx"><option value="">Any context</option><option value="disordered_like">Disordered</option><option value="structured_like">Structured</option><option value="mixed">Mixed</option></select>
       <select id="fCopies"><option value="0">Any copies</option><option value="3">≥3 copies</option><option value="5">≥5 copies</option><option value="10">≥10 copies</option></select>
-      <select id="fSort"><option value="copies">Most copies</option><option value="fams">Most repeat families</option><option value="len">Longest</option><option value="gene">Gene A–Z</option></select>
+      <select id="fSort"><option value="copies">Most copies</option><option value="fams">Most repeat families</option><option value="len">Longest</option><option value="gene">Gene A to Z</option></select>
       <span class="count" id="catCount"></span>
     </div>
     <table class="cat"><thead><tr><th>Gene</th><th class="hide-sm">Protein</th><th class="hide-sm">Length</th><th>Repeat families (consensus, copies)</th></tr></thead><tbody id="catBody"><tr><td colspan="4" class="empty">Loading catalog…</td></tr></tbody></table>
@@ -646,7 +662,7 @@ M...</pre>
 <footer>
   <div class="container">
     <span>Access to Gemini Carbon provided through the Antigravity Research Access Program.</span><span>© McWhite Lab, University of Arizona</span>
-    <span>Structures: AlphaFold DB · Annotations: UniProt, InterPro, ELM · Viewer: 3Dmol.js · Data as of <span id="asof"></span></span>
+    <span>Structures: AlphaFold DB. Annotations: UniProt, InterPro, ELM. Viewer: 3Dmol.js. Data as of <span id="asof"></span></span>
   </div>
 </footer>
 <div id="tip"></div>
@@ -996,7 +1012,7 @@ function initOverview(){
 function shortFinding(h){return h.finding.split(';')[0].replace(/^[A-Z0-9]+[: ]+/,'')}
 const ELM3={2:['ELM curated','elm-curated'],1:['Not in ELM · protein curated elsewhere','elm-none'],0:['ELM never curated this protein','elm-unk']};
 function elmCall(fid){return DATA.elm?DATA.elm[fid]:undefined}
-function elmFamBadge(fid){const c=elmCall(fid);if(!c)return '<span class="famelm" style="background:#bdc1c4">ELM: not in snapshot</span>';
+function elmFamBadge(fid){const c=elmCall(fid);if(!c)return '<span class="famelm" style="background:var(--grey-2)">ELM: not in snapshot</span>';
   const t=c[0]===2?`ELM curated (${c[2]})`:ELM3[c[0]][0];return `<span class="famelm ${ELM3[c[0]][1]}">${esc(t)}</span>`}
 function elmLine(fid,hand,N){
   if(hand&&(hand.st==='curated'||hand.st==='partial'))return elmHTML(hand);
@@ -1031,7 +1047,7 @@ function panelSVG(fid,m,opts={}){
   // bars
   s+=`<line x1="0" x2="${W}" y1="${y0+BH}" y2="${y0+BH}" stroke="#bdc1c4"/><line x1="0" x2="${W}" y1="${y0+BH/2}" y2="${y0+BH/2}" stroke="#d5d8db" stroke-dasharray="2 2"/>`;
   if(P&&P.c.length){P.v.forEach((row,k)=>{let acc=0;row.forEach((pct,ci)=>{if(!pct)return;const h=Math.min(100-acc,pct)/100*BH;if(h<=0)return;
-      s+=`<rect x="${k*cw+1}" y="${(y0+BH-acc/100*BH-h).toFixed(2)}" width="${cw-2}" height="${h.toFixed(2)}" fill="${PTM_COL[P.c[ci]]||'#999'}"><title>position ${k+1}: ${P.c[ci]} in ${pct}% of copies</title></rect>`;acc+=pct})})}
+      s+=`<rect x="${k*cw+1}" y="${(y0+BH-acc/100*BH-h).toFixed(2)}" width="${cw-2}" height="${h.toFixed(2)}" fill="${PTM_COL[P.c[ci]]||'var(--grey-4)'}"><title>position ${k+1}: ${P.c[ci]} in ${pct}% of copies</title></rect>`;acc+=pct})})}
   else s+=`<text x="${W/2}" y="${y0+BH/2+3}" text-anchor="middle" font-size="8.5" fill="#9aa0a6" font-family="-apple-system,Segoe UI,Roboto,sans-serif">no modification annotated</text>`;
   y0+=BH+gap;}
   // logo
@@ -1130,7 +1146,7 @@ function renderList(){
   const vis=visibleItems(),row=it=>`<button class="bl-it${it.key===curKey?' on':''}" data-k="${esc(it.key)}" title="${esc(it.title)}"><b>${esc(it.gene)}</b><span>${esc(it.title)}</span></button>`;
   let h=tempItem?`<div class="bl-tier"><h4>From the catalog</h4>${row(tempItem)}</div>`:'';
   TIER_ORDER.forEach(t=>{const its=vis.filter(i=>i.tier===t);if(!its.length)return;const g=HL_GROUPS[t];
-    h+=`<div class="bl-tier"><h4><i style="background:${g.c}"></i>${esc(g.label)}<span>${its.length}</span></h4>`+
+    h+=`<div class="bl-tier"><h4><span class="sw" style="background:${g.c}"></span>${esc(g.label)}<span>${its.length}</span></h4>`+
       FN_ORDER.map(f=>{const x=its.filter(i=>i.fn===f);return x.length?`<div class="bl-fn">${esc(x[0].fnLabel)}</div>${x.map(row).join('')}`:''}).join('')+`</div>`});
   if(!vis.length)h+=`<div class="bl-empty">No worked example matches. The <a href="#catalog">catalog</a> holds every protein.</div>`;
   $('#blBody').innerHTML=h;
@@ -1303,7 +1319,7 @@ function drawTracks(v,up){
 function renderLegend(v){
   const sites=v.ptmRes||[];
   $('#exLegend').innerHTML=colorMode==='plddt'
-    ?`<span><i style="background:#0053D6"></i>pLDDT &gt; 90</span><span><i style="background:#65CBF3"></i>70–90</span><span><i style="background:#FFDB13"></i>50–70</span><span><i style="background:#FF7D45"></i>&lt; 50</span>`
+    ?`<span><i style="background:var(--blue-6)"></i>pLDDT &gt; 90</span><span><i style="background:var(--teal-2)"></i>70–90</span><span><i style="background:var(--yellow-1)"></i>50–70</span><span><i style="background:var(--red-1)"></i>&lt; 50</span>`
     :v.m.map((m,i)=>`<span class="lgf${v.iso===i?' on':''}${v.iso!=null&&v.iso!==i?' off':''}" data-i="${i}" title="Show only this repeat family on the structure"><i style="width:1.6em;background:linear-gradient(90deg,${RAMPS[i%RAMPS.length][0]},${RAMPS[i%RAMPS.length][1]})"></i>F${m.f} (${m.i.length} copies${m.x==='disordered_like'?', side chains shown':''})</span>`).join('')+`<span><i style="background:${BASE}"></i>rest of chain</span>`;
   if(sites.length)$('#exLegend').innerHTML+=`<span><i style="background:${SITE}"></i>UniProt modification (red sticks)</span>`;
   if(colorMode!=='plddt'&&v.m.length>1)$('#exLegend').innerHTML+=`<span class="lghint">${v.iso==null?'Click a repeat family to show it alone':'<a href="#" id="isoAll">Show all repeat families</a>'}</span>`;
@@ -1378,7 +1394,7 @@ function filterCatalog(cat){
 function rowHTML(p,i){
   return `<tr class="row" data-i="${i}"><td><div class="gn">${esc(p.g||'—')}</div><div class="ac">${esc(p.a)}</div></td>
   <td class="hide-sm">${esc(p.d)}</td><td class="hide-sm">${fmt(p.L)}</td>
-  <td>${p.m.map(m=>`<span class="cc"><i style="background:${(CTX[m.x]||{c:'#999'}).c}"></i><span>${esc(m.c)}</span><em>×${m.i.length}${(()=>{const g=DATA.grp&&DATA.grp[`${p.id}_F${m.f}`];const k=FREG[`${p.id}_F${m.f}`]?'freg':g?['known','newocc','novel','other'][g[0]]:null;return k?` · <b style="color:${HL_GROUPS[k].c};font-weight:600">${esc(HL_GROUPS[k].label)}</b>`:''})()}</em></span>`).join('')}</td></tr>`;
+  <td>${p.m.map(m=>`<span class="cc"><i style="background:${(CTX[m.x]||{c:'var(--grey-4)'}).c}"></i><span>${esc(m.c)}</span><em>×${m.i.length}${(()=>{const g=DATA.grp&&DATA.grp[`${p.id}_F${m.f}`];const k=FREG[`${p.id}_F${m.f}`]?'freg':g?['known','newocc','novel','other'][g[0]]:null;return k?` · <b style="color:${HL_GROUPS[k].c};font-weight:600">${esc(HL_GROUPS[k].label)}</b>`:''})()}</em></span>`).join('')}</td></tr>`;
 }
 function renderCatalog(reset){
   getCatalog().then(cat=>{
@@ -1464,7 +1480,7 @@ function renderHandoff2(){
     const fid=mb.dataset.m,sid=fid.replace(/_F\d+$/,''),f=+fid.split('_F').pop(),cat=await getCatalog().catch(()=>null);if(!cat)return;
     const p=cat.find(x=>x.id===sid),m=p&&p.m.find(x=>x.f===f);if(!m)return;
     const P=PROF[fid],pn=panelSVG(fid,m,{w:760,max:24,bh:54,lh:78});
-    tr.insertAdjacentHTML('afterend',`<tr class="motif"><td colspan="8"><div class="mk"><span><b style="color:var(--strong)">${esc(p.g||p.a)}</b> · ${pn.n} copies of ${pn.L} aa</span>${(P?P.c:[]).map(c=>`<span><i style="background:${PTM_COL[c]||'#999'}"></i>${esc(c)}</span>`).join('')}${P&&!P.c.length?'<span>annotated sites fall only in copies of another length, not plotted</span>':'<span>bars: % of copies modified at each unit position</span>'}</div><div class="mx" style="max-width:${tr.closest('.wrap').clientWidth-34}px">${pn.svg}</div></td></tr>`);
+    tr.insertAdjacentHTML('afterend',`<tr class="motif"><td colspan="8"><div class="mk"><span><b style="color:var(--strong)">${esc(p.g||p.a)}</b> · ${pn.n} copies of ${pn.L} aa</span>${(P?P.c:[]).map(c=>`<span><i style="background:${PTM_COL[c]||'var(--grey-4)'}"></i>${esc(c)}</span>`).join('')}${P&&!P.c.length?'<span>annotated sites fall only in copies of another length, not plotted</span>':'<span>bars: % of copies modified at each unit position</span>'}</div><div class="mx" style="max-width:${tr.closest('.wrap').clientWidth-34}px">${pn.svg}</div></td></tr>`);
     mb.textContent='Hide motif'},true);
   $('#pfBody').addEventListener('click',e=>{if(e.target.closest('.mbtn')||e.target.closest('tr.motif'))return;const tr=e.target.closest('tr.row');if(tr)openFid(tr.dataset.fid,'Modification at a fixed unit position.')});
 }
@@ -1472,14 +1488,14 @@ function renderHandoff2(){
 /* ── Round 5: repeat families inside a UniProt functional region ── */
 const FREGALL={};X2.freg.forEach(r=>FREGALL[r[0]]=r);
 const FREG={};X2.freg.forEach(r=>{if(!r[10])FREG[r[0]]=r});   // the group: in a functional region and no citation for the repeat itself
-function citeBadge(fid){const k=X2.cited[fid],c=k&&X2.cites[k];return c?`<a class="famelm" style="background:${HL_GROUPS.known.c};color:#fff" href="${esc(c.u)}" target="_blank" rel="noopener" title="Citation for the repeat itself">${esc(c.n)}: ${esc(c.c)}</a>`:''}
+function citeBadge(fid){const k=X2.cited[fid],c=k&&X2.cites[k];return c?`<a class="famelm" style="background:${HL_GROUPS.known.c};color:var(--paper)" href="${esc(c.u)}" target="_blank" rel="noopener" title="Citation for the repeat itself">${esc(c.n)}: ${esc(c.c)}</a>`:''}
 const FREG_KIND=['Interaction or binding','Required for a function','Other named region'];
-function fregBadge(fid){const r=FREGALL[fid];return citeBadge(fid)+(r?`<span class="famelm" style="background:#018080" title="UniProt Region: ${esc(r[8])}">In a functional region: ${esc(r[8].length>46?r[8].slice(0,44)+'…':r[8])} (${r[5]} of ${r[4]} copies)</span>`:'')}
+function fregBadge(fid){const r=FREGALL[fid];return citeBadge(fid)+(r?`<span class="famelm" style="background:var(--teal-3)" title="UniProt Region: ${esc(r[8])}">In a functional region: ${esc(r[8].length>46?r[8].slice(0,44)+'…':r[8])} (${r[5]} of ${r[4]} copies)</span>`:'')}
 function renderFreg(){
   const F=X2.freg.filter(r=>!r[10]),CK=['structured_like','disordered_like','mixed'],FC=['known','newocc','novel','other'];
   $('#fregN').textContent=`${fmt(F.length)} repeat families in ${fmt(new Set(F.map(r=>r[1])).size)} proteins.`;
   const its=ITEMS.filter(i=>i.hl&&FREG[i.key]);
-  $('#cards-freg').innerHTML=its.slice(0,6).map(it=>cardHTML(it).replace('<div class="fc-chips">',`<div class="fc-chips"><span style="color:#018080">${esc(FREG[it.key][8])}</span>`)).join('');
+  $('#cards-freg').innerHTML=its.slice(0,6).map(it=>cardHTML(it).replace('<div class="fc-chips">',`<div class="fc-chips"><span style="color:var(--teal-3)">${esc(FREG[it.key][8])}</span>`)).join('');
   $('#cards-freg').querySelectorAll('.fcard').forEach(b=>{b.style.setProperty('--tc','#018080');b.onclick=()=>{selectItem(b.dataset.k);toBrowser()}});
   $('#fregWrap').innerHTML=`<details class="xtab" open><summary>All ${fmt(F.length)} repeat families in a functional region${qm('Class is the group the repeat family would fall in on its own evidence, ignoring the region: Novel, Known motif, new place, or Other. Not yet rated: the motif and novelty checks have not been run for it.')}</summary>
     <div class="ctl"><input id="frQ" type="search" placeholder="Filter by gene, consensus or region"><select id="frK" aria-label="Kind of region">${FREG_KIND.map((k,i)=>`<option value="${i}">${k}</option>`).join('')}<option value="">Any region</option></select>
