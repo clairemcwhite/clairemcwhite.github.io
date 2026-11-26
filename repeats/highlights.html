@@ -328,6 +328,9 @@ section,[id="top"]{scroll-margin-top:56px}
 .arrt .at-t{font-size:.85em}
 .ag-link{font-size:.85em;font-weight:600}
 .tiers-h{margin:1.8em 0 0}
+.refs{list-style:none;padding-left:0;font-size:.88em}
+.refs li{margin:.4em 0;padding-left:1.5em;text-indent:-1.5em}
+.refs li:target{background:var(--orange-1)}
 .why{margin:.8em 0 0;padding-left:1.4em;max-width:52em;font-size:.95em}
 .why li{margin:.35em 0}
 .tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1em;margin:1.6em 0 0}
@@ -485,9 +488,9 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
   <div class="page-head">
     <h1>A blinded language-model screen for repeats in human proteins</h1>
     <p class="byline">McWhite Lab, Department of Molecular and Cellular Biology, University of Arizona</p>
-    <p class="abstract">We asked a language model, Gemini Carbon, to find repeats in human proteins by reading the sequences alone: no code, no tools, no search and no protein names. <b>While recognizing these patterns is difficult for the human eye, we consider this to be a task that naturally suits the abilities of LLMs to recognize patterns in sequences.</b> Every reported copy was then located in the sequence. Many of the repeats in disordered or mixed sequence are short linear motifs (SLiMs), the short peptide modules that mediate many protein interactions in disordered regions (<a href="https://doi.org/10.1021/cr400585q">Van Roey et al., 2014</a>).<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>The model read anonymized sequences four at a time and reported each recurring pattern as a consensus, with the copies it was based on. Copies that could not be found in the sequence were discarded.</span></span></p>
+    <p class="abstract">We asked a language model, Gemini Carbon, to find repeats in human proteins by reading the sequences alone: no code, no tools, no search and no protein names. <b>While recognizing these patterns is difficult for the human eye, we consider this to be a task that naturally suits the abilities of LLMs to recognize patterns in sequences.</b> Every reported copy was then located in the sequence. Repeats are especially common in disordered regions (<a class="cite" href="#ref-tompa2003">Tompa, 2003</a>; <a class="cite" href="#ref-simon2009">Simon &amp; Hancock, 2009</a>; <a class="cite" href="#ref-jorda2010">Jorda et al., 2010</a>; <a class="cite" href="#ref-delucchi2020">Delucchi et al., 2020</a>). Many of the repeats in disordered or mixed sequence are short linear motifs (SLiMs), the short peptide modules that mediate many protein interactions in disordered regions (<a class="cite" href="#ref-vanroey2014">Van Roey et al., 2014</a>).<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>The model read anonymized sequences four at a time and reported each recurring pattern as a consensus, with the copies it was based on. Copies that could not be found in the sequence were discarded.</span></span></p>
     <nav class="links ql" aria-label="On this page">
-      <span class="lab">On this page</span><span class="grp"><a href="#known">Known</a><a href="#newocc">Known motif, new place</a><a href="#freg">In a functional region</a><a href="#novel">Novel</a><a href="#browse">Browse examples</a><a href="#ptmFixWrap">Repeat PTMs</a><a href="#arch8">Structured repeat types</a><a href="#method">Method</a><a href="#catalog">Catalog</a></span>
+      <span class="lab">On this page</span><span class="grp"><a href="#known">Known</a><a href="#newocc">Known motif, new place</a><a href="#freg">In a functional region</a><a href="#novel">Novel</a><a href="#browse">Browse examples</a><a href="#ptmFixWrap">Repeat PTMs</a><a href="#arch8">Structured repeat types</a><a href="#method">Method</a><a href="#catalog">Catalog</a><a href="#refs">References</a></span>
     </nav>
     <nav class="links ql" aria-label="Species catalogs and data">
       <span class="lab">Species catalogs</span><span class="grp"><a href="./human.html">Human</a><a href="./yeast.html">Yeast</a><a href="./arabidopsis.html">Arabidopsis</a><a href="catalog.json" download>Data (JSON)</a><span class="off">Preprint in preparation</span></span>
@@ -512,10 +515,10 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
     </div>
     <h2 class="tiers-h">Analysis of known and novel SLiMs</h2>
     <ol class="why">
-      <li>Repeated binding motifs make a protein multivalent: several copies let it hold several partners at once, as with the phosphotyrosines of <a href="#x=LAT">LAT</a> that gather signalling proteins into condensates (<a href="https://doi.org/10.1038/nature10879" target="_blank" rel="noopener">Li et al., 2012</a>; <a href="https://doi.org/10.1126/science.aad9964" target="_blank" rel="noopener">Su et al., 2016</a>).</li>
-      <li>Repetitive sequences can acquire functionality through their collective physicochemical properties, as with the FG repeats of <a href="#x=NUP98">NUP98</a> that form the hydrogel-like barrier of the nuclear pore (<a href="https://doi.org/10.1126/science.1132516" target="_blank" rel="noopener">Frey et al., 2006</a>).</li>
-      <li>Many functional repeats are considerably longer than canonical SLiMs, such as the 21-residue units of the salivary proline-rich protein <a href="#x=PRB4">PRB4</a> (<a href="https://doi.org/10.1007/BF00364656" target="_blank" rel="noopener">Kim et al., 1993</a>).</li>
-      <li>Some repeat arrays are functional because they provide multiple sites for post-translational modification rather than multiple independent binding sites, as with the RNA polymerase II CTD heptads of <a href="#x=POLR2A">POLR2A</a>, whose pattern of marks makes up the CTD code (<a href="https://doi.org/10.1038/nsb0903-679" target="_blank" rel="noopener">Buratowski, 2003</a>), and the KSP repeats of <a href="#x=NEFH">NEFH</a>. Multisite phosphorylation can also set a threshold for a response (<a href="https://doi.org/10.1038/35107009" target="_blank" rel="noopener">Nash et al., 2001</a>).</li>
+      <li>Repeated binding motifs make a protein multivalent: several copies let it hold several partners at once, as with the phosphotyrosines of <a href="#x=LAT">LAT</a> that gather signalling proteins into condensates (<a class="cite" href="#ref-li2012">Li et al., 2012</a>; <a class="cite" href="#ref-su2016">Su et al., 2016</a>).</li>
+      <li>Repetitive sequences can acquire functionality through their collective physicochemical properties, as with the FG repeats of <a href="#x=NUP98">NUP98</a> that form the hydrogel-like barrier of the nuclear pore (<a class="cite" href="#ref-frey2006">Frey et al., 2006</a>).</li>
+      <li>Many functional repeats are considerably longer than canonical SLiMs, such as the 21-residue units of the salivary proline-rich protein <a href="#x=PRB4">PRB4</a> (<a class="cite" href="#ref-kim1993">Kim et al., 1993</a>).</li>
+      <li>Some repeat arrays are functional because they provide multiple sites for post-translational modification rather than multiple independent binding sites, as with the RNA polymerase II CTD heptads of <a href="#x=POLR2A">POLR2A</a>, whose pattern of marks makes up the CTD code (<a class="cite" href="#ref-buratowski2003">Buratowski, 2003</a>), and the KSP repeats of <a href="#x=NEFH">NEFH</a>. Multisite phosphorylation can also set a threshold for a response (<a class="cite" href="#ref-nash2001">Nash et al., 2001</a>).</li>
     </ol>
     <div class="tiers" id="tierNav"></div>
     <div id="grpBar"></div>
@@ -610,7 +613,7 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
 
   <section id="arch8">
     <h2>Types of structured repeat</h2>
-    <p class="lead">Most repeat arrays are folded domains in series. One example of each of the most common types.<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>UniProt already annotates these, so all are in the Known group. Their copy number is constrained by structure: a WD40 propeller closes with seven blades and EF-hands work in pairs. Types are ranked by how many repeat arrays they have, counting only types whose longest array has three or more copies. The example is the longest array of each type not already used for another tile; the bar shows its copies along the protein. Olduvai copies are coloured by subtype (copies grouped by sequence similarity).</span></span></p>
+    <p class="lead">Most repeat arrays are folded domains in series (<a class="cite" href="#ref-marcotte1999">Marcotte et al., 1999</a>). One example of each of the most common types.<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>UniProt already annotates these, so all are in the Known group. Their copy number is constrained by structure: a WD40 propeller closes with seven blades and EF-hands work in pairs. Types are ranked by how many repeat arrays they have, counting only types whose longest array has three or more copies. The example is the longest array of each type not already used for another tile; the bar shows its copies along the protein. Olduvai copies are coloured by subtype (copies grouped by sequence similarity).</span></span></p>
     <div class="arch8" id="arch8Grid"></div>
     <p class="a8more"><button type="button" class="clmore" id="arch8More" aria-expanded="false" aria-controls="arch8Grid"></button></p>
   </section>
@@ -723,6 +726,24 @@ M...</pre>
     </div>
     <table class="cat"><thead><tr><th>Gene</th><th class="hide-sm">Protein</th><th class="hide-sm">Length</th><th>Repeat arrays (consensus, copies)</th></tr></thead><tbody id="catBody"><tr><td colspan="4" class="empty">Loading catalog…</td></tr></tbody></table>
     <div class="more" id="moreWrap" style="display:none"><button class="btn" id="moreBtn">Show more</button></div>
+  </section>
+
+  <section id="refs">
+    <h2>References</h2>
+    <ul class="refs">
+      <li id="ref-buratowski2003">Buratowski S. The CTD code. <i>Nat Struct Biol</i> 2003;10:679–680. <a href="https://doi.org/10.1038/nsb0903-679" target="_blank" rel="noopener">doi:10.1038/nsb0903-679</a></li>
+      <li id="ref-delucchi2020">Delucchi M, Schaper E, Sachenkova O, Elofsson A, Anisimova M. A new census of protein tandem repeats and their relationship with intrinsic disorder. <i>Genes</i> 2020;11:407. <a href="https://doi.org/10.3390/genes11040407" target="_blank" rel="noopener">doi:10.3390/genes11040407</a></li>
+      <li id="ref-frey2006">Frey S, Richter RP, Görlich D. FG-rich repeats of nuclear pore proteins form a three-dimensional meshwork with hydrogel-like properties. <i>Science</i> 2006;314:815–817. <a href="https://doi.org/10.1126/science.1132516" target="_blank" rel="noopener">doi:10.1126/science.1132516</a></li>
+      <li id="ref-jorda2010">Jorda J, Xue B, Uversky VN, Kajava AV. Protein tandem repeats – the more perfect, the less structured. <i>FEBS J</i> 2010;277:2673–2682. <a href="https://doi.org/10.1111/j.1742-464X.2010.07684.x" target="_blank" rel="noopener">doi:10.1111/j.1742-464X.2010.07684.x</a></li>
+      <li id="ref-kim1993">Kim HS, Lyons KM, Saitoh E, Azen EA, Smithies O, Maeda N. The structure and evolution of the human salivary proline-rich protein gene family. <i>Mamm Genome</i> 1993;4:3–14. <a href="https://doi.org/10.1007/BF00364656" target="_blank" rel="noopener">doi:10.1007/BF00364656</a></li>
+      <li id="ref-li2012">Li P, et al. Phase transitions in the assembly of multivalent signalling proteins. <i>Nature</i> 2012;483:336–340. <a href="https://doi.org/10.1038/nature10879" target="_blank" rel="noopener">doi:10.1038/nature10879</a></li>
+      <li id="ref-marcotte1999">Marcotte EM, Pellegrini M, Yeates TO, Eisenberg D. A census of protein repeats. <i>J Mol Biol</i> 1999;293:151–160. <a href="https://doi.org/10.1006/jmbi.1999.3136" target="_blank" rel="noopener">doi:10.1006/jmbi.1999.3136</a></li>
+      <li id="ref-nash2001">Nash P, et al. Multisite phosphorylation of a CDK inhibitor sets a threshold for the onset of DNA replication. <i>Nature</i> 2001;414:514–521. <a href="https://doi.org/10.1038/35107009" target="_blank" rel="noopener">doi:10.1038/35107009</a></li>
+      <li id="ref-simon2009">Simon M, Hancock JM. Tandem and cryptic amino acid repeats accumulate in disordered regions of proteins. <i>Genome Biol</i> 2009;10:R59. <a href="https://doi.org/10.1186/gb-2009-10-6-r59" target="_blank" rel="noopener">doi:10.1186/gb-2009-10-6-r59</a></li>
+      <li id="ref-su2016">Su X, et al. Phase separation of signaling molecules promotes T cell receptor signal transduction. <i>Science</i> 2016;352:595–599. <a href="https://doi.org/10.1126/science.aad9964" target="_blank" rel="noopener">doi:10.1126/science.aad9964</a></li>
+      <li id="ref-tompa2003">Tompa P. Intrinsically unstructured proteins evolve by repeat expansion. <i>BioEssays</i> 2003;25:847–855. <a href="https://doi.org/10.1002/bies.10324" target="_blank" rel="noopener">doi:10.1002/bies.10324</a></li>
+      <li id="ref-vanroey2014">Van Roey K, et al. Short linear motifs: ubiquitous and functionally diverse protein interaction modules directing cell regulation. <i>Chem Rev</i> 2014;114:6733–6778. <a href="https://doi.org/10.1021/cr400585q" target="_blank" rel="noopener">doi:10.1021/cr400585q</a></li>
+    </ul>
   </section>
 
   <section id="cite">
