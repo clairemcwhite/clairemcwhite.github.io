@@ -328,6 +328,8 @@ section,[id="top"]{scroll-margin-top:56px}
 .arrt .at-t{font-size:.85em}
 .ag-link{font-size:.85em;font-weight:600}
 .tiers-h{margin:1.8em 0 0}
+.why{margin:.8em 0 0;padding-left:1.4em;max-width:52em;font-size:.95em}
+.why li{margin:.35em 0}
 .tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1em;margin:1.6em 0 0}
 @media (max-width:1100px){.tiers{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:820px){.tiers{grid-template-columns:1fr}}
@@ -504,11 +506,17 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
         <a class="ag-link" href="#arch8">Gallery of structured repeat architectures →</a>
       </div></div>
       <div class="ag"><div class="ag-h" style="--ac:var(--c-dis)">Disordered/mixed</div><div class="ag-row two">
-        <div class="arrt" data-k="tandem" style="--ac:var(--c-dis)"><span class="at-l">Tandem array</span><span class="at-v" id="atv-tandem"></span><svg class="at-bar" id="atb-tandem" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>PRNP</b> octarepeats: five PHGGGWGQ copies head to tail in the disordered N-terminal region.</span></div>
-        <div class="arrt" data-k="dispersed" style="--ac:var(--c-dis)"><span class="at-l">Dispersed array</span><span class="at-v" id="atv-dispersed"></span><svg class="at-bar" id="atb-dispersed" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>NUP98</b> GLFG repeats: eight copies spread through the disordered FG region.</span></div>
+        <div class="arrt" data-k="tandem" style="--ac:var(--c-dis)"><span class="at-l">Tandem array</span><span class="at-v" id="atv-tandem"></span><svg class="at-bar" id="atb-tandem" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>PRNP</b> octarepeats: five PHGGGWGQ copies head to tail in the disordered N-terminal region. Their histidines bind copper ions.</span></div>
+        <div class="arrt" data-k="dispersed" style="--ac:var(--c-dis)"><span class="at-l">Dispersed array</span><span class="at-v" id="atv-dispersed"></span><svg class="at-bar" id="atb-dispersed" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>NUP98</b> GLFG repeats: eight copies spread through the disordered FG region. They bind nuclear transport receptors and together form the selective barrier of the nuclear pore.</span></div>
       </div></div>
     </div>
     <h2 class="tiers-h">Analysis of known and novel SLiMs</h2>
+    <ol class="why">
+      <li>Repeated binding motifs make a protein multivalent: several copies let it hold several partners at once, as with the phosphotyrosines of <a href="#x=LAT">LAT</a> that gather signalling proteins into condensates (<a href="https://doi.org/10.1038/nature10879" target="_blank" rel="noopener">Li et al., 2012</a>; <a href="https://doi.org/10.1126/science.aad9964" target="_blank" rel="noopener">Su et al., 2016</a>).</li>
+      <li>Repetitive sequences can acquire functionality through their collective physicochemical properties, as with the FG repeats of <a href="#x=NUP98">NUP98</a> that form the hydrogel-like barrier of the nuclear pore (<a href="https://doi.org/10.1126/science.1132516" target="_blank" rel="noopener">Frey et al., 2006</a>).</li>
+      <li>Many functional repeats are considerably longer than canonical SLiMs, such as the 21-residue units of the salivary proline-rich protein <a href="#x=PRB4">PRB4</a> (<a href="https://doi.org/10.1007/BF00364656" target="_blank" rel="noopener">Kim et al., 1993</a>).</li>
+      <li>Some repeat arrays are functional because they provide multiple sites for post-translational modification rather than multiple independent binding sites, as with the RNA polymerase II CTD heptads of <a href="#x=POLR2A">POLR2A</a>, whose pattern of marks makes up the CTD code (<a href="https://doi.org/10.1038/nsb0903-679" target="_blank" rel="noopener">Buratowski, 2003</a>), and the KSP repeats of <a href="#x=NEFH">NEFH</a>. Multisite phosphorylation can also set a threshold for a response (<a href="https://doi.org/10.1038/35107009" target="_blank" rel="noopener">Nash et al., 2001</a>).</li>
+    </ol>
     <div class="tiers" id="tierNav"></div>
     <div id="grpBar"></div>
     <p class="elmnote" id="elmNote"></p>
