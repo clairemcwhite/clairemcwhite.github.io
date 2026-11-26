@@ -550,7 +550,7 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
 
   <section id="freg">
     <h2 class="sec-h" data-tier="freg">In a functional region</h2>
-    <p class="lead"><b id="fregN"></b> UniProt does not annotate the repeat, but most of its copies sit inside a region it assigns a function to.<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>At least half of the copies lie inside a UniProt Region feature that names a function, such as an interaction with a partner protein, and no UniProt Repeat, Domain or Zinc finger feature covers them. <span id="fregSplit"></span></span></span></p>
+    <p class="lead"><b id="fregN"></b> Most copies sit inside a region that UniProt assigns a function to.<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>At least half of the copies lie inside a UniProt Region feature that names a function, such as an interaction with a partner protein, and no UniProt Repeat, Domain or Zinc finger feature covers them. <span id="fregSplit"></span></span></span></p>
     <div class="cards" id="cards-freg"></div>
     <div id="fregWrap"></div>
   </section>
@@ -791,7 +791,7 @@ const HL_GROUPS = {
           blurb:'A known motif, repeated in an array that UniProt and ELM do not record.',
           subs:[{k:'mod',l:'Canonical motif class with a modification at the motif position'},{k:'elm',l:'ELM class matches every copy; no ELM instance in this array'}]},
   freg:  {c:'#018080', label:'In a functional region', nav:'In a functional region', head:'In a functional region',
-          blurb:'Repeat not annotated in UniProt; most copies sit in a region with a known function.',
+          blurb:'Most copies sit inside a region that UniProt assigns a function to.',
           subs:[{k:'writer',l:'Writer named in UniProt'},{k:'mod',l:'Modification at a fixed unit position'},
                 {k:'lit',l:'Described in the literature, not in the databases'},{k:'nomod',l:'No annotated modification in the array'}]},
   novel: {c:'#6a51a3', label:'Novel', nav:'Novel', head:'Novel repeats',
