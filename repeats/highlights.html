@@ -315,6 +315,16 @@ section,[id="top"]{scroll-margin-top:56px}
 .subnav a:hover{color:var(--strong);text-decoration:none}
 .subnav a i{display:inline-block;width:.6em;height:.6em;margin-right:.4em}
 
+.arrtypes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1em;margin:1.8em 0 0}
+@media (max-width:720px){.arrtypes{grid-template-columns:1fr}}
+.arrt{display:flex;flex-direction:column;gap:.5em;text-align:left;font:inherit;color:var(--text);background:var(--paper);border:1px solid var(--lighter);border-top:3px solid var(--c-dis);padding:.8em 1em .9em;cursor:pointer;transition:background-color .15s,box-shadow .15s,transform .15s}
+.arrt:hover,.arrt:focus-visible{border-color:var(--c-dis);background:color-mix(in oklab,var(--c-dis) 6%,transparent);box-shadow:0 3px 10px rgba(0,0,0,.10);transform:translateY(-2px)}
+.arrt .at-l{font-size:.72em;font-weight:700;color:var(--c-dis)}
+.arrt .at-l::after{content:" →";opacity:.45}
+.arrt:hover .at-l::after{opacity:1}
+.arrt .at-v{display:block;width:100%;height:260px;position:relative;background:#fff}
+.arrt .at-bar{display:block;width:100%;height:18px}
+.arrt .at-t{font-size:.85em}
 .tiers-h{margin:1.8em 0 0}
 .tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1em;margin:1.6em 0 0}
 @media (max-width:1100px){.tiers{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -446,6 +456,15 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
 .catnote{margin:.5em 0 1em;padding:.55em .8em;border:1px solid var(--light);background:var(--code);color:var(--text);font-size:.88em}
 .clmore{font:inherit;font-size:.95em;background:none;border:0;padding:0 .2em;color:var(--link);cursor:pointer;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
 .clmore:hover{color:var(--strong)}
+
+/* example boxes read as clickable */
+.fcard,.a8,.lpanel{transition:background-color .15s,box-shadow .15s,transform .15s,border-color .15s}
+.fcard:hover,.fcard:focus-visible{border-color:var(--tc);background:color-mix(in oklab,var(--tc) 7%,var(--paper));box-shadow:0 3px 10px rgba(0,0,0,.10);transform:translateY(-2px)}
+.a8:hover,.a8:focus-visible{border-color:var(--c-str);background:color-mix(in oklab,var(--c-str) 6%,var(--paper));box-shadow:0 3px 10px rgba(0,0,0,.10);transform:translateY(-2px)}
+.lpanel:hover,.lpanel:focus-visible{border-color:var(--link);background:color-mix(in oklab,var(--link) 5%,var(--paper));box-shadow:0 3px 10px rgba(0,0,0,.10);transform:translateY(-2px)}
+.fcard::after,.a8::after{content:"Show structure ↓";font-size:.78em;font-weight:600;color:var(--link);opacity:0;transition:opacity .15s}
+.fcard:hover::after,.fcard:focus-visible::after,.a8:hover::after,.a8:focus-visible::after{opacity:1}
+@media (prefers-reduced-motion:reduce){.fcard,.a8,.lpanel,.arrt,.tier{transition:none}.fcard:hover,.a8:hover,.lpanel:hover,.arrt:hover,.tier:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -476,6 +495,10 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
       <div><b data-stat="struct"></b><span>structured repeat families</span></div>
       <div><b data-stat="dismix"></b><span>disordered or mixed repeat families</span></div>
       <div><b data-stat="copies_total"></b><span>located repeat copies</span></div>
+    </div>
+    <div class="arrtypes" id="arrTypes">
+      <button type="button" class="arrt" data-k="tandem"><span class="at-l">Tandem array</span><span class="at-v" id="atv-tandem"></span><svg class="at-bar" id="atb-tandem" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>PRNP</b> octarepeats: five PHGGGWGQ copies head to tail in the disordered N-terminal region.</span></button>
+      <button type="button" class="arrt" data-k="dispersed"><span class="at-l">Dispersed array</span><span class="at-v" id="atv-dispersed"></span><svg class="at-bar" id="atb-dispersed" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>NUP98</b> GLFG repeats: eight copies spread through the disordered FG region.</span></button>
     </div>
     <h2 class="tiers-h">Analysis of known and novel SLiMs</h2>
     <div class="tiers" id="tierNav"></div>
@@ -1662,10 +1685,41 @@ function renderFreg(){
   $('#frBody').addEventListener('click',e=>{const tr=e.target.closest('tr.row');if(tr)openFid(tr.dataset.fid,'Most copies lie in the UniProt region: '+FREGALL[tr.dataset.fid][8]+'.')});
 }
 
+
+/* ── Tandem vs dispersed examples at the top ───────────────────────────── */
+const ARR_EX={
+  tandem:{"id":"SEQ_15104","a":"P04156","g":"PRNP","d":"Major prion protein","L":253,"m":[{"f":1,"c":"[PQ][GH]GGGWGQ","u":8,"sp":"tandem","x":"disordered_like","cf":"high","i":[[52,59,"QGGGGWGQ"],[60,67,"PHGGGWGQ"],[68,75,"PHGGGWGQ"],[76,83,"PHGGGWGQ"],[84,91,"PHGGGWGQ"]]}]},
+  dispersed:{"id":"SEQ_05958","a":"P52948","g":"NUP98","d":"Nuclear pore complex protein Nup98-Nup96","L":1817,"m":[{"f":1,"c":"[GT]GLFGo","u":6,"sp":"dispersed","x":"disordered_like","cf":"high","i":[[49,54,"GGLFGN"],[60,65,"GGLFGT"],[127,132,"GGLFGT"],[225,230,"TGLFGS"],[271,276,"GGLFGQ"],[328,333,"GGLFGT"],[347,352,"TGLFGQ"],[388,393,"GGLFGN"]]}]}
+};
+function initArrTypes(){
+  if(!$('#arrTypes'))return;
+  const col=getComputedStyle(document.documentElement).getPropertyValue('--c-dis').trim()||'#e15759';
+  Object.entries(ARR_EX).forEach(([k,p])=>{
+    const cp=p.m[0].i,L=p.L,W=300;
+    $('#atb-'+k).innerHTML=`<rect x="0" y="8" width="${W}" height="2" fill="#c8ccd0"/>`+cp.map(([a,b])=>`<rect x="${(a-1)/L*W}" y="2" width="${Math.max(1.5,(b-a+1)/L*W)}" height="14" fill="${col}"/>`).join('');
+    $('.arrt[data-k="'+k+'"]').addEventListener('click',()=>openFromCatalog(p));
+  });
+  const load=async k=>{
+    const p=ARR_EX[k],el=$('#atv-'+k);
+    if(typeof $3Dmol==='undefined')return;
+    try{
+      const pdb=await getPDB(p.a);
+      const v=$3Dmol.createViewer(el,{backgroundColor:'white',antialias:true});
+      v.addModel(pdb,'pdb');
+      const res=p.m[0].i.flatMap(([a,b])=>Array.from({length:b-a+1},(_,j)=>a+j));
+      v.setStyle({},{cartoon:{color:'#d5d9dc',opacity:.85}});
+      v.setStyle({resi:res},{cartoon:{color:col},stick:{color:col,radius:.18}});
+      v.zoomTo({resi:res});v.render();
+      el.addEventListener('wheel',e=>e.stopPropagation(),{passive:true});
+    }catch(e){el.textContent=''}
+  };
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){io.unobserve(e.target);load(e.target.dataset.k)}}),{rootMargin:'200px'});
+  document.querySelectorAll('.arrt').forEach(b=>io.observe(b));
+}
 /* ── Boot ──────────────────────────────────────────────────────────────── */
 function boot(){
   drawIlls();fillNumbers();drawCharts();initOverview();initExplorerControls();initCatalog();
-  renderTierNav();renderCards();initBrowser();renderHandoff2();renderFreg();
+  renderTierNav();initArrTypes();renderCards();initBrowser();renderHandoff2();renderFreg();
   $('#findForm').addEventListener('submit',async e=>{e.preventDefault();const q=$('#findQ').value.trim();if(!q)return;$('#findMsg').textContent='Searching…';
     const cat=await getCatalog().catch(()=>null);if(!cat){$('#findMsg').textContent='Catalog unavailable';return}
     const Q=q.toUpperCase(),hit=cat.find(p=>(p.g||'').toUpperCase()===Q||(p.a||'').toUpperCase()===Q);
