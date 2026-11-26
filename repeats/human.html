@@ -1255,7 +1255,7 @@ select, .dataset-select, .search-input-wrap input, #cmpSearch { background: var(
 .af-zoom-btn { background: var(--color-sheet); border-color: var(--color-sheet-rule); color: var(--color-ink-2); }
 .af-zoom-btn:hover { background: var(--color-paper); }
 
-/* repeat families */
+/* repeat arrays */
 .repeat-entry-card { border: 0; border-top: var(--rule-hair) solid var(--color-sheet-rule); border-radius: 0; background: transparent; }
 .repeat-entry-card:first-child { border-top: 0; }
 .instance-table-wrap { border: 0; border-radius: 0; }
@@ -1388,7 +1388,7 @@ kbd, code { font-family: var(--font-outlier); }
     </div>
 
     <div class="metric-item">
-      <span class="metric-label">Repeat families</span>
+      <span class="metric-label">Repeat arrays</span>
       <span id="metricTotalMotifs" class="metric-val">0</span>
     </div>
 
@@ -2538,7 +2538,7 @@ kbd, code { font-family: var(--font-outlier); }
             <div class="card-header">
               <span class="card-title">
                 <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                Repeat families (${repeats.length})
+                Repeat arrays (${repeats.length})
               </span>
             </div>
             <div class="card-body">
@@ -2550,7 +2550,7 @@ kbd, code { font-family: var(--font-outlier); }
         motifsHtml = `
           <div class="detail-card">
             <div class="card-header">
-              <span class="card-title">Repeat families</span>
+              <span class="card-title">Repeat arrays</span>
             </div>
             <div class="card-body">
               <div class="negative-call-card">
@@ -2976,7 +2976,7 @@ kbd, code { font-family: var(--font-outlier); }
           llmBlocksHtml += `
             <g class="track-block-group" cursor="pointer" data-start="${inst.start}" data-end="${inst.end}">
               <rect x="${x1}" y="${llmTrackY - 7}" width="${bw}" height="14" rx="3" fill="${bgVar}" stroke="${colorVar}" stroke-width="1.5">
-                <title>Repeat family ${rIdx + 1} (copy ${iIdx + 1}): ${inst.start}–${inst.end} (${inst.length} aa)\nConsensus: ${rep.consensus}\nSubsequence: ${inst.subsequence}</title>
+                <title>Repeat array ${rIdx + 1} (copy ${iIdx + 1}): ${inst.start}–${inst.end} (${inst.length} aa)\nConsensus: ${rep.consensus}\nSubsequence: ${inst.subsequence}</title>
               </rect>
               ${conservedTicks}
             </g>
@@ -3154,7 +3154,7 @@ kbd, code { font-family: var(--font-outlier); }
               ${repeats.map((r, idx) => `
                 <div class="track-legend-item">
                   <span class="legend-color-dot" style="background: var(--motif-${idx % 6});"></span>
-                  <span>Repeat family ${idx + 1} (ticks = conserved positions)</span>
+                  <span>Repeat array ${idx + 1} (ticks = conserved positions)</span>
                 </div>
               `).join('')}
               <div class="track-legend-item">
@@ -3272,7 +3272,7 @@ kbd, code { font-family: var(--font-outlier); }
         const isIdr = rep.sequence_context === 'disordered_like' || rep.sequence_context === 'mixed';
         zoomButtonsHtml += `
           <button class="af-zoom-btn" data-zoom="motif" data-ridx="${rIdx}" style="border-left: 4px solid ${hex};">
-            <span><strong>Repeat family ${rIdx + 1}</strong> (${vInsts.length} copies${isIdr ? ', disordered' : ''})</span>
+            <span><strong>Repeat array ${rIdx + 1}</strong> (${vInsts.length} copies${isIdr ? ', disordered' : ''})</span>
             <span style="font-size: 10px; font-family: var(--font-mono);">L=${rep.unit_length}</span>
           </button>
         `;
@@ -3634,7 +3634,7 @@ kbd, code { font-family: var(--font-outlier); }
               const statusDesc = match.conserved
                 ? `Conserved/Physicochemically Conserved (${match.tokenRaw})`
                 : `Spacer position (${match.tokenRaw})`;
-              title += ` | Repeat family ${match.motifIndex + 1} (copy ${match.instanceIndex + 1}, ${match.start}–${match.end}) | Token: ${statusDesc}`;
+              title += ` | Repeat array ${match.motifIndex + 1} (copy ${match.instanceIndex + 1}, ${match.start}–${match.end}) | Token: ${statusDesc}`;
 
               if (state.seqColorMode === 'conserved_same') {
                 // Default: color each amino acid of the motif that's a conserved or physicochemically conserved position in the same motif color
@@ -3738,7 +3738,7 @@ kbd, code { font-family: var(--font-outlier); }
         <div class="repeat-entry-card">
           <div class="repeat-entry-header ${themeClass}">
             <div class="motif-title-wrap">
-              <span class="motif-name-badge">Repeat family ${idx + 1}</span>
+              <span class="motif-name-badge">Repeat array ${idx + 1}</span>
               <span class="consensus-chip" title="Click to copy consensus" onclick="navigator.clipboard.writeText('${rep.consensus}'); showToast('Consensus copied!');">
                 <code>${styledConsensus}</code>
                 <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
