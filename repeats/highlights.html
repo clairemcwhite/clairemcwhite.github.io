@@ -321,11 +321,8 @@ section,[id="top"]{scroll-margin-top:56px}
 .ag-row{display:grid;grid-template-columns:1fr;gap:1em}
 .ag-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:600px){.ag-row.two{grid-template-columns:1fr}}
-.arrt{display:flex;flex-direction:column;gap:.5em;text-align:left;font:inherit;color:var(--text);background:var(--paper);border:1px solid var(--lighter);border-top:3px solid var(--ac);padding:.8em 1em .9em;cursor:pointer;transition:background-color .15s,box-shadow .15s,transform .15s;height:100%}
-.arrt:hover,.arrt:focus-visible{border-color:var(--ac);background:color-mix(in oklab,var(--ac) 6%,transparent);box-shadow:0 3px 10px rgba(0,0,0,.10);transform:translateY(-2px)}
+.arrt{display:flex;flex-direction:column;gap:.5em;text-align:left;font:inherit;color:var(--text);background:var(--paper);border:1px solid var(--lighter);border-top:3px solid var(--ac);padding:.8em 1em .9em;height:100%}
 .arrt .at-l{font-size:.72em;font-weight:700;color:var(--ac)}
-.arrt .at-l::after{content:" →";opacity:.45}
-.arrt:hover .at-l::after{opacity:1}
 .arrt .at-v{display:block;width:100%;height:240px;position:relative;background:#fff}
 .arrt .at-bar{display:block;width:100%;height:18px}
 .arrt .at-t{font-size:.85em}
@@ -469,7 +466,7 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
 .lpanel:hover,.lpanel:focus-visible{border-color:var(--link);background:color-mix(in oklab,var(--link) 5%,var(--paper));box-shadow:0 3px 10px rgba(0,0,0,.10);transform:translateY(-2px)}
 .fcard::after,.a8::after{content:"Show structure ↓";font-size:.78em;font-weight:600;color:var(--link);opacity:0;transition:opacity .15s}
 .fcard:hover::after,.fcard:focus-visible::after,.a8:hover::after,.a8:focus-visible::after{opacity:1}
-@media (prefers-reduced-motion:reduce){.fcard,.a8,.lpanel,.arrt,.tier{transition:none}.fcard:hover,.a8:hover,.lpanel:hover,.arrt:hover,.tier:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){.fcard,.a8,.lpanel,.arrt,.tier{transition:none}.fcard:hover,.a8:hover,.lpanel:hover,.tier:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -503,12 +500,12 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
     </div>
     <div class="arrtypes" id="arrTypes">
       <div class="ag"><div class="ag-h" style="--ac:var(--c-str)">Structured</div><div class="ag-row">
-        <button type="button" class="arrt" data-k="structured" style="--ac:var(--c-str)"><span class="at-l">Tandem array</span><span class="at-v" id="atv-structured"></span><svg class="at-bar" id="atb-structured" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>NFKBIA</b> ankyrin repeats: five ~35-aa helix-turn-helix units stacked into a solenoid.</span></button>
+        <div class="arrt" data-k="structured" style="--ac:var(--c-str)"><span class="at-l">Tandem array</span><span class="at-v" id="atv-structured"></span><svg class="at-bar" id="atb-structured" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>NFKBIA</b> ankyrin repeats: five ~35-aa helix-turn-helix units stacked into a solenoid.</span></div>
         <a class="ag-link" href="#arch8">Gallery of structured repeat architectures →</a>
       </div></div>
       <div class="ag"><div class="ag-h" style="--ac:var(--c-dis)">Disordered/mixed</div><div class="ag-row two">
-        <button type="button" class="arrt" data-k="tandem" style="--ac:var(--c-dis)"><span class="at-l">Tandem array</span><span class="at-v" id="atv-tandem"></span><svg class="at-bar" id="atb-tandem" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>PRNP</b> octarepeats: five PHGGGWGQ copies head to tail in the disordered N-terminal region.</span></button>
-        <button type="button" class="arrt" data-k="dispersed" style="--ac:var(--c-dis)"><span class="at-l">Dispersed array</span><span class="at-v" id="atv-dispersed"></span><svg class="at-bar" id="atb-dispersed" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>NUP98</b> GLFG repeats: eight copies spread through the disordered FG region.</span></button>
+        <div class="arrt" data-k="tandem" style="--ac:var(--c-dis)"><span class="at-l">Tandem array</span><span class="at-v" id="atv-tandem"></span><svg class="at-bar" id="atb-tandem" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>PRNP</b> octarepeats: five PHGGGWGQ copies head to tail in the disordered N-terminal region.</span></div>
+        <div class="arrt" data-k="dispersed" style="--ac:var(--c-dis)"><span class="at-l">Dispersed array</span><span class="at-v" id="atv-dispersed"></span><svg class="at-bar" id="atb-dispersed" viewBox="0 0 300 18" preserveAspectRatio="none"></svg><span class="at-t"><b>NUP98</b> GLFG repeats: eight copies spread through the disordered FG region.</span></div>
       </div></div>
     </div>
     <h2 class="tiers-h">Analysis of known and novel SLiMs</h2>
@@ -1710,7 +1707,6 @@ function initArrTypes(){
   Object.entries(ARR_EX).forEach(([k,p])=>{
     const cp=p.m[0].i,L=p.L,W=300,C=COL[k];
     $('#atb-'+k).innerHTML=`<rect x="0" y="8" width="${W}" height="2" fill="#c8ccd0"/>`+cp.map(([a,b],j)=>`<rect x="${(a-1)/L*W}" y="2" width="${Math.max(1.5,(b-a+1)/L*W)}" height="14" fill="${C[j%2]}"/>`).join('');
-    $('.arrt[data-k="'+k+'"]').addEventListener('click',()=>openFromCatalog(p));
   });
   const load=async k=>{
     const p=ARR_EX[k],el=$('#atv-'+k),C=COL[k];
