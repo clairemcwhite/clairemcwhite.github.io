@@ -55,6 +55,8 @@ h1{font-size:2em;line-height:1.2;color:var(--strong);margin:0 0 .5em;font-weight
 .ql .grp{display:flex;flex-wrap:wrap;row-gap:.2em;column-gap:1.3em;white-space:normal}
 @media (max-width:560px){.links.ql{flex-wrap:wrap}.links .lab{flex-basis:100%}}
 .links+.links{margin-top:.35em}
+.links .cl{display:flex;flex-wrap:wrap;column-gap:1.3em;row-gap:.2em;flex:1 1 100%}
+.links.sp .grp a{color:var(--strong);font-weight:600}.links.sp .grp a[download]{color:var(--link);font-weight:400}.links.sp .grp a:hover{color:var(--link-hover)}
 .find{display:flex;gap:.5em;align-items:center;margin:1em 0 0;font-size:.92em;flex-wrap:wrap}
 .find label{color:var(--strong);font-weight:600}
 .find input{font:inherit;padding:.35em .6em;border:1px solid var(--light);border-radius:3px;min-width:0;flex:0 1 22em}
@@ -351,7 +353,7 @@ section,[id="top"]{scroll-margin-top:56px}
 .gbar{display:flex;height:10px;margin:1.2em 0 .5em;border-radius:2px;overflow:hidden}
 .gbar a{display:block;height:100%}
 .gnote{font-size:.82em;color:var(--gray);max-width:60em;margin:0}
-.tier .n .big{font-size:1.5em;color:var(--tc);margin-right:.15em}
+.tier .n .big{font-size:1.5em;color:var(--tc);margin:0 .15em 0 0;display:inline;line-height:1.2}
 .elmnote{font-size:.85em;color:var(--gray);max-width:52em;margin:1.2em 0 0}
 
 .sec-k{font-size:.72em;font-weight:700;margin:0 0 .3em}
@@ -490,11 +492,11 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
   <div class="page-head">
     <h1>A blinded language-model screen for repeats in human proteins</h1>
     <p class="byline">McWhite Lab, Department of Molecular and Cellular Biology, University of Arizona</p>
-    <p class="abstract">We asked a language model, Gemini Carbon, to find repeats in human proteins by reading the sequences alone, i.e. using no code, no tools, no search and no protein names. <b>While recognizing these patterns is extremely difficult for the human eye, we consider this to be a task that naturally suits the abilities of LLMs to recognize patterns in sequences.</b> Repeats are especially common in disordered regions (<a class="cite" href="#ref-tompa2003">Tompa, 2003</a>; <a class="cite" href="#ref-simon2009">Simon &amp; Hancock, 2009</a>; <a class="cite" href="#ref-jorda2010">Jorda et al., 2010</a>). Many of the repeats in disordered or mixed sequence are short linear motifs (SLiMs), the short peptide modules that mediate many protein interactions in disordered regions (<a class="cite" href="#ref-vanroey2014">Van Roey et al., 2014</a>).</p>
+    <p class="abstract">We asked a language model, Gemini Carbon, to find repeats in human proteins by reading the sequences alone, i.e. using no code, no tools, no search and no protein names. <b>While recognizing these patterns is extremely difficult for the human eye, we consider this to be a task that naturally suits the abilities of LLMs to recognize patterns in sequences.</b> Repeats are especially common in disordered regions (<a class="cite" href="#ref-tompa2003">Tompa, 2003</a>; <a class="cite" href="#ref-simon2009">Simon &amp; Hancock, 2009</a>; <a class="cite" href="#ref-jorda2010">Jorda et al., 2010</a>). Many of the repeats in disordered or mixed sequence are potential novel short linear motifs (SLiMs), the short peptide modules that mediate many protein interactions in disordered regions (<a class="cite" href="#ref-vanroey2014">Van Roey et al., 2014</a>).</p>
     <nav class="links ql" aria-label="On this page">
-      <span class="lab">On this page</span><span class="grp"><a href="#known">Known</a><a href="#newocc">Known motif, new place</a><a href="#freg">In a functional region</a><a href="#novel">Novel</a><a href="#browse">Browse examples</a><a href="#ptmFixWrap">Repeat PTMs</a><a href="#arch8">Structured repeat types</a><a href="#method">Method</a><a href="#catalog">Catalog</a><a href="#refs">References</a></span>
+      <span class="lab">On this page</span><span class="grp"><span class="cl"><a href="#known">Known</a><a href="#newocc">Known motif, new place</a><a href="#freg">In a functional region</a><a href="#novel">Novel</a></span><span class="cl"><a href="#browse">Browse examples</a><a href="#ptmFixWrap">Repeat PTMs</a><a href="#arch8">Structured repeat types</a><a href="#method">Method</a><a href="#catalog">Catalog</a><a href="#refs">References</a></span></span>
     </nav>
-    <nav class="links ql" aria-label="Species catalogs and data">
+    <nav class="links ql sp" aria-label="Species catalogs and data">
       <span class="lab">Species catalogs</span><span class="grp"><a href="./human.html">Human</a><a href="./yeast.html">Yeast</a><a href="./arabidopsis.html">Arabidopsis</a><a href="./drosophila.html">Drosophila</a><a href="./ecoli.html">E. coli</a><a href="./bsubtilis.html">B. subtilis</a><a href="./mimivirus.html">Mimivirus</a><a href="./vaccinia.html">Vaccinia</a><a href="./herpesviruses.html">Herpesviruses</a><a href="catalog.json" download>Data (JSON)</a><span class="off">Preprint in preparation</span></span>
     </nav>
     <form class="find" id="findForm" autocomplete="off"><label for="findQ">Find a protein</label><input id="findQ" type="search" placeholder="Gene or UniProt accession, e.g. SRRM2 or P24928"><button type="submit">Go</button><span class="msg" id="findMsg"></span></form>
@@ -1831,8 +1833,9 @@ function boot(){
   $('#findForm').addEventListener('submit',async e=>{e.preventDefault();const q=$('#findQ').value.trim();if(!q)return;$('#findMsg').textContent='Searching…';
     const cat=await getCatalog().catch(()=>null);if(!cat){$('#findMsg').textContent='Catalog unavailable';return}
     const Q=q.toUpperCase(),hit=cat.find(p=>(p.g||'').toUpperCase()===Q||(p.a||'').toUpperCase()===Q);
-    if(hit){$('#findMsg').textContent='';openFromCatalog(hit)}
-    else{$('#q').value=q;renderCatalog(true);const n=filterCatalog(cat).length;$('#findMsg').textContent=n?`${n} matches in the catalog`:'No protein with repeats matches';document.getElementById('catalog').scrollIntoView({behavior:'smooth'})}});
+    const hl=`<a href="./human.html#q=${encodeURIComponent(hit?hit.g||hit.a:q)}">Open ${esc(hit?hit.g||hit.a:q)} in the human catalog →</a>`;
+    if(hit){$('#findMsg').innerHTML=hl;openFromCatalog(hit)}
+    else{$('#q').value=q;renderCatalog(true);const n=filterCatalog(cat).length;$('#findMsg').innerHTML=n?`${n} matches in the catalog · ${hl}`:'No protein with repeats matches';document.getElementById('catalog').scrollIntoView({behavior:'smooth'})}});
   if(/^#x=/.test(location.hash))dkFromHash();
   let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawOverview();if(curView)drawTracks(curView,lastUP);if(exViewer){exViewer.resize();exViewer.render()}},150)});
 }

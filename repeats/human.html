@@ -1325,6 +1325,12 @@ kbd, code { font-family: var(--font-outlier); }
 .cmp-scroll { max-height: 46vh; overflow-y: auto; border: var(--rule-hair) solid var(--color-sheet-rule); }
 .cmp-note { font-size: var(--text-xs); color: var(--color-muted); }
 .cmp-lane-a { fill: var(--motif-0); } .cmp-lane-b { fill: var(--motif-2); } .cmp-lane-base { fill: var(--color-rule); }
+
+.orth-badge.orth-q, .orth-lab.orth-q { font-weight: 700; color: var(--color-ink); }
+.orth-lab { font-weight: 600; color: var(--color-ink-2); margin-right: var(--space-2xs); }
+.orth-box { margin-bottom: var(--space-sm); }
+.orth-q { cursor: help; font-weight: 400; }
+
 </style>
 </head>
 <body class="single-run">
@@ -2467,7 +2473,7 @@ kbd, code { font-family: var(--font-outlier); }
                 <div class="hero-tags-row">
                   ${(rec.flags || []).map(f => `<span class="badge badge-flag">${f}</span>`).join('')}
                   ${repeats.length > 0 
-                    ? `<span class="badge badge-repeat-count">${repeats.length} repeat ${repeats.length === 1 ? 'family' : 'families'}</span>` 
+                    ? `<span class="badge badge-repeat-count">${repeats.length} repeat ${repeats.length === 1 ? 'array' : 'arrays'}</span>` 
                     : '<span class="badge badge-no-repeat">No repeat called</span>'}
                 </div>
               </div>
@@ -3755,6 +3761,7 @@ kbd, code { font-family: var(--font-outlier); }
               <span class="attr-badge" style="text-transform: capitalize;">${(rep.sequence_context || 'disordered_like').replace(/_/g, '-')}</span>
               <span class="attr-badge">Confidence: ${rep.confidence || 'high'}</span>
               <span class="attr-badge">${numCopies} copies</span>
+              ${rep._orth ? `<span class="attr-badge orth-badge orth-${rep._orth[1]}" title="${escapeHtml(rep._orth[2])}">${escapeHtml(rep._orth[0])}</span>` : ''}
               <span class="attr-badge" style="color: ${allVerified ? 'var(--success)' : 'var(--danger)'};">
                 ${allVerified ? '&check; All copies found verbatim' : '&times; Not all copies found'}
               </span>
@@ -3762,6 +3769,12 @@ kbd, code { font-family: var(--font-outlier); }
           </div>
 
           <div class="repeat-body-content">
+            ${rep._orth ? `
+              <div class="rationale-quote-box orth-box">
+                <div class="rationale-title">Ortholog check <span class="orth-q" tabindex="0" title="Each disordered or mixed repeat array was searched for in Ensembl Compara orthologs from 16 vertebrates (3 primates: macaque, marmoset, mouse lemur; 7 other placental mammals; 6 deeper vertebrates: opossum, chicken, zebra finch, anole, Xenopus, zebrafish) and compared with shuffles of the same segments. Found outside primates above the shuffled expectation: pass. Not found: pass as a lineage expansion only if it is a high-confidence tandem, periodic or 4+-copy array strongly enriched over shuffled sequence of the same protein; otherwise quarantine. Long consensus patterns can miss divergent orthologs, so a quarantine marks a weaker hit, not a false one.">(?)</span></div>
+                <span class="orth-lab orth-${rep._orth[1]}">${escapeHtml(rep._orth[0])}</span> ${escapeHtml(rep._orth[2])}
+              </div>
+            ` : ''}
             ${rep.rationale ? `
               <div class="rationale-quote-box">
                 <div class="rationale-title">Model's description</div>
@@ -4174,6 +4187,8 @@ kbd, code { font-family: var(--font-outlier); }
 
     window.addEventListener('DOMContentLoaded', () => {
       setupEventListeners();
+      const hq=/^#q=/.test(location.hash)?decodeURIComponent(location.hash.slice(3)):'';
+      if(hq){const si=document.getElementById('searchInput');si.value=hq;si.dispatchEvent(new Event('input'))}
       renderMetrics();
       renderProteinList();
       renderActiveDetail();
