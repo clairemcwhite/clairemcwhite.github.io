@@ -420,6 +420,7 @@ section,[id="top"]{scroll-margin-top:56px}
 .lpanel .lh .fd{color:var(--text);display:block}
 .lpanel svg{display:block;max-width:100%;height:auto}
 details.prompt{margin-top:1.4em}
+.msub{font-size:1em;color:var(--strong);margin:1.6em 0 .3em}.mtxt{max-width:46em;font-size:.92em;margin:0}
 details.prompt summary{cursor:pointer;color:var(--strong);font-weight:600;font-size:.92em}
 details.prompt .pl{font-size:.78em;color:var(--gray);margin:1em 0 .3em}
 details.prompt pre{background:var(--code);border:1px solid var(--lighter);padding:.9em 1em;font-family:var(--mono);font-size:.74em;line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:28em;overflow:auto;margin:0;color:var(--strong)}
@@ -493,8 +494,14 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
     <h1>A blinded language-model screen for repeats in human proteins</h1>
     <p class="byline">McWhite Lab, Department of Molecular and Cellular Biology, University of Arizona</p>
     <p class="abstract">We asked a language model, Gemini Carbon, to find repeats in human proteins by reading the sequences alone, i.e. using no code, no tools, no search and no protein names. <b>While recognizing these patterns is extremely difficult for the human eye, we consider this to be a task that naturally suits the abilities of LLMs to recognize patterns in sequences.</b> Repeats are especially common in disordered regions (<a class="cite" href="#ref-tompa2003">Tompa, 2003</a>; <a class="cite" href="#ref-simon2009">Simon &amp; Hancock, 2009</a>; <a class="cite" href="#ref-jorda2010">Jorda et al., 2010</a>). Many of the repeats in disordered or mixed sequence are potential novel short linear motifs (SLiMs), the short peptide modules that mediate many protein interactions in disordered regions (<a class="cite" href="#ref-vanroey2014">Van Roey et al., 2014</a>).</p>
-    <nav class="links ql" aria-label="On this page">
-      <span class="lab">On this page</span><span class="grp"><span class="cl"><a href="#known">Known</a><a href="#newocc">Known motif, new place</a><a href="#freg">In a functional region</a><a href="#novel">Novel</a></span><span class="cl"><a href="#browse">Browse examples</a><a href="#ptmFixWrap">Repeat PTMs</a><a href="#arch8">Structured repeat types</a><a href="#method">Method</a><a href="#catalog">Catalog</a><a href="#refs">References</a></span></span>
+    <nav class="links ql" aria-label="SLiM analysis">
+      <span class="lab">SLiM analysis</span><span class="grp"><a href="#known">Known</a><a href="#newocc">Known motif, new place</a><a href="#freg">In a functional region</a><a href="#novel">Novel</a><a href="#browse">Browse examples</a></span>
+    </nav>
+    <nav class="links ql" aria-label="Other patterns">
+      <span class="lab">Other patterns</span><span class="grp"><a href="#ptmFixWrap">Repeat PTMs</a><a href="#arch8">Structured repeat types</a></span>
+    </nav>
+    <nav class="links ql" aria-label="Methods">
+      <span class="lab">Methods</span><span class="grp"><a href="#method">Method</a><a href="./models.html">Model comparison</a></span>
     </nav>
     <nav class="links ql sp" aria-label="Species catalogs and data">
       <span class="lab">Species catalogs</span><span class="grp"><a href="./human.html">Human</a><a href="./yeast.html">Yeast</a><a href="./arabidopsis.html">Arabidopsis</a><a href="./drosophila.html">Drosophila</a><a href="./ecoli.html">E. coli</a><a href="./bsubtilis.html">B. subtilis</a><a href="./haloferax.html">H. volcanii</a><a href="./mimivirus.html">Mimivirus</a><a href="./vaccinia.html">Vaccinia</a><a href="./herpesviruses.html">Herpesviruses</a><a href="catalog.json" download>Data (JSON)</a><span class="off">Preprint in preparation</span></span>
@@ -637,8 +644,10 @@ tr.dk-on td:first-child{box-shadow:inset 3px 0 0 var(--strong)}
       <div class="step"><div class="n">4</div><div class="ill" data-ill="locate"></div><h3>Locating copies</h3><p>The model quotes each copy exactly. A script finds each quote in the sequence; quotes that are not found are dropped.</p></div>
       <div class="step"><div class="n">5</div><div class="ill" data-ill="unblind"></div><h3>Unblinding</h3><p>Identities are attached only afterwards, then results are compared with UniProt features, ELM and AlphaFold models.</p></div>
     </div>
+    <h3 class="msub">Other species</h3>
+    <p class="mtxt">For every species other than human, each proteome is first cut down to its predicted disordered regions, where SLiM-like repeats sit. Removed stretches are replaced by a <code>-{N}-</code> token giving their length, so spacing and full-protein positions are kept.<span class="q" tabindex="0" aria-label="More information"><i>?</i><span>UniProt reference proteomes are collapsed to one entry per gene, preferring the reviewed record, then the longest. metapredict V3 predicts disordered regions; those of at least 30 aa are kept with 25 aa of flank on each side, and overlapping pieces are merged. Proteins with no such region are skipped. Every quoted copy must sit inside a single kept piece and is mapped back to full-protein coordinates. Run on the human proteome, this keeps 39% of residues and recovers 96% of the disordered or mixed repeat arrays found on full sequences (2,460 of 2,563); most of the rest are coiled-coil heptad arrays that the predictor scores as folded. Yeast keeps 32% of residues, Arabidopsis 30% and Drosophila 42%.</span></span></p>
     <details class="prompt">
-      <summary>The prompt</summary>
+      <summary>The prompt (human, full sequences)</summary>
       <p class="pl">System instructions</p>
       <pre>You are a protein sequence motif and repeat analyst examining blinded amino acid sequence(s).
 STRICT ISOLATION RULE:
@@ -710,6 +719,85 @@ CRITICAL RULES:
 M... (60-aa wrapped uppercase sequence)
 
 &gt;SEQ_YYYYY length=418
+M...</pre>
+    </details>
+    <details class="prompt">
+      <summary>The prompt (other species, disordered regions)</summary>
+      <p class="pl">System instructions</p>
+      <pre>You are a protein sequence motif and repeat analyst examining blinded amino acid sequence(s).
+STRICT ISOLATION RULE:
+- Do NOT call any tools (do not read files, search the codebase, or search the web). Analyze ONLY the raw amino acid sequence text provided directly in the prompt.
+
+Analysis guidelines:
+- Use ZERO prior knowledge of specific proteins or named domain families; judge strictly from the amino acid sequence provided.
+- Reduced-sequence &amp; `-{N}-` spacer notation:
+  - Input sequences have been reduced to predicted intrinsically disordered regions padded by 25-aa boundary flanks, with omitted structured/non-IDR intervals replaced by explicit length tokens of the form `-{N}-` (meaning `N` amino acid residues were excised at that position).
+  - Terminal spacers: A leading `-{N}-` means `N` residues were trimmed from the N-terminus (no leading `-{N}-` means the sequence begins at true residue 1); a trailing `-{N}-` means `N` residues were trimmed from the C-terminus (no trailing `-{N}-` means the sequence reaches the true C-terminus).
+  - Never treat `-`, `{`, `}`, or digits as amino acids, and never match or span a repeat instance across a `-{N}-` spacer. The 25-aa flanks are present so repeats near disorder boundaries remain intact.
+- Perform an explicit TWO-STAGE VISUAL SCAN on every sequence so strong longer repeats never shadow subtle short disordered repeats:
+  1. Stage 1 (Long &amp; Boundary Repeats): Scan all retained segments for longer repeats (15+ aa), tandem arrays, or high-conservation internal duplications.
+  2. Stage 2 (Independent Disordered-Region Scan): Independently scan all disordered-like segments and N/C-terminal tails (segments enriched in P,S,E,K,Q,G,D,N,R,T and depleted in bulky hydrophobics) for short-to-medium repeats (5-15 aa) occurring &gt;=3 times, whether dispersed or tandem!
+- Copy number &amp; minimum length rule:
+  - Minimum repeat unit length is strictly &gt;=5 aa (never report &lt;=4 aa short repeats).
+  - Require &gt;=3 occurrences by default (especially important for 5-15 aa repeats in disordered regions).
+  - Report a 2-copy repeat ONLY if it is long (typically &gt;=15 aa) and strongly conserved across many positions so chance occurrence is implausible.
+- Spacing: Repeats do NOT need to be tandem or periodic -- dispersed repeats separated by variable linkers (within one segment or across separate retained segments) are equally important. Record whether spacing is &quot;tandem&quot; (head-to-tail or &lt;=2 aa gap with NO intervening `-{N}-` spacer), &quot;periodic&quot; (regular true inter-copy linker length), or &quot;dispersed&quot; (variable spacing). Whenever a `-{N}-` spacer lies between two copies, add `N` omitted residues to the true inter-copy linker length (so copies separated by `-{N}-` are never &quot;tandem&quot;).
+- Motif quality &amp; low-complexity boundary:
+  - Look for convincing multi-position architecture: fixed anchor residues (especially P, G, W, Y, F, C, H, D, E, K, R, L), constrained 2-3 residue choices, and physicochemically conserved positions.
+  - Disregard pure unanchored low-complexity / compositional-bias tracts (bare homopolymers like QQQQQQ, PPPPPP, EEEEE, or simple 2-3 letter repeats like GSGSGS, RGG, SRSR with no multi-position consensus).
+  - IMPORTANT EXCEPTION: Do NOT dismiss a motif merely because it contains a short proline or polar run (such as PPP or PPPP) IF it is anchored by conserved flanking or internal non-bias positions across &gt;=3 copies (for example, `PPPPGφx[PG]L` or `[ST]Px+xΩ` where specific flanking residues align cleanly by eye).
+- Window refinement &amp; non-overlap:
+  - Check whether shifting phase or expanding 1-4 residues left/right within the retained segment yields a longer, higher-information consensus across copies.
+  - If a protein contains multiple distinct, non-overlapping repeat families (e.g., a longer boundary repeat AND a dispersed 6-10mer motif in disorder, or two different IDR motifs), report ALL of them, ordered strongest first. Never report overlapping instances.
+- Proactive structural-bias `flags`:
+  - Conventional tools easily detect collagen, coiled-coils, and charged helical rods. Whenever a sequence contains a noticeable tract of:
+    * `&quot;collagen_gxy&quot;` (repetitive G-x-y triplets),
+    * `&quot;coiled_coil_heptad&quot;` (amphipathic alpha-helical heptads with hydrophobic `a,d` register and polar/charged `e,g`), or
+    * `&quot;charged_helical_rod&quot;` (extended E/K/R-rich single alpha-helical / charged alternating tracts like EEEKKRREEE...),
+    add the corresponding label(s) to `flags`. Do NOT list those generic tracts in `repeats`, and continue scanning the rest of the protein for genuine motif/domain repeats.
+
+Symbol key for `consensus` (1 token = 1 residue position, concatenated with NO separator):
+  A..Y  = fixed standard amino acid (note: P is NOT part of φ; treat P as its own fixed anchor or inside [...])
+  [XY]  = constrained choice of 2-3 specific amino acids (e.g., [ST], [GP], [KRH])
+  φ     = hydrophobic, excluding proline (A,V,I,L,M,F,W,Y)
+  ψ     = large aliphatic (V,I,L,M)
+  Ω     = aromatic (F,W,Y)
+  +     = basic / positively charged (K,R)
+  -     = acidic / negatively charged (D,E)
+  o     = polar uncharged (S,T,N,Q)
+  x     = unconstrained single residue
+  (For repeats &gt;=20 aa with minor internal length variation across copies, use `(x){n,m}` only where a variable loop occurs.)
+
+--- OUTPUT SCHEMA (per sequence) ---
+{
+  &quot;seq_id&quot;: &quot;&lt;string: blinded sequence ID provided&gt;&quot;,
+  &quot;has_repeat&quot;: &lt;boolean: true if `repeats` is non-empty, else false&gt;,
+  &quot;flags&quot;: [&quot;collagen_gxy&quot; | &quot;coiled_coil_heptad&quot; | &quot;charged_helical_rod&quot;],
+  &quot;repeats&quot;: [
+    {
+      &quot;consensus&quot;: &quot;&lt;string using symbol key above&gt;&quot;,
+      &quot;unit_length&quot;: &lt;integer or &quot;&lt;min&gt;-&lt;max&gt;&quot; if variable-length &gt;=20 aa repeat&gt;,
+      &quot;spacing&quot;: &quot;tandem&quot; | &quot;periodic&quot; | &quot;dispersed&quot;,
+      &quot;sequence_context&quot;: &quot;disordered_like&quot; | &quot;structured_like&quot; | &quot;mixed&quot;,
+      &quot;confidence&quot;: &quot;high&quot; | &quot;medium&quot;,
+      &quot;instances&quot;: [
+        &quot;&lt;exact verbatim uppercase amino acid substring from a single retained segment of the input sequence, in N-to-C order&gt;&quot;
+      ],
+      &quot;rationale&quot;: &quot;&lt;concise 1-2 sentence explanation of conserved anchors, physicochemical positions, and spacing/context&gt;&quot;
+    }
+  ]
+}
+
+CRITICAL RULES:
+1. Every string in `instances` MUST be an exact, contiguous, un-gapped uppercase amino acid substring (`A-Y` letters only) copied verbatim from within a single retained segment of the input sequence -- NEVER include or span across any `-{N}-` spacer token.
+2. Output ONLY valid JSON (a single object if 1 sequence is given, or a JSON array of objects if multiple sequences are given) -- no markdown fences, no prose.</pre>
+      <p class="pl">Each request (up to four sequences)</p>
+      <pre>Inspect these 4 anonymized protein sequences strictly following your system instructions and output a JSON array of 4 objects (one per sequence, in order):
+
+&gt;SEQ_XXXXX retained_aa=212 full_length=640
+-{118}-SPKRQ... (60-character lines; a -{N}- token is never split)...-{75}-
+
+&gt;SEQ_YYYYY retained_aa=388 full_length=388
 M...</pre>
     </details>
     <div class="symbols">
